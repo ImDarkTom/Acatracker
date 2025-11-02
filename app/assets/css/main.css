@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+    --color-brand-950: hsl(190, 50%, 5%);
+    --color-brand-900: hsl(190, 50%, 10%);
+    --color-brand-800: hsl(190, 50%, 20%);
+    --color-brand-700: hsl(190, 50%, 30%);
+    --color-brand-600: hsl(190, 50%, 40%);
+    --color-brand-500: hsl(190, 50%, 50%);
+    --color-brand-400: hsl(190, 50%, 60%);
+    --color-brand-300: hsl(190, 50%, 70%);
+    --color-brand-200: hsl(190, 50%, 80%);
+    --color-brand-100: hsl(190, 50%, 90%);
+    --color-brand-50: hsl(190, 50%, 950%);
+}
+
+body {
+    @apply bg-brand-950 text-brand-50;
+}

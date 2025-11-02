@@ -1,17 +1,13 @@
-<script setup lang="ts">
-const { data: tasks, error, status } = await useFetch('/api/tasks', {
-    lazy: true
-});
-</script>
-
 <template>
-    <h1>Home</h1>
-    <div v-if="status === 'pending'">
-        Loading...
-    </div>
-    <div v-else>
-        <div v-for="task in tasks" :key="task.id">
-            {{ task.title }}
+    <div class="pt-16 flex items-center justify-center">
+        <div class="text-center">
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold text-brand-100">Acatracker</h1>
+                <p class="py-6">Open-source academic tracker.</p>
+                <button class="p-4 bg-brand-600">
+                    Get Started
+                </button>
+            </div>
         </div>
     </div>
 </template>

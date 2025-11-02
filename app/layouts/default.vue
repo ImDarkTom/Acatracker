@@ -1,12 +1,7 @@
-<script setup lang="ts">
-import NavBar from '~/components/NavBar.vue';
-
-</script>
-
 <template>
-    <div class="h-dvh bg-gray-950 text-gray-50">
+    <div class="min-h-screen flex flex-col">
         <NavBar />
-        <main class="p-4">
+        <main class="p-4 grow">
             <slot />
         </main>
     </div>
