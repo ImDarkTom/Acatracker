@@ -10,9 +10,16 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/main.css'],
+  
   vite: {
     plugins: [
       tailwindcss(),
     ]
-  }
+  },
+
+  colorMode: {
+    dataValue: 'theme'
+  },
+
+  modules: ['@nuxtjs/color-mode', '@nuxt/icon']
 })

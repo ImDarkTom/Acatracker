@@ -18,8 +18,8 @@ body {
     @apply bg-brand-950 text-brand-50;
 }
 
-@media (prefers-color-scheme: light) {
-    :root {
+@layer base {
+    html[data-theme='light'] {
         --color-brand-950: hsl(190, 50%, 95%);
         --color-brand-900: hsl(190, 50%, 90%);
         --color-brand-800: hsl(190, 50%, 80%);
