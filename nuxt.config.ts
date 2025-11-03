@@ -20,7 +20,8 @@ export default defineNuxtConfig({
   },
 
   colorMode: {
-    dataValue: 'theme'
+    dataValue: 'theme',
+    storage: 'cookie',
   },
 
   modules: ['@nuxtjs/color-mode', '@nuxt/icon', '@pinia/nuxt']
