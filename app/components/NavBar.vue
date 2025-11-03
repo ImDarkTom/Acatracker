@@ -10,7 +10,7 @@ import ThemeToggle from './ThemeToggle.vue';
                 <NuxtLink to="/">Acatracker</NuxtLink>
             </li>
             <!-- <li>
-                <NuxtLink :to="{ name: 'tasks' }" :active-class="'border-b-2 border-brand-200 text-brand-200'">My Tasks</NuxtLink>
+                <NuxtLink :to="{ name: 'dashboard' }" :active-class="'border-b-2 border-brand-200 text-brand-200'">My Tasks</NuxtLink>
             </li>
             <li>
                 <NuxtLink :to="{ name: 'create' }" :active-class="'border-b-2 border-brand-200 text-brand-200'">Create Task</NuxtLink>
