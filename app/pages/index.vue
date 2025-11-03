@@ -4,9 +4,7 @@
             <div class="max-w-md">
                 <h1 class="text-5xl font-bold text-brand-100">Acatracker</h1>
                 <p class="py-6">Open-source academic tracker.</p>
-                <button class="p-4 bg-brand-600">
-                    Get Started
-                </button>
+                <AuthButton class="p-4 bg-brand-600" />
             </div>
         </div>
     </div>

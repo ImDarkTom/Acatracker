@@ -12,9 +12,9 @@ const isDark = computed({
 </script>
 
 <template>
-    <label class="mr-2">
+    <label class="flex items-center cursor-pointer">
         <input v-model="isDark" type="checkbox" class="hidden">
 
-        <Icon :name="isDark ? 'bi:sun' : 'bi:moon'" />
+        <Icon :name="isDark ? 'bi:sun' : 'bi:moon'" size="20" />
     </label>
 </template>

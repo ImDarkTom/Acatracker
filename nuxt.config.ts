@@ -23,5 +23,5 @@ export default defineNuxtConfig({
     dataValue: 'theme'
   },
 
-  modules: ['@nuxtjs/color-mode', '@nuxt/icon']
+  modules: ['@nuxtjs/color-mode', '@nuxt/icon', '@pinia/nuxt']
 })
