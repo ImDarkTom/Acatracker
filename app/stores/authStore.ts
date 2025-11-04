@@ -10,12 +10,13 @@ export const useAuthStore = defineStore("useAuthStore", () => {
     function setSession(value: ReturnedSession['data'] | null) {
         session.value = value;
         if (session.value) {
-            isLoading.value = false;
+            _isLoading.value = false;
         }
     }
 
     const user = computed(() => session.value?.user);
-    const isLoading = ref(true);
+    const _isLoading = ref(true);
+    const isLoading = computed(() => _isLoading || session.value);
 
     async function signIn() {
         await authClient.signIn.social({
