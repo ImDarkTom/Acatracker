@@ -1,22 +1,26 @@
+import type { UseFetchOptions } from "#app";
 import { createAuthClient } from "better-auth/vue";
+
+// Adapted: https://github.com/better-auth/better-auth/issues/5358#issuecomment-3411807797
+const relativeFetch =(<T>(url: string, opts?: UseFetchOptions<T>) => {
+    try {
+        if (url.startsWith('http')) url = new URL(url).pathname;
+    } catch {}
+    return useFetch(url, opts);
+});
 
 const authClient = createAuthClient();
 
-export type ReturnedSession = Awaited<ReturnType<typeof authClient.useSession>>;
-
 export const useAuthStore = defineStore("useAuthStore", () => {
-    const session = ref<ReturnedSession['data'] | null>(null);
+    const session = ref<Awaited<ReturnType<typeof authClient.useSession>> | null>(null);
 
-    function setSession(value: ReturnedSession['data'] | null) {
-        session.value = value;
-        if (session.value) {
-            _isLoading.value = false;
-        }
+    async function init() {
+        const data = await authClient.useSession(relativeFetch);
+        session.value = data;
     }
 
-    const user = computed(() => session.value?.user);
-    const _isLoading = ref(true);
-    const isLoading = computed(() => _isLoading || session.value);
+    const user = computed(() => session.value?.data?.user);
+    const isLoading = computed(() => session.value?.isPending);
 
     async function signIn() {
         await authClient.signIn.social({
@@ -28,12 +32,11 @@ export const useAuthStore = defineStore("useAuthStore", () => {
 
     async function signOut() {
         await authClient.signOut();
-        setSession(null);
         navigateTo("/");
     }
 
     return {
-        setSession,
+        init,
         isLoading,
         signIn,
         signOut,
