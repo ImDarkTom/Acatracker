@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import ThemeToggle from './ThemeToggle.vue';
-
-</script>
-
 <template>
     <nav class="bg-brand-900 flex items-center flex-row justify-between p-4">
         <ul class="flex flex-row gap-2">
@@ -18,7 +13,7 @@ import ThemeToggle from './ThemeToggle.vue';
         </ul>
         <ul class="flex flex-row gap-2">
             <li class="flex items-center mr-2">
-                <ThemeToggle />
+                <AppThemeToggle />
             </li>
             <li>
                 <AuthButton class="bg-brand-600 p-2" />
