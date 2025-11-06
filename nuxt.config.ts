@@ -29,6 +29,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@pinia/nuxt',
     '@vee-validate/nuxt',
-    'nuxt-csurf'
+    'nuxt-csurf',
+    'reka-ui/nuxt',
   ]
 })
