@@ -5,6 +5,7 @@ import { InsertTask } from '~~/lib/db/schema';
 
 const submitError = ref('');
 const isLoading = ref(false);
+const isSubmitted = ref(false);
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertTask)
@@ -14,11 +15,12 @@ const onSubmit = handleSubmit(async (values) => {
     try {
         submitError.value = "";
         isLoading.value = true;
-        const result = await $fetch("/api/tasks", {
+        await $fetch("/api/tasks", {
             method: 'POST',
             body: values,
         });
-        console.log(result);
+        isSubmitted.value = true;
+        navigateTo('/dashboard');
     } catch (e) {
         const error = e as FetchError;
         if (error.data.data) {
@@ -30,7 +32,7 @@ const onSubmit = handleSubmit(async (values) => {
 });
 
 onBeforeRouteLeave(() => {
-    if (meta.value.dirty) {
+    if (!isSubmitted.value && meta.value.dirty) {
         const confirmed = confirm('Are you sure you want to leave? All unsaved changes will be lost.');
         if (!confirmed) {
             return false;

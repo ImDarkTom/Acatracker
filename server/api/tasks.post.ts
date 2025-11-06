@@ -1,6 +1,14 @@
-import { InsertTask } from "~~/lib/db/schema";
+import db from "~~/lib/db";
+import { InsertTask, task } from "~~/lib/db/schema";
 
 export default defineEventHandler(async (event) => {
+    if (!event.context.user) {
+        return sendError(event, createError({
+            statusCode: 401,
+            statusMessage: 'Unauthorized',
+        }));
+    }
+
     const result = await readValidatedBody(event, InsertTask.safeParse);
 
     if (!result.success) {
@@ -21,5 +29,10 @@ export default defineEventHandler(async (event) => {
         }));
     }
 
-    return result.data;
+    const [ created ] = await db.insert(task).values({
+        ...result.data,
+        userId: event.context.user.id,
+    }).returning();
+
+    return created;
 });
