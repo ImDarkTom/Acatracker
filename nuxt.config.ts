@@ -24,5 +24,11 @@ export default defineNuxtConfig({
     storage: 'cookie',
   },
 
-  modules: ['@nuxtjs/color-mode', '@nuxt/icon', '@pinia/nuxt', '@vee-validate/nuxt']
+  modules: [
+    '@nuxtjs/color-mode',
+    '@nuxt/icon',
+    '@pinia/nuxt',
+    '@vee-validate/nuxt',
+    'nuxt-csurf'
+  ]
 })

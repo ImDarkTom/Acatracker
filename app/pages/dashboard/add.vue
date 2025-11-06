@@ -3,6 +3,8 @@ import type { FetchError } from "ofetch";
 
 import { InsertTask } from '~~/lib/db/schema';
 
+const { $csrfFetch } = useNuxtApp()
+
 const submitError = ref('');
 const isLoading = ref(false);
 const isSubmitted = ref(false);
@@ -15,7 +17,7 @@ const onSubmit = handleSubmit(async (values) => {
     try {
         submitError.value = "";
         isLoading.value = true;
-        await $fetch("/api/tasks", {
+        await $csrfFetch("/api/tasks", {
             method: 'POST',
             body: values,
         });
