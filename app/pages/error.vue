@@ -6,7 +6,7 @@ const error = route.query.error || "An unknown error occured.";
 
 <template>
     <div>
-        <div class="bg-error p-2 mb-2">
+        <div class="bg-errorbg p-2 mb-2">
             Oh no! {{ error }}
         </div>
         <NuxtLink to="/">

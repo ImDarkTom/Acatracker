@@ -13,7 +13,8 @@
     --color-brand-100: hsl(190, 50%, 90%);
     --color-brand-50: hsl(190, 50%, 95%);
 
-    --color-error: hsl(0, 50%, 25%)
+    --color-errortxt: hsl(0, 40%, 50%);
+    --color-errorbg: hsl(0, 50%, 25%)
 }
 
 body {
@@ -34,6 +35,7 @@ body {
         --color-brand-100: hsl(190, 50%, 10%);
         --color-brand-50:  hsl(190, 50%, 5%);
 
-        --color-error: hsl(0, 50%, 75%);
+        --color-errortxt: hsl(0, 40%, 50%);
+        --color-errorbg: hsl(0, 50%, 75%);
     }
 }
