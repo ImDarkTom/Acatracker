@@ -4,7 +4,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { user } from "./auth";
 import z from "zod";
 
-export const task = sqliteTable("task", {
+export const assesment = sqliteTable("assesment", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text().notNull(),
     description: text(),
@@ -15,7 +15,7 @@ export const task = sqliteTable("task", {
     updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
 
-export const InsertTask = createInsertSchema(task, {
+export const InsertAssesment = createInsertSchema(assesment, {
     name: (field) => field.min(1).max(100),
     description: (field) => field.max(1000),
     module: (field) => z.string(),

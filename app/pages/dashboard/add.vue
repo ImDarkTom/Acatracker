@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FetchError } from "ofetch";
 
-import { InsertTask } from '~~/lib/db/schema';
+import { InsertAssesment } from '~~/lib/db/schema';
 
 const { $csrfFetch } = useNuxtApp()
 
@@ -10,14 +10,14 @@ const isLoading = ref(false);
 const isSubmitted = ref(false);
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
-    validationSchema: toTypedSchema(InsertTask)
+    validationSchema: toTypedSchema(InsertAssesment)
 });
 
 const onSubmit = handleSubmit(async (values) => {
     try {
         submitError.value = "";
         isLoading.value = true;
-        await $csrfFetch("/api/tasks", {
+        await $csrfFetch("/api/assesments", {
             method: 'POST',
             body: values,
         });
@@ -46,7 +46,7 @@ onBeforeRouteLeave(() => {
 
 <template>
     <div class="max-w-md mx-auto">
-        <h1 class="text-xl">Add a new task</h1>
+        <h1 class="text-xl">Add a new assesment</h1>
         <p>This can be an assignment, exam date, project due date, etc.</p>
         <br>
         <div v-if="submitError" class="bg-errorbg p-2">

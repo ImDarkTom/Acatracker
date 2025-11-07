@@ -1,5 +1,5 @@
 import db from "~~/lib/db";
-import { InsertTask, task } from "~~/lib/db/schema";
+import { InsertAssesment, assesment } from "~~/lib/db/schema";
 
 export default defineEventHandler(async (event) => {
     if (!event.context.user) {
@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         }));
     }
 
-    const result = await readValidatedBody(event, InsertTask.safeParse);
+    const result = await readValidatedBody(event, InsertAssesment.safeParse);
 
     if (!result.success) {
         const statusMessage = result.error.issues
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
         }));
     }
 
-    const [ created ] = await db.insert(task).values({
+    const [ created ] = await db.insert(assesment).values({
         ...result.data,
         userId: event.context.user.id,
     }).returning();
