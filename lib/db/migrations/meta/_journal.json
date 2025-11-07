@@ -29,6 +29,13 @@
       "when": 1762549327509,
       "tag": "0003_illegal_invaders",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1762553236735,
+      "tag": "0004_square_stranger",
+      "breakpoints": true
     }
   ]
 }

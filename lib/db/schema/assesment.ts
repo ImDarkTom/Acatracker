@@ -7,6 +7,7 @@ import z from "zod";
 export const assesment = sqliteTable("assesment", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text().notNull(),
+    slug: text().notNull().unique(),
     description: text(),
     module: text().notNull(), // int().notNull().references(() => module.id),
     dueAt: int().notNull(),
@@ -38,6 +39,7 @@ export const InsertAssesment = createInsertSchema(assesment, {
     }, z.number().int())
 }).omit({
     id: true,
+    slug: true,
     userId: true,
     createdAt: true,
     updatedAt: true,
