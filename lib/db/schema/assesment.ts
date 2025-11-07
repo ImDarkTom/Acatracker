@@ -44,3 +44,5 @@ export const InsertAssesment = createInsertSchema(assesment, {
     createdAt: true,
     updatedAt: true,
 });
+
+export type InsertAssesment = z.infer<typeof InsertAssesment>;

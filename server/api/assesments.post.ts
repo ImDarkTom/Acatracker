@@ -1,11 +1,8 @@
 import { LibsqlError } from "@libsql/client";
-import { DrizzleError, eq } from "drizzle-orm";
+import { DrizzleError } from "drizzle-orm";
 import slugify from "slug";
-import { customAlphabet } from "nanoid";
-import db from "~~/lib/db";
-import { InsertAssesment, assesment } from "~~/lib/db/schema";
-
-const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvqxyz", 5);
+import { InsertAssesment } from "~~/lib/db/schema";
+import { findUniqueSlug, insertAssesment } from "~~/lib/db/queries/assesments";
 
 export default defineEventHandler(async (event) => {
     if (!event.context.user) {
@@ -35,33 +32,10 @@ export default defineEventHandler(async (event) => {
         }));
     }
 
-    // TODO: optimise this by getting all slugs beginning with the name, so we don't have to re-query
-    let slug = slugify(result.data.name);
-    let existing = !!(await db.query.assesment.findFirst({
-        where: eq(assesment.slug, slug),
-    }));
-
-    while (existing) {
-        const id = nanoid();
-        const idSlug = `${slug}-${id}`;
-
-        existing = !!(await db.query.assesment.findFirst({
-            where: eq(assesment.slug, idSlug),
-        }));
-
-        if (!existing) {
-            slug = idSlug;
-        }
-    }
+    const slug = await findUniqueSlug(slugify(result.data.name));
 
     try {
-        const [ created ] = await db.insert(assesment).values({
-            ...result.data,
-            slug: slug,
-            userId: event.context.user.id,
-        }).returning();
-
-        return created;
+        return insertAssesment(result.data, slug, event.context.user.id);
     } catch (e) {
         const error = e as DrizzleError;
         if ((error.cause as LibsqlError).message.trim() === "SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: assesment.slug") {
@@ -72,5 +46,4 @@ export default defineEventHandler(async (event) => {
         }
         throw error;
     }
-
 });
