@@ -5,6 +5,12 @@ import { customAlphabet } from "nanoid";
 
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvqxyz", 5);
 
+export async function findAssesments(userId: number) {
+    return db.query.assesment.findMany({
+        where: eq(assesment.userId, userId),
+    });
+}
+
 export async function findAssesmentBySlug(slug: string) {
     return db.query.assesment.findFirst({
         where: eq(assesment.slug, slug),

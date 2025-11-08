@@ -3,15 +3,9 @@ import { DrizzleError } from "drizzle-orm";
 import slugify from "slug";
 import { InsertAssesment } from "~~/lib/db/schema";
 import { findUniqueSlug, insertAssesment } from "~~/lib/db/queries/assesments";
+import defineAuthenticatedEventHander from "../utils/defineAuthenticatedEventHandler";
 
-export default defineEventHandler(async (event) => {
-    if (!event.context.user) {
-        return sendError(event, createError({
-            statusCode: 401,
-            statusMessage: 'Unauthorized',
-        }));
-    }
-
+export default defineAuthenticatedEventHander(async (event) => {
     const result = await readValidatedBody(event, InsertAssesment.safeParse);
 
     if (!result.success) {
