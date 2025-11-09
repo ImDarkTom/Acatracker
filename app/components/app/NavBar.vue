@@ -4,7 +4,7 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-    <nav class="bg-brand-900 flex items-center flex-row justify-between p-4">
+    <nav class="bg-base flex items-center flex-row justify-between p-4">
         <ul class="flex flex-row gap-2">
             <li class="mr-2 text-brand-400 font-bold hover:underline">
                 <NuxtLink to="/">Acatracker</NuxtLink>
@@ -23,7 +23,7 @@ const authStore = useAuthStore();
                 <AppThemeToggle />
             </li>
             <li>
-                <AuthButton class="bg-brand-600 p-2" />
+                <AuthButton class="p-2" />
             </li>
         </ul>
     </nav>

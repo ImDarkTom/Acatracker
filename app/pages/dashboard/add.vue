@@ -56,6 +56,7 @@ onBeforeRouteLeave(() => {
             <AppFormField 
                 name="name" 
                 label="Name"
+                placeholder="e.g. Important Exam"
                 :disabled="isLoading"
                 :error="errors.name" />
             <AppFormField 
@@ -67,7 +68,8 @@ onBeforeRouteLeave(() => {
                 :error="errors.description" />
             <AppFormField 
                 name="module" 
-                label="Module" 
+                label="Module"
+                placeholder="e.g. Advanced Databases"
                 :disabled="isLoading"
                 :errors="errors.module" />
             <AppFormField 
@@ -77,15 +79,15 @@ onBeforeRouteLeave(() => {
                 :disabled="isLoading"
                 :error="errors.dueAt" />
             <div class="flex flex-row justify-between" :class="{ 'opacity-50': isLoading }">
-                <button :disabled="isLoading" type="button" class="bg-brand-900 p-2 flex gap-2 not-disabled:cursor-pointer" @click="$router.back()">
+                <AppBtnPrimary :disabled="isLoading" type="button" class="bg-base!" @click="$router.back()">
                     <Icon name="bi:arrow-left" size="24"/>
                     Back
-                </button>
-                <button :disabled="isLoading" type="submit" class="bg-brand-800 p-2 flex gap-1 pr-3 not-disabled:cursor-pointer">
+                </AppBtnPrimary>
+                <AppBtnPrimary :disabled="isLoading" type="submit">
                     <Icon v-if="isLoading" name="mdi:loading" class="animate-spin" size="24" />
                     <Icon v-else name="bi:plus" size="24"/>
                     Add
-                </button>
+                </AppBtnPrimary>
             </div>
         </form>
     </div>

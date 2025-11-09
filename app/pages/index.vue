@@ -1,22 +1,17 @@
 <script setup lang="ts">
 const authStore = useAuthStore();
-
 </script>
 
 <template>
-    <div class="pt-16 flex items-center justify-center">
-        <div class="text-center">
-            <div class="max-w-md">
-                <h1 class="text-5xl font-bold text-brand-100">Acatracker</h1>
-                <p class="py-6">Open-source academic tracker.</p>
-                
-                <button v-if="authStore.user" class="p-4 bg-brand-600" >
-                    <NuxtLink :to="{ name: 'dashboard' }">
-                        Open Dashboard
-                    </NuxtLink>
-                </button>
-                <AuthButton v-else class="p-4 bg-brand-600" />
-            </div>
-        </div>
+    <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
+        <h1 class="text-5xl font-bold text-brand-100">Acatracker</h1>
+        <p class="mb-2">Open-source academic tracker.</p>
+
+        <NuxtLink v-if="authStore.user" :to="{ name: 'dashboard' }">
+            <AppBtnPrimary class="p-4">
+                Open Dashboard
+            </AppBtnPrimary>
+        </NuxtLink>
+        <AuthButton v-else class="p-4" />
     </div>
 </template>

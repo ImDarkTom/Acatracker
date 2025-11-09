@@ -20,7 +20,7 @@ const props = defineProps<{
             :disabled
             :type="props.type || 'text'" 
             :placeholder
-            class="w-full bg-brand-900 p-2" 
+            class="w-full bg-base p-2 rounded-md" 
             :class="{ 
                 'ring-1 ring-errortxt/50 ring-inset': props.error,
                 'opacity-50': disabled,
