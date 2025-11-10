@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { module, InsertModule } from "../schema";
 
 export async function findModules(userId: number) {
-    return db.query.assesment.findMany({
+    return db.query.module.findMany({
         where: eq(module.userId, userId),
     });
 }

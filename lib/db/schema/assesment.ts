@@ -1,6 +1,7 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 
+import { module } from '.';
 import { user } from "./auth";
 import z from "zod";
 
@@ -9,7 +10,7 @@ export const assesment = sqliteTable("assesment", {
     name: text().notNull(),
     slug: text().notNull().unique(),
     description: text(),
-    module: text().notNull(), // int().notNull().references(() => module.id),
+    module: int().notNull().references(() => module.id),
     dueAt: int().notNull(),
     userId: int().notNull().references(() => user.id),
     createdAt: int().notNull().$default(() => Date.now()),
@@ -19,7 +20,7 @@ export const assesment = sqliteTable("assesment", {
 export const InsertAssesment = createInsertSchema(assesment, {
     name: (field) => field.min(1).max(100),
     description: (field) => field.max(1000),
-    module: (field) => z.string(),
+    module: (field) => field,
     dueAt: () => z.preprocess((arg) => {
         if (typeof arg === 'string') {
             const m = arg.match(/^(\d{4})-(\d{2})-(\d{2})$/);

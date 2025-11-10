@@ -42,6 +42,12 @@ onBeforeRouteLeave(() => {
     }
     return true;
 });
+
+const modulesStore = useModuleStore();
+const { modules } = storeToRefs(modulesStore);
+
+onMounted(() => modulesStore.refresh());
+
 </script>
 
 <template>
@@ -66,12 +72,22 @@ onBeforeRouteLeave(() => {
                 placeholder="(Optional)" 
                 :disabled="isLoading"
                 :error="errors.description" />
-            <AppFormField 
-                name="module" 
-                label="Module"
-                placeholder="e.g. Advanced Databases"
-                :disabled="isLoading"
-                :errors="errors.module" />
+            <div class="flex flex-row gap-2 items-end">
+                <AppFormFieldSelect
+                    class="w-full"
+                    name="module" 
+                    label="Module"
+                    :disabled="isLoading"
+                    :errors="errors.module">
+                    <option value="" disabled selected>(select a module)</option>
+                    <option v-for="module in modules" :value="module.id">{{ module.name }}</option>
+                </AppFormFieldSelect>
+                <AddModule @submitted="modulesStore.refresh">
+                    <AppBtnPrimary @click.prevent>
+                        <Icon name="bi:plus" size="18" />
+                    </AppBtnPrimary>
+                </AddModule>
+            </div>
             <AppFormField 
                 name="dueAt" 
                 label="Due" 

@@ -13,6 +13,10 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertModule)
 });
 
+const emit = defineEmits<{
+    (e: 'submitted'): void,
+}>();
+
 const onSubmit = handleSubmit(async (values) => {
     try {
         submitError.value = "";
@@ -23,6 +27,7 @@ const onSubmit = handleSubmit(async (values) => {
         });
         isSubmitted.value = true;
         open.value = false;
+        emit('submitted');
     } catch (e) {
         const error = e as FetchError;
         if (error.data?.data) {
@@ -61,10 +66,12 @@ function handleInteract(event: Event) {
 <template>
     <DialogRoot v-model:open="open">
         <DialogTrigger>
-            <AppBtnPrimary class="p-4 w-full px-auto">
-                <Icon name="bi:plus" />
-                Add Module
-            </AppBtnPrimary>
+            <slot>
+                <AppBtnPrimary class="p-4 w-full px-auto">
+                    <Icon name="bi:plus" />
+                    Add Module
+                </AppBtnPrimary>
+            </slot>
         </DialogTrigger>
         <DialogPortal>
             <DialogOverlay class="bg-black/35 fixed inset-0 z-30" />

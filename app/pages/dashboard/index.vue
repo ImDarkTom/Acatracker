@@ -2,6 +2,13 @@
 const { data, status } = await useFetch('/api/assesments', {
     lazy: true,
 });
+
+const modulesStore = useModuleStore();
+const { modules } = storeToRefs(modulesStore);
+
+onMounted(() => {
+    modulesStore.refresh();
+});
 </script>
 
 <template>
@@ -17,7 +24,7 @@ const { data, status } = await useFetch('/api/assesments', {
                             v-for="assesment in data" 
                             :key="assesment.id" 
                             class="bg-elevated p-2 rounded-sm" >
-                            <span class="text-lg">{{ assesment.name }} - {{ assesment.module }}</span>
+                            <span class="text-lg">{{ assesment.name }} - {{ modules?.filter((m) => m.id === Number(assesment.module))[0]?.name ?? 'Unknown Module' }}</span>
                             <p class="text-brand-100">{{ assesment.description ?? '(No description.)' }}</p>
                         </div>
                     </div>
