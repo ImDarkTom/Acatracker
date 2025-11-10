@@ -1,5 +1,7 @@
 import { int, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { user } from "./auth";
+import z from "zod";
+import { createInsertSchema } from "drizzle-zod";
 
 // TODO: make sure we handle errors for if we try to insert duplicate names
 export const module = sqliteTable("module", {
@@ -12,3 +14,15 @@ export const module = sqliteTable("module", {
 }, (t) => [
     unique().on(t.name, t.userId),
 ]);
+
+export const InsertModule = createInsertSchema(module, {
+    name: (field) => field.min(1).max(100),
+    code: (field) => field.min(1).max(20),
+}).omit({
+    id: true,
+    userId: true,
+    createdAt: true,
+    updatedAt: true,
+});
+
+export type InsertModule = z.infer<typeof InsertModule>;

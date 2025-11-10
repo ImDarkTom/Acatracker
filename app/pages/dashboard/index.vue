@@ -11,14 +11,17 @@ const { data, status } = await useFetch('/api/assesments', {
                 <div v-if="status === 'pending'" class="flex items-center justify-center h-full">
                     <Icon name="mdi:loading" class="animate-spin" size="32" />
                 </div>
-                <div v-else-if="data && data.length > 0" class="flex flex-col p-2">
-                    <div 
-                        v-for="assesment in data" 
-                        :key="assesment.id" 
-                        class="bg-elevated p-2 rounded-sm" >
-                        <span class="text-lg">{{ assesment.name }} - {{ assesment.module }}</span>
-                        <p class="text-brand-100">{{ assesment.description ?? '(No description.)' }}</p>
+                <div v-else-if="data && data.length > 0" class="flex flex-col p-2 grow">
+                    <div class="flex flex-col gap-2 grow">
+                        <div 
+                            v-for="assesment in data" 
+                            :key="assesment.id" 
+                            class="bg-elevated p-2 rounded-sm" >
+                            <span class="text-lg">{{ assesment.name }} - {{ assesment.module }}</span>
+                            <p class="text-brand-100">{{ assesment.description ?? '(No description.)' }}</p>
+                        </div>
                     </div>
+                    <AddModule />
                 </div>
                 <div v-else class="h-full flex flex-col gap-2 items-center justify-center">
                     <p>Add an assesment to get started</p>
