@@ -1,8 +1,37 @@
+CREATE TABLE `assesment` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`name` text NOT NULL,
+	`slug` text NOT NULL,
+	`description` text,
+	`module` integer NOT NULL,
+	`released_at` integer,
+	`due_at` integer NOT NULL,
+	`user_id` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	FOREIGN KEY (`module`) REFERENCES `module`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `assesment_slug_unique` ON `assesment` (`slug`);--> statement-breakpoint
+CREATE TABLE `module` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`name` text NOT NULL,
+	`code` text NOT NULL,
+	`year` integer NOT NULL,
+	`semester` integer NOT NULL,
+	`user_id` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `module_code_userId_unique` ON `module` (`code`,`user_id`);--> statement-breakpoint
 CREATE TABLE `account` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`account_id` text NOT NULL,
 	`provider_id` text NOT NULL,
-	`user_id` text NOT NULL,
+	`user_id` integer NOT NULL,
 	`access_token` text,
 	`refresh_token` text,
 	`id_token` text,
@@ -23,7 +52,7 @@ CREATE TABLE `session` (
 	`updated_at` integer NOT NULL,
 	`ip_address` text,
 	`user_agent` text,
-	`user_id` text NOT NULL,
+	`user_id` integer NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
@@ -47,6 +76,3 @@ CREATE TABLE `verification` (
 	`created_at` integer DEFAULT (cast(unixepoch('subsecond') * 1000 as integer)) NOT NULL,
 	`updated_at` integer DEFAULT (cast(unixepoch('subsecond') * 1000 as integer)) NOT NULL
 );
---> statement-breakpoint
-ALTER TABLE `task` ADD `user_id` integer NOT NULL REFERENCES user(id);--> statement-breakpoint
-ALTER TABLE `module` ADD `user_id` integer NOT NULL REFERENCES user(id);

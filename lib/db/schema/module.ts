@@ -8,16 +8,20 @@ export const module = sqliteTable("module", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text().notNull(),
     code: text().notNull(),
+    year: int().notNull(),
+    semester: int().notNull(),
     userId: int().notNull().references(() => user.id),
     createdAt: int().notNull().$default(() => Date.now()),
     updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 }, (t) => [
-    unique().on(t.name, t.userId),
+    unique().on(t.code, t.userId),
 ]);
 
 export const InsertModule = createInsertSchema(module, {
     name: (field) => field.min(1).max(100),
     code: (field) => field.min(1).max(20),
+    year: (field) => field.min(1).max(10),
+    semester: (field) => field.min(1).max(5),
 }).omit({
     id: true,
     userId: true,

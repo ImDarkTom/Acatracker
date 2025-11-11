@@ -4,7 +4,7 @@ const props = defineProps<{
     name: string;
     disabled?: boolean;
     placeholder?: string;
-    type?: 'text' | 'textarea' | 'date';
+    type?: 'text' | 'textarea' | 'date' | 'number';
     error?: string;
 }>();
 </script>

@@ -20,12 +20,17 @@ onMounted(() => {
                 </div>
                 <div v-else-if="data && data.length > 0" class="flex flex-col p-2 grow">
                     <div class="flex flex-col gap-2 grow">
-                        <div 
-                            v-for="assesment in data" 
-                            :key="assesment.id" 
-                            class="bg-elevated p-2 rounded-sm" >
-                            <span class="text-lg">{{ assesment.name }} - {{ modules?.filter((m) => m.id === Number(assesment.module))[0]?.name ?? 'Unknown Module' }}</span>
-                            <p class="text-brand-100">{{ assesment.description ?? '(No description.)' }}</p>
+                        <div
+                            v-for="module in modules"
+                            :key="module.id">
+                            <span class="text-lg">{{ module.name }}</span>
+                            <div 
+                                v-for="assesment in data" 
+                                :key="assesment.id" 
+                                class="bg-elevated p-2 rounded-sm" >
+                                <span class="text-lg">{{ assesment.name }}</span>
+                                <p class="text-brand-100">{{ assesment.description ?? '(No description.)' }}</p>
+                            </div>
                         </div>
                     </div>
                     <AddModule />

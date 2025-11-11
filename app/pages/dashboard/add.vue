@@ -89,8 +89,14 @@ onMounted(() => modulesStore.refresh());
                 </AddModule>
             </div>
             <AppFormField 
+                name="releasedAt" 
+                label="Release date (optional)" 
+                type="date"
+                :disabled="isLoading"
+                :error="errors.releasedAt" />
+            <AppFormField 
                 name="dueAt" 
-                label="Due" 
+                label="Due date" 
                 type="date"
                 :disabled="isLoading"
                 :error="errors.dueAt" />

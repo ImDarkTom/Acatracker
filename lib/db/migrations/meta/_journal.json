@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1762122297191,
-      "tag": "0000_open_quentin_quire",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1762128760832,
-      "tag": "0001_marvelous_praxagora",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1762390942198,
-      "tag": "0002_closed_phil_sheldon",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1762549327509,
-      "tag": "0003_illegal_invaders",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1762553236735,
-      "tag": "0004_square_stranger",
+      "when": 1762895135420,
+      "tag": "0000_massive_frog_thor",
       "breakpoints": true
     }
   ]

@@ -98,6 +98,22 @@ function handleInteract(event: Event) {
                         placeholder="e.g. OOP1234"
                         :disabled="isLoading"
                         :error="errors.code" />
+                    <div class="flex flex-row gap-2 *:max-w-[calc(50%-0.25rem)]">
+                        <AppFormField 
+                            type="number"
+                            label="Year" 
+                            name="year" 
+                            placeholder="e.g. '1' for Year 1"
+                            :disabled="isLoading"
+                            :error="errors.year" />
+                        <AppFormField
+                            type="number"
+                            label="Semester" 
+                            name="semester" 
+                            placeholder="e.g. '2' for Semester 2"
+                            :disabled="isLoading"
+                            :error="errors.semester" />
+                    </div>
                     <div class="flex justify-end mt-2">
                         <AppBtnPrimary type="submit" :disabled="isLoading">
                             <Icon v-if="!isLoading" name="bi:plus" />
