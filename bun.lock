@@ -4,6 +4,7 @@
     "": {
       "name": "acatracker",
       "dependencies": {
+        "@internationalized/date": "^3.10.0",
         "@libsql/client": "^0.15.15",
         "@nuxt/icon": "2.1.0",
         "@nuxtjs/color-mode": "^3.5.2",
