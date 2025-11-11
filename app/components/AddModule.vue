@@ -65,7 +65,7 @@ function handleInteract(event: Event) {
 
 <template>
     <DialogRoot v-model:open="open">
-        <DialogTrigger>
+        <DialogTrigger as-child>
             <slot>
                 <AppBtnPrimary class="p-4 w-full px-auto">
                     <Icon name="bi:plus" />
