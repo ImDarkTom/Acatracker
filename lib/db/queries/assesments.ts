@@ -1,6 +1,6 @@
 import db from "..";
-import { eq } from "drizzle-orm";
-import { assesment, InsertAssesment } from "../schema";
+import { and, eq } from "drizzle-orm";
+import { assesment, InsertAssesment, type AssesmentSchema } from "../schema";
 import { customAlphabet } from "nanoid";
 
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvqxyz", 5);
@@ -43,4 +43,28 @@ export async function insertAssesment(insertable: InsertAssesment, slug: string,
     }).returning();
 
     return created;
+}
+
+export async function deleteAssesmentById(id: number, userId: number) {
+    const [ removed ] = await db.delete(assesment).where(
+        and(
+            eq(assesment.id, id),
+            eq(assesment.userId, userId),
+        ),
+    ).returning();
+
+    return removed;
+}
+
+export async function updateAssesmentById(id: number, newAssesment: InsertAssesment, userId: number) {
+    const [ updated ] = await db.update(assesment)
+        .set(newAssesment)
+        .where(
+            and(
+                eq(assesment.id, id),
+                eq(assesment.userId, userId),
+            ),  
+        ).returning();
+
+    return updated;
 }
