@@ -1,64 +1,80 @@
 <script setup lang="ts">
-import { CalendarDate, getLocalTimeZone, type DateValue } from '@internationalized/date';
-import { assesment } from '~~/lib/db/schema';
+import { getLocalTimeZone, today, type DateValue } from '@internationalized/date';
+import type { AssesmentSchema } from '~~/lib/db/schema';
+
+const { eventsOnDate } = useAssesmentsStore();
 
 const props = defineProps<{
-    assesments: ReturnType<typeof useAssesmentsStore>['assesments'],
+    assesments: AssesmentSchema[],
 }>();
 
-const now = new Date();
-const todayDate = new CalendarDate(now.getFullYear(), now.getMonth() + 1, now.getDate());
+const selectedDate = ref<DateValue | null>(today(getLocalTimeZone()));
+function updateSelected(value: DateValue | undefined) {
+    selectedDate.value = value ?? null;
+}
 
 function happeningOnDate(calDateRaw: DateValue, type: 'due' | 'released') {
-    const calendarDate = calDateRaw.toDate(getLocalTimeZone());
-    const targetTime = calendarDate.getTime();
-    const key = type === 'due' ? 'dueAt' : 'releasedAt';
+    const events = eventsOnDate(calDateRaw);
+    if (!events.exist) return false;
 
-    return !!props.assesments?.some(i => i[key] === targetTime);
-
+    if (type === 'due') {
+        return events.due.length > 0;
+    } else {
+        return events.released.length > 0;
+    }
 }
 </script>
 
 <template>
     <CalendarRoot 
         v-slot="{ weekDays, grid }" 
-        :default-value="todayDate"
-        class="p-4 h-full" 
+        :default-value="today(getLocalTimeZone())"
+        @update:model-value="updateSelected"
         :week-starts-on="1"
         :weekday-format="'short'"
         fixed-weeks>
         <CalendarHeader class="flex items-center justify-between">
-            <CalendarPrev class="cursor-pointer">
-                <Icon name="bi:arrow-left" />
+            <CalendarPrev class=" size-8 flex items-center justify-center cursor-pointer hover:bg-elevated rounded-sm">
+                <Icon name="bi:arrow-left" size="24" />
             </CalendarPrev>
 
             <CalendarHeading />
 
-            <CalendarNext class="cursor-pointer">
-                <Icon name="bi:arrow-right" />
+            <CalendarNext class="size-8 flex items-center justify-center cursor-pointer hover:bg-elevated rounded-sm">
+                <Icon name="bi:arrow-right" size="24" />
             </CalendarNext>
         </CalendarHeader>
-        <div class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-            <CalendarGrid v-for="month in grid" :key="month.value.toString()"
+        <div class="flex flex-col pt-4">
+            <CalendarGrid 
+                v-for="month in grid" 
+                :key="month.value.toString()"
                 class="w-full select-none">
                 <CalendarGridHead>
                     <CalendarGridRow class="mb-1 grid w-full grid-cols-7">
-                        <CalendarHeadCell v-for="day in weekDays" :key="day">
+                        <CalendarHeadCell 
+                            v-for="day in weekDays" 
+                            :key="day" >
                             {{ day }}
                         </CalendarHeadCell>
                     </CalendarGridRow>
                 </CalendarGridHead>
                 <CalendarGridBody class="grid">
-                    <CalendarGridRow v-for="(weekDates, index) in month.rows" :key="`weekDate-${index}`"
+                    <CalendarGridRow 
+                        v-for="(weekDates, index) in month.rows" 
+                        :key="`weekDate-${index}`"
                         class="grid grid-cols-7">
-                        <CalendarCell v-for="weekDate in weekDates" :key="weekDate.toString()" :date="weekDate"
+                        <CalendarCell 
+                            v-for="weekDate in weekDates" 
+                            :key="weekDate.toString()" 
+                            :date="weekDate"
                             class="text-center flex justify-center">
                             <CalendarCellTrigger 
                                 :day="weekDate" 
                                 :month="month.value"
-                                class="relative flex items-center justify-center rounded-full size-8 md:size-12 outline-none focus:ring-1 ring-inset focus:ring-brand-50 data-outside-view:text-brand-50/30 data-selected:bg-brand-100! data-selected:text-surface hover:bg-elevated data-highlighted:bg-red-500 data-unavailable:pointer-events-none data-unavailable:text-brand-50/50 data-unavailable:line-through data-today:font-semibold data-today:underline"
+                                class="relative flex items-center justify-center rounded-full size-8 md:size-12 outline-none focus:ring-1 ring-inset focus:ring-brand-50 data-outside-view:text-brand-50/30 data-selected:bg-brand-100! data-selected:text-surface hover:bg-elevated data-unavailable:pointer-events-none data-unavailable:text-brand-50/50 data-unavailable:line-through data-today:font-semibold data-today:underline"
                                 :class="{ 
-                                    'before:absolute before:block before:top-1 before:rounded-full before:size-1 md:before:size-2 before:bg-brand-500': happeningOnDate(weekDate, 'due')
+                                    'before:absolute before:block before:top-1.5 before:rounded-full before:size-1 md:before:size-1.5 before:bg-red-500': happeningOnDate(weekDate, 'due'),
+                                    'before:absolute before:block before:top-1.5 before:rounded-full before:size-1 md:before:size-1.5 before:bg-teal-500': happeningOnDate(weekDate, 'released'),
                                 }" />
                         </CalendarCell>
                     </CalendarGridRow>

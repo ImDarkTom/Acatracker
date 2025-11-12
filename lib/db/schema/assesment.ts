@@ -50,4 +50,6 @@ export const InsertAssesment = createInsertSchema(assesment, {
     updatedAt: true,
 });
 
+export type AssesmentSchema = typeof assesment.$inferSelect;
+
 export type InsertAssesment = z.infer<typeof InsertAssesment>;

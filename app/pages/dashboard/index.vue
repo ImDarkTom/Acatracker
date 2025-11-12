@@ -47,8 +47,11 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-        <div class="w-full md:w-3/5 bg-base rounded-md">
-            <DashboardCalendar :assesments />
+        <div class="w-full md:w-3/5 bg-base rounded-md flex flex-col gap-2 p-2">
+            <div v-if="status === 'pending'">
+                <Icon name="mdi:loading" class="animate-spin" size="32" />
+            </div>
+            <DashboardCalendar v-else-if="assesments && assesments.length > 0" :assesments />
         </div>
     </div>
 </template>
