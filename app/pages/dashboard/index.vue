@@ -26,11 +26,23 @@ onMounted(() => {
                             :key="module.id">
                             <span class="text-lg">{{ module.name }}</span>
                             <div 
-                                v-for="assesment in assesments" 
+                                v-for="assesment in assesments.filter(a => a.module === module.id)" 
                                 :key="assesment.id" 
                                 class="bg-elevated p-2 rounded-sm" >
                                 <span class="text-lg">{{ assesment.name }}</span>
-                                <p class="text-brand-100">{{ assesment.description ?? '(No description.)' }}</p>
+                                <div class="flex flex-row w-full gap-1 text-sm">
+                                    <span v-if="assesment.releasedAt" class="text-brand-200 flex flex-row gap-1 items-center">
+                                        <Icon name="carbon:rocket" size="12" />
+                                        {{ new Date(assesment.releasedAt).toLocaleDateString() }}
+                                    </span>
+
+                                    <div class="w-full h-px my-auto border-b-2 border-dotted border-brand-200"></div>
+
+                                    <span class="text-brand-200 flex flex-row gap-1 items-center">
+                                        <Icon name="carbon:event-schedule" size="12" />
+                                        {{ new Date(assesment.dueAt).toLocaleDateString() }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
