@@ -96,10 +96,13 @@ async function deleteAssesment(assesment: AssesmentSchema) {
             </div>
         </div>
         <div class="w-full md:w-3/5 bg-base rounded-md flex flex-col gap-2 p-2">
-            <div v-if="status === 'pending'">
+            <div v-if="status === 'pending'" class="flex items-center justify-center grow">
                 <Icon name="mdi:loading" class="animate-spin" size="32" />
             </div>
             <DashboardCalendar v-else-if="assesments && assesments.length > 0" :assesments />
+            <div v-else class="m-1 bg-linear-to-br from-elevated to-elevated/80 min-h-[calc(100vh/2)] rounded-sm flex items-center justify-center select-none">
+                Items will appear on the calendar once you add an assesment.
+            </div>
         </div>
     </div>
 </template>
