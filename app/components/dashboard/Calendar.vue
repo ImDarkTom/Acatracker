@@ -35,13 +35,13 @@ function happeningOnDate(calDateRaw: DateValue, type: 'due' | 'released') {
         fixed-weeks>
         <CalendarHeader class="flex items-center justify-between">
             <CalendarPrev class=" size-8 flex items-center justify-center cursor-pointer hover:bg-elevated rounded-sm">
-                <Icon name="bi:arrow-left" size="24" />
+                <Icon name="material-symbols:chevron-left-rounded" size="24" />
             </CalendarPrev>
 
-            <CalendarHeading />
+            <CalendarHeading class="select-none" />
 
             <CalendarNext class="size-8 flex items-center justify-center cursor-pointer hover:bg-elevated rounded-sm">
-                <Icon name="bi:arrow-right" size="24" />
+                <Icon name="material-symbols:chevron-right-rounded" size="24" />
             </CalendarNext>
         </CalendarHeader>
         <div class="flex flex-col pt-4">

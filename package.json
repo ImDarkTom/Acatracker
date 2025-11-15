@@ -37,6 +37,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@iconify-json/material-symbols": "^1.2.46",
     "@types/slug": "^5.0.9",
     "drizzle-kit": "^0.31.6"
   }

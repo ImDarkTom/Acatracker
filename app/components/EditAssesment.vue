@@ -83,11 +83,8 @@ watch(open, (newVal) => {
             <DialogContent @escape-key-down="handleInteract" @pointer-down-outside="handleInteract"
                 class="p-4 bg-base fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] h- w-md max-w-full rounded-lg shadow-md shadow-black z-100">
                 <DialogTitle class="text-lg font-semibold text-brand-100">
-                    Edit Assesment
+                    Editing {{ assesment.name }}
                 </DialogTitle>
-                <DialogDescription class="mt-2 mb-1">
-                    Edit {{ assesment.name }}.
-                </DialogDescription>
                 <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
                     <AppFormField 
                         label="Name" 
@@ -114,7 +111,7 @@ watch(open, (newVal) => {
                         </AppFormFieldSelect>
                         <AddModule @submitted="modulesStore.refresh">
                             <AppBtnPrimary @click.prevent>
-                                <Icon name="bi:plus" size="18" />
+                                <Icon name="material-symbols:add" size="18" />
                             </AppBtnPrimary>
                         </AddModule>
                     </div>
@@ -140,9 +137,9 @@ watch(open, (newVal) => {
                 </form>
                 <div @mousedown.stop="handleInteract">
                     <DialogClose
-                        class="absolute top-4 right-4 inline-flex cursor-pointer rounded-full hover:bg-elevated active:shadow-brand-700 shadow-sm"
+                        class="absolute p-2 top-4 right-4 inline-flex cursor-pointer rounded-full hover:bg-elevated active:shadow-brand-700 shadow-sm"
                         aria-label="Close">
-                        <Icon name="bi:x" size="24" />
+                        <Icon name="material-symbols:close-rounded" size="20" />
                     </DialogClose>
                 </div>
             </DialogContent>

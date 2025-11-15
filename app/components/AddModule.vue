@@ -68,7 +68,7 @@ function handleInteract(event: Event) {
         <DialogTrigger as-child>
             <slot>
                 <AppBtnPrimary class="p-4 w-full px-auto">
-                    <Icon name="bi:plus" />
+                    <Icon name="material-symbols:create-new-folder-outline" />
                     Add Module
                 </AppBtnPrimary>
             </slot>
@@ -124,9 +124,9 @@ function handleInteract(event: Event) {
                 </form>
                 <div @mousedown.stop="handleInteract" >
                     <DialogClose
-                        class="absolute top-4 right-4 inline-flex cursor-pointer rounded-full hover:bg-elevated active:shadow-brand-700 shadow-sm"
+                        class="absolute p-2 top-4 right-4 inline-flex cursor-pointer rounded-full hover:bg-elevated active:shadow-brand-700 shadow-sm"
                         aria-label="Close">
-                        <Icon name="bi:x" size="24" />
+                        <Icon name="material-symbols:close-rounded" size="20" />
                     </DialogClose>
                 </div>
             </DialogContent>

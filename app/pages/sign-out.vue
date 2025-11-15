@@ -8,6 +8,6 @@ onMounted(async () => {
 
 <template>
     <div class="w-full flex justify-center">
-        <Icon name="mdi:loading" class="animate-spin" size="32" />
+        <LoadingIcon size="32" />
     </div>
 </template>

@@ -15,20 +15,24 @@ const authStore = useAuthStore();
             </AppBtnPrimary>
         </DropdownMenuTrigger>
         <DropdownMenuPortal>
-            <DropdownMenuContent class="w-52 shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
+            <DropdownMenuContent 
+                :align="'start'"
+                :align-offset="16"
+                class="w-52 shadow-sm bg-elevated rounded-md overflow-hidden mx-2">
                 <CustomDropdownItem 
                     value="Dashboard" 
-                    icon="bi:grid-1x2" 
+                    icon="material-symbols:dashboard-outline-rounded" 
                     :select-action="() => $router.push('/dashboard')" />
                 <CustomDropdownItem 
-                    value="Add" 
-                    icon="bi:plus" 
+                    value="Add Assesment" 
+                    icon="material-symbols:add-notes-outline-rounded" 
                     :select-action="() => $router.push('/dashboard/add')" />
                 <DropdownMenuSeparator class="h-px w-full bg-brand-50" />
                 <CustomDropdownItem 
                     value="Sign Out"
-                    icon="bi:box-arrow-right" 
+                    icon="material-symbols:logout-rounded" 
                     :select-action="() => $router.push('/sign-out')" />
+                <DropdownMenuArrow class="fill-elevated" />
             </DropdownMenuContent>
         </DropdownMenuPortal>
     </DropdownMenuRoot>

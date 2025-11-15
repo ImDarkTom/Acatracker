@@ -30,6 +30,7 @@
         "zod": "^4.1.12",
       },
       "devDependencies": {
+        "@iconify-json/material-symbols": "^1.2.46",
         "@types/slug": "^5.0.9",
         "drizzle-kit": "^0.31.6",
       },
@@ -179,6 +180,8 @@
     "@floating-ui/vue": ["@floating-ui/vue@1.1.9", "", { "dependencies": { "@floating-ui/dom": "^1.7.4", "@floating-ui/utils": "^0.2.10", "vue-demi": ">=0.13.0" } }, "sha512-BfNqNW6KA83Nexspgb9DZuz578R7HT8MZw1CfK9I6Ah4QReNWEJsXWHN+SdmOVLNGmTPDi+fDT535Df5PzMLbQ=="],
 
     "@hexagon/base64": ["@hexagon/base64@1.1.28", "", {}, "sha512-lhqDEAvWixy3bZ+UOYbPwUbBkwBq5C1LAJ/xPC8Oi+lL54oyakv/npbA0aU2hgCsx/1NUd4IBvV03+aUBWxerw=="],
+
+    "@iconify-json/material-symbols": ["@iconify-json/material-symbols@1.2.46", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-cNWdSAa5Z3f0TlqdCt28rmeYWGKwe68J1ORdyHyqC4D6H7CWiVKBJXV3TDTocOQVDO372bz+cmsFeo4+pbRy+A=="],
 
     "@iconify/collections": ["@iconify/collections@1.0.613", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-7jqZqr7oGiDF7pxZgFtQIsyLTNNrO85zinaj8oDG7Cejp2SgmjAd5x50b8fvaMkPUzr6LDRbcn+U2odNqmdc4A=="],
 

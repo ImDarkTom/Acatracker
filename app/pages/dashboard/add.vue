@@ -84,7 +84,7 @@ onMounted(() => modulesStore.refresh());
                 </AppFormFieldSelect>
                 <AddModule @submitted="modulesStore.refresh">
                     <AppBtnPrimary @click.prevent>
-                        <Icon name="bi:plus" size="18" />
+                        <Icon name="material-symbols:add" size="18" />
                     </AppBtnPrimary>
                 </AddModule>
             </div>
@@ -102,12 +102,12 @@ onMounted(() => modulesStore.refresh());
                 :error="errors.dueAt" />
             <div class="flex flex-row justify-between" :class="{ 'opacity-50': isLoading }">
                 <AppBtnPrimary :disabled="isLoading" type="button" class="bg-base!" @click="$router.back()">
-                    <Icon name="bi:arrow-left" size="24"/>
+                    <Icon name="material-symbols:arrow-back-rounded" size="24"/>
                     Back
                 </AppBtnPrimary>
                 <AppBtnPrimary :disabled="isLoading" type="submit">
-                    <Icon v-if="isLoading" name="mdi:loading" class="animate-spin" size="24" />
-                    <Icon v-else name="bi:plus" size="24"/>
+                    <LoadingIcon v-if="isLoading" size="24" />
+                    <Icon v-else name="material-symbols:add" size="24"/>
                     Add
                 </AppBtnPrimary>
             </div>

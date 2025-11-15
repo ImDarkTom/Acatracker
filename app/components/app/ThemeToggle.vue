@@ -16,7 +16,7 @@ const isDark = computed({
         <label class="flex items-center cursor-pointer">
             <input v-model="isDark" type="checkbox" class="hidden">
             
-            <Icon :name="isDark ? 'bi:sun' : 'bi:moon'" size="20" />
+            <Icon :name="isDark ? 'material-symbols:light-mode-outline-rounded' : 'material-symbols:dark-mode-outline-rounded'" size="20" />
         </label>
     </ClientOnly>
 </template>
