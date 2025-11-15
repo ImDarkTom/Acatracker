@@ -1,13 +1,12 @@
 <script setup lang="ts">
 const authStore = useAuthStore();
-
 </script>
 
 <template>
     <nav class="bg-base flex items-center flex-row justify-between p-4">
         <ul class="flex flex-row gap-2">
-            <li class="mr-2 text-brand-400 font-bold hover:underline">
-                <NuxtLink to="/">Acatracker</NuxtLink>
+            <li class="mr-2 text-brand-400 font-bold select-none">
+                Acatracker
             </li>
             <template v-if="authStore.user">
                 <li>

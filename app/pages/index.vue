@@ -1,5 +1,16 @@
 <script setup lang="ts">
+useHead({
+    title: 'Acatracker'
+});
+
 const authStore = useAuthStore();
+const router = useRouter();
+
+onMounted(() => {
+    if (authStore.user && !authStore.isLoading) {
+        router.push('/dashboard');
+    }
+});
 </script>
 
 <template>
