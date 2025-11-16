@@ -17,6 +17,8 @@ export const module = sqliteTable("module", {
     unique().on(t.code, t.userId),
 ]);
 
+export type ModuleSchema = typeof module.$inferSelect;
+
 export const InsertModule = createInsertSchema(module, {
     name: (field) => field.min(1).max(100),
     code: (field) => field.min(1).max(20),

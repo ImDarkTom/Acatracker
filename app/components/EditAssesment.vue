@@ -109,11 +109,11 @@ watch(open, (newVal) => {
                             <option value="" disabled selected>(select a module)</option>
                             <option v-for="module in modules" :value="module.id">{{ module.name }}</option>
                         </AppFormFieldSelect>
-                        <AddModule @submitted="modulesStore.refresh">
+                        <AddModuleBtn @submitted="modulesStore.refresh">
                             <AppBtnPrimary @click.prevent>
                                 <Icon name="material-symbols:add" size="18" />
                             </AppBtnPrimary>
-                        </AddModule>
+                        </AddModuleBtn>
                     </div>
                     <AppFormField 
                         name="releasedAt" 
