@@ -1,4 +1,4 @@
-import { deleteAssesmentById, updateAssesmentById } from "~~/lib/db/queries/assesments";
+import { updateAssesmentById } from "~~/lib/db/queries/assesments";
 import { InsertAssesment } from "~~/lib/db/schema";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
 
