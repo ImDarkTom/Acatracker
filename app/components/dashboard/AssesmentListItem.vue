@@ -2,6 +2,7 @@
 import type { AssesmentSchema, ModuleSchema } from '~~/lib/db/schema';
 
 const assesmentsStore = useAssesmentsStore();
+const modulesStore = useModuleStore();
 
 defineProps<{
     module: ModuleSchema,
@@ -17,11 +18,46 @@ async function deleteAssesment(assesment: AssesmentSchema) {
 
     assesmentsStore.refresh();
 }
+
+async function deleteModule(module: ModuleSchema) {
+    if (!confirm(`Are you sure you want to delete the '${module.name}' module?`)) return;
+
+    await $fetch(`/api/modules/${module.id}`, {
+        method: 'DELETE'
+    });
+
+    modulesStore.refresh();
+}
 </script>
 
 <template>
     <div class="flex flex-col gap-2">
-        <span class="text-lg">{{ module.name }} ({{ module.code }})</span>
+        <div class="flex flex-row justify-between">
+            <span class="text-lg">{{ module.name }} ({{ module.code }})</span>
+            <DropdownMenuRoot>
+                <DropdownMenuTrigger
+                    class="rounded-sm data-[state='open']:bg-base p-2 size-8 flex items-center justify-center">
+                    <Icon name="material-symbols:more-vert" size="24" />
+                </DropdownMenuTrigger>
+                <DropdownMenuPortal>
+                    <DropdownMenuContent class="w-52 shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
+                        <EditModule 
+                            :module 
+                            @submitted="modulesStore.refresh()">
+                            <CustomDropdownItem 
+                                value="Edit" 
+                                icon="material-symbols:edit-outline-rounded"
+                                :select-action="(e) => e.preventDefault()" />
+                        </EditModule>
+                        <CustomDropdownItem 
+                            value="Delete" 
+                            icon="material-symbols:delete-outline-rounded"
+                            :select-action="() => deleteModule(module)" />
+                    </DropdownMenuContent>
+                </DropdownMenuPortal>
+            </DropdownMenuRoot>
+        </div>
+
         <div v-for="assesment in assesments.filter(a => a.module === module.id)" :key="assesment.id"
             class="bg-elevated p-2 rounded-sm flex flex-row">
             <div class="flex flex-col grow">
