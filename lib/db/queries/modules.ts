@@ -1,5 +1,5 @@
 import db from "..";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { module, InsertModule } from "../schema";
 
 export async function findModules(userId: number) {
@@ -15,4 +15,29 @@ export async function insertModule(insertable: InsertModule, userId: number) {
     }).returning();
 
     return created;
+}
+
+
+export async function deleteModuleById(id: number, userId: number) {
+    const [ removed ] = await db.delete(module).where(
+        and(
+            eq(module.id, id),
+            eq(module.userId, userId),
+        ),
+    ).returning();
+
+    return removed;
+}
+
+export async function updateModuleById(id: number, newModule: InsertModule, userId: number) {
+    const [ updated ] = await db.update(module)
+        .set(newModule)
+        .where(
+            and(
+                eq(module.id, id),
+                eq(module.userId, userId),
+            ),  
+        ).returning();
+
+    return updated;
 }
