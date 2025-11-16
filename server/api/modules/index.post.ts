@@ -2,7 +2,7 @@ import { LibsqlError } from "@libsql/client";
 import { DrizzleError } from "drizzle-orm";
 import { InsertModule } from "~~/lib/db/schema";
 import { insertModule } from "~~/lib/db/queries/modules";
-import defineAuthenticatedEventHander from "../utils/defineAuthenticatedEventHandler";
+import defineAuthenticatedEventHander from "../../utils/defineAuthenticatedEventHandler";
 
 export default defineAuthenticatedEventHander(async (event) => {
     const result = await readValidatedBody(event, InsertModule.safeParse);
