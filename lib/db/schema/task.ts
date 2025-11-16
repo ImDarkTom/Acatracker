@@ -1,7 +1,7 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 
-import { module } from '.';
+import { assesment } from '.';
 import { user } from "./auth";
 import z from "zod";
 
@@ -23,13 +23,11 @@ const preprocessDate = z.preprocess((arg) => {
     return arg;
 }, z.number().int())
 
-export const assesment = sqliteTable("assesment", {
+export const task = sqliteTable("task", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text().notNull(),
-    slug: text().notNull().unique(),
     description: text(),
-    module: int().notNull().references(() => module.id),
-    releasedAt: int(),
+    assesment: int().notNull().references(() => assesment.id),
     dueAt: int().notNull(),
     completed: int({ mode: 'boolean' }),
     userId: int().notNull().references(() => user.id),
@@ -37,20 +35,17 @@ export const assesment = sqliteTable("assesment", {
     updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
 
-export const InsertAssesment = createInsertSchema(assesment, {
+export const InsertTask = createInsertSchema(task, {
     name: (field) => field.min(1).max(100),
     description: (field) => field.max(1000),
-    module: (field) => field,
-    releasedAt: () => preprocessDate,
     dueAt: () => preprocessDate,
 }).omit({
     id: true,
-    slug: true,
     userId: true,
     createdAt: true,
     updatedAt: true,
 });
 
-export type AssesmentSchema = typeof assesment.$inferSelect;
+export type TaskSchema = typeof task.$inferSelect;
 
-export type InsertAssesment = z.infer<typeof InsertAssesment>;
+export type InsertTask = z.infer<typeof InsertTask>;
