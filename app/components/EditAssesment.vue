@@ -14,7 +14,14 @@ const isLoading = ref(false);
 const isSubmitted = ref(false);
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
-    validationSchema: toTypedSchema(InsertAssesment)
+    validationSchema: toTypedSchema(InsertAssesment),
+    initialValues: {
+        name: props.assesment.name,
+        description: props.assesment.description,
+        module: props.assesment.module,
+        releasedAt: props.assesment.releasedAt,
+        dueAt: props.assesment.dueAt,
+    }
 });
 
 const emit = defineEmits<{
