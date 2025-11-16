@@ -64,23 +64,25 @@ async function deleteModule(module: ModuleSchema) {
 
         <div v-for="assesment in assesments.filter(a => a.module === module.id)" :key="assesment.id"
             class="bg-elevated p-2 rounded-sm flex flex-row">
-            <div class="flex flex-col grow">
-                <span class="text-lg">{{ assesment.name }}</span>
-                <div class="flex flex-row w-full gap-1 text-sm">
-                    <span v-if="assesment.releasedAt" class="text-text-secondary flex flex-row gap-1 items-center">
-                        <Icon name="material-symbols:rocket-launch-outline-rounded" size="12" />
-                        {{ new Date(assesment.releasedAt).toLocaleDateString() }}
-                    </span>
+            <NuxtLink :to="`/dashboard/assesment/${assesment.id}`" class="grow">
+                <div class="flex flex-col grow hover:text-brand-300">
+                    <span class="text-lg">{{ assesment.name }}</span>
+                    <div class="flex flex-row w-full gap-1 text-sm">
+                        <span v-if="assesment.releasedAt" class="text-text-secondary flex flex-row gap-1 items-center">
+                            <Icon name="material-symbols:rocket-launch-outline-rounded" size="12" />
+                            {{ new Date(assesment.releasedAt).toLocaleDateString() }}
+                        </span>
 
-                    <div class="w-full h-px my-auto border-b-2 border-dotted border-text-secondary"></div>
+                        <div class="w-full h-px my-auto border-b-2 border-dotted border-text-secondary"></div>
 
-                    <span class="text-text-secondary flex flex-row gap-1 items-center">
-                        <Icon name="material-symbols:nest-clock-farsight-analog-outline-rounded" size="12" />
-                        {{ new Date(assesment.dueAt).toLocaleDateString() }}
-                    </span>
+                        <span class="text-text-secondary flex flex-row gap-1 items-center">
+                            <Icon name="material-symbols:nest-clock-farsight-analog-outline-rounded" size="12" />
+                            {{ new Date(assesment.dueAt).toLocaleDateString() }}
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-col gap-2 items-center pl-2">
+            </NuxtLink>
+            <div class="flex flex-col gap-2 items-center pl-2" @click.stop>
                 <DropdownMenuRoot>
                     <DropdownMenuTrigger
                         class="rounded-sm data-[state='open']:bg-base p-2 size-8 flex items-center justify-center">

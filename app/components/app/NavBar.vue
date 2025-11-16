@@ -10,10 +10,10 @@ const authStore = useAuthStore();
             </li>
             <template v-if="authStore.user">
                 <li>
-                    <NuxtLink to="/dashboard" :exact-active-class="'border-b-2 border-brand-200 text-brand-200'">Dashboard</NuxtLink>
+                    <NuxtLink to="/dashboard" :exact-active-class="'border-b-2 border-brand-200 text-brand-200'">Home</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink to="/dashboard/add" :exact-active-class="'border-b-2 border-brand-200 text-brand-200'">Add</NuxtLink>
+                    <NuxtLink to="/dashboard/add" :exact-active-class="'border-b-2 border-brand-200 text-brand-200'">Add Assesment</NuxtLink>
                 </li>
             </template>
         </ul>
