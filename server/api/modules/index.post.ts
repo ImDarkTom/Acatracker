@@ -1,4 +1,3 @@
-import { LibsqlError } from "@libsql/client";
 import { DrizzleError } from "drizzle-orm";
 import { InsertModule } from "~~/lib/db/schema";
 import { insertModule } from "~~/lib/db/queries/modules";
