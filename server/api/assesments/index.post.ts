@@ -3,7 +3,7 @@ import { DrizzleError } from "drizzle-orm";
 import slugify from "slug";
 import { InsertAssesment } from "~~/lib/db/schema";
 import { findUniqueSlug, insertAssesment } from "~~/lib/db/queries/assesments";
-import defineAuthenticatedEventHander from "../utils/defineAuthenticatedEventHandler";
+import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
 
 export default defineAuthenticatedEventHander(async (event) => {
     const result = await readValidatedBody(event, InsertAssesment.safeParse);
