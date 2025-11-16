@@ -15,7 +15,7 @@ onMounted(() => {
 
 <template>
     <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
-        <h1 class="text-5xl font-bold text-brand-100">Acatracker</h1>
+        <h1 class="text-5xl font-bold bg-linear-to-br from-brand-500 to-brand-300 text-transparent bg-clip-text">Acatracker</h1>
         <p class="mb-2">Open-source academic tracker.</p>
 
         <NuxtLink v-if="authStore.user" :to="{ name: 'dashboard' }">
