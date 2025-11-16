@@ -5,6 +5,9 @@
     --color-base: hsl(190, 15%, 10%);
     --color-elevated: hsl(190, 15%, 20%);
 
+    --color-text: hsl(190, 15%, 90%);
+    --color-text-secondary: hsl(190, 15%, 80%);
+
     --color-brand-700: hsl(190, 50%, 30%);
     --color-brand-600: hsl(190, 50%, 40%);
     --color-brand-500: hsl(190, 50%, 50%);
@@ -36,6 +39,9 @@ body {
         --color-brand-200: hsl(190, 50%, 20%);
         --color-brand-100: hsl(190, 50%, 10%);
         --color-brand-50:  hsl(190, 50%, 5%);
+
+        --color-text: hsl(190, 10%, 10%);
+        --color-text-secondary: hsl(190, 10%, 20%);
 
         --color-errortxt: hsl(0, 40%, 50%);
         --color-errorbg: hsl(0, 50%, 75%);

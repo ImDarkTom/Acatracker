@@ -31,16 +31,20 @@ async function deleteModule(module: ModuleSchema) {
 </script>
 
 <template>
-    <div class="flex flex-col gap-2">
-        <div class="flex flex-row justify-between">
-            <span class="text-lg">{{ module.name }} ({{ module.code }})</span>
+    <div class="flex flex-col gap-1">
+        <div class="flex flex-row justify-between items-center">
+            <div class="text-text-secondary flex flex-row gap-2 items-center">
+                <code class="ring-1 ring-text-secondary text-sm p-0.5 rounded-sm h-min">{{ module.code }}</code>
+                <span class="text-lg">{{ module.name }}</span>
+            </div>
+
             <DropdownMenuRoot>
                 <DropdownMenuTrigger
-                    class="rounded-sm data-[state='open']:bg-base p-2 size-8 flex items-center justify-center">
+                    class="rounded-sm data-[state='open']:bg-base hover:bg-elevated cursor-pointer p-2 size-8 flex items-center justify-center">
                     <Icon name="material-symbols:more-vert" size="24" />
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>
-                    <DropdownMenuContent class="w-52 shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
+                    <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
                         <EditModule 
                             :module 
                             @submitted="modulesStore.refresh()">
@@ -63,14 +67,14 @@ async function deleteModule(module: ModuleSchema) {
             <div class="flex flex-col grow">
                 <span class="text-lg">{{ assesment.name }}</span>
                 <div class="flex flex-row w-full gap-1 text-sm">
-                    <span v-if="assesment.releasedAt" class="text-brand-200 flex flex-row gap-1 items-center">
+                    <span v-if="assesment.releasedAt" class="text-text-secondary flex flex-row gap-1 items-center">
                         <Icon name="material-symbols:rocket-launch-outline-rounded" size="12" />
                         {{ new Date(assesment.releasedAt).toLocaleDateString() }}
                     </span>
 
-                    <div class="w-full h-px my-auto border-b-2 border-dotted border-brand-200"></div>
+                    <div class="w-full h-px my-auto border-b-2 border-dotted border-text-secondary"></div>
 
-                    <span class="text-brand-200 flex flex-row gap-1 items-center">
+                    <span class="text-text-secondary flex flex-row gap-1 items-center">
                         <Icon name="material-symbols:nest-clock-farsight-analog-outline-rounded" size="12" />
                         {{ new Date(assesment.dueAt).toLocaleDateString() }}
                     </span>
@@ -83,7 +87,7 @@ async function deleteModule(module: ModuleSchema) {
                         <Icon name="material-symbols:more-vert" size="24" />
                     </DropdownMenuTrigger>
                     <DropdownMenuPortal>
-                        <DropdownMenuContent class="w-52 shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
+                        <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
                             <EditAssesment :assesment @submitted="assesmentsStore.refresh()">
                                 <CustomDropdownItem value="Edit" icon="material-symbols:edit-outline-rounded"
                                     :select-action="(e) => e.preventDefault()" />
