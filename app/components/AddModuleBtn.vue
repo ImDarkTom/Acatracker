@@ -2,6 +2,7 @@
 import type { FetchError } from "ofetch";
 
 import { InsertModule } from '~~/lib/db/schema';
+import LoadingIcon from "./LoadingIcon.vue";
 
 const { $csrfFetch } = useNuxtApp()
 
@@ -116,8 +117,8 @@ function handleInteract(event: Event) {
                     </div>
                     <div class="flex justify-end mt-2">
                         <AppBtnPrimary type="submit" :disabled="isLoading">
-                            <Icon v-if="!isLoading" name="bi:plus" />
-                            <Icon v-else name="mdi:loading" class="animate-spin" />
+                            <Icon v-if="!isLoading" name="material-symbols:add-rounded" />
+                            <LoadingIcon v-else />
                             Add
                         </AppBtnPrimary>
                     </div>

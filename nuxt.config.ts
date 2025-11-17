@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/main.css'],
-  
+
   vite: {
     plugins: [
       tailwindcss(),
@@ -22,6 +22,15 @@ export default defineNuxtConfig({
   colorMode: {
     dataValue: 'theme',
     storage: 'cookie',
+  },
+
+  icon: {
+    clientBundle: {
+      icons: [
+        'material-symbols:thermostat-carbon-outline', // we use this as the loading icon
+        'material-sumbols:more-vert'
+      ],
+    },
   },
 
   modules: [

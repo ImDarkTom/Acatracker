@@ -136,8 +136,8 @@ watch(open, (newVal) => {
                         :error="errors.dueAt" />
                     <div class="flex justify-end mt-2">
                         <AppBtnPrimary type="submit" :disabled="isLoading">
-                            <Icon v-if="!isLoading" name="bi:pen" />
-                            <Icon v-else name="mdi:loading" class="animate-spin" />
+                            <Icon v-if="!isLoading" name="material-symbols:edit-outline-rounded" />
+                            <LoadingIcon v-else />
                             Edit
                         </AppBtnPrimary>
                     </div>

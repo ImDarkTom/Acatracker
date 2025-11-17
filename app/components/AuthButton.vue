@@ -40,8 +40,8 @@ const authStore = useAuthStore();
         v-else 
         :disabled="authStore.isLoading" 
         @click="authStore.signIn">
-        <Icon v-if="authStore.isLoading" name="mdi:loading" class="animate-spin" />
-        <Icon v-else name="bi:github" />
+        <LoadingIcon v-if="authStore.isLoading" />
+        <Icon v-else name="mdi:github" />
         
         <span>Sign in with Github</span>
     </AppBtnPrimary>
