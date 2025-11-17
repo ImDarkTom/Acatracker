@@ -1,71 +1,28 @@
 <script setup lang="ts">
-import type { FetchError } from "ofetch";
-
 import { InsertModule } from '~~/lib/db/schema';
 import LoadingIcon from "./LoadingIcon.vue";
 
-const { $csrfFetch } = useNuxtApp()
-
-const submitError = ref('');
-const isLoading = ref(false);
-const isSubmitted = ref(false);
+const { $csrfFetch } = useNuxtApp();
+const modulesStore = useModuleStore();
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertModule)
 });
 
-const emit = defineEmits<{
-    (e: 'submitted'): void,
-}>();
+const { isOpen, isLoading, handleInteract, submitHandler } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = handleSubmit(async (values) => {
-    try {
-        submitError.value = "";
-        isLoading.value = true;
-        await $csrfFetch("/api/modules", {
-            method: 'POST',
-            body: values,
-        });
-        isSubmitted.value = true;
-        open.value = false;
-        emit('submitted');
-    } catch (e) {
-        const error = e as FetchError;
-        if (error.data?.data) {
-            setErrors(error.data.data);
-        }
-        submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occured.';
-    }
-    isLoading.value = false;
-});
+const onSubmit = submitHandler(async (values) => {
+    await $csrfFetch("/api/modules", {
+        method: 'POST',
+        body: values,
+    });
 
-onBeforeRouteLeave(() => {
-    if (!isSubmitted.value && meta.value.dirty) {
-        const confirmed = confirm('Are you sure you want to leave? All unsaved changes will be lost.');
-        if (!confirmed) {
-            return false;
-        }
-    }
-    return true;
-});
-
-const open = ref(false);
-
-function handleInteract(event: Event) {
-    event.preventDefault();
-
-    if (!isSubmitted.value && meta.value.dirty) {
-        if (confirm('Are you sure you want to leave? All unsaved changes will be lost.')) {
-            open.value = false;
-            return;
-        }
-    }
-}
-
+    modulesStore.refresh();
+}, setErrors);
 </script>
 
 <template>
-    <DialogRoot v-model:open="open">
+    <DialogRoot v-model:open="isOpen">
         <DialogTrigger as-child>
             <slot>
                 <AppBtnPrimary class="p-4 w-full px-auto">

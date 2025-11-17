@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { FetchError } from "ofetch";
-
 import { InsertModule, type ModuleSchema } from '~~/lib/db/schema';
 
 const { $csrfFetch } = useNuxtApp()
@@ -8,10 +6,6 @@ const { $csrfFetch } = useNuxtApp()
 const props = defineProps<{
     module: ModuleSchema,
 }>();
-
-const submitError = ref('');
-const isLoading = ref(false);
-const isSubmitted = ref(false);
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertModule),
@@ -23,57 +17,23 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     },
 });
 
+const { isOpen, isLoading, handleInteract, submitHandler } = useEditDialogForm({ meta, handleSubmit });
+
 const emit = defineEmits<{
     (e: 'submitted'): void,
 }>();
 
-const onSubmit = handleSubmit(async (values) => {
-    try {
-        submitError.value = "";
-        isLoading.value = true;
-        await $csrfFetch(`/api/modules/${props.module.id}`, {
-            method: 'PUT',
-            body: values,
-        });
-        isSubmitted.value = true;
-        open.value = false;
-        emit('submitted');
-    } catch (e) {
-        const error = e as FetchError;
-        if (error.data?.data) {
-            setErrors(error.data.data);
-        }
-        submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occured.';
-    }
-    isLoading.value = false;
-});
-
-onBeforeRouteLeave(() => {
-    if (!isSubmitted.value && meta.value.dirty) {
-        const confirmed = confirm('Are you sure you want to leave? All unsaved changes will be lost.');
-        if (!confirmed) {
-            return false;
-        }
-    }
-    return true;
-});
-
-const open = ref(false);
-
-function handleInteract(event: Event) {
-    event.preventDefault();
-
-    if (!isSubmitted.value && meta.value.dirty) {
-        if (confirm('Are you sure you want to leave? All unsaved changes will be lost.')) {
-            open.value = false;
-            return;
-        }
-    }
-}
+const onSubmit = submitHandler(async (values) => {
+    await $csrfFetch(`/api/modules/${props.module.id}`, {
+        method: 'PUT',
+        body: values,
+    });
+    emit('submitted');
+}, setErrors)
 </script>
 
 <template>
-    <DialogRoot v-model:open="open">
+    <DialogRoot v-model:open="isOpen">
         <DialogTrigger as-child>
             <slot />
         </DialogTrigger>

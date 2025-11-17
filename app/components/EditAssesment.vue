@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import type { FetchError } from "ofetch";
-
 import { InsertAssesment, type AssesmentSchema } from '~~/lib/db/schema';
-
-const { $csrfFetch } = useNuxtApp()
 
 const props = defineProps<{
     assesment: AssesmentSchema,
 }>();
 
-const submitError = ref('');
-const isLoading = ref(false);
-const isSubmitted = ref(false);
+const { $csrfFetch } = useNuxtApp()
+const modulesStore = useModuleStore();
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertAssesment),
@@ -24,64 +19,30 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     }
 });
 
+const { isOpen, isLoading, handleInteract, submitHandler } = useEditDialogForm({ meta, handleSubmit });
+
+watch(isOpen, (newVal) => {
+    // When dialog is opened, refresh the modules list we can choose from.
+    if (newVal) modulesStore.refresh();
+});
+
 const emit = defineEmits<{
     (e: 'submitted'): void,
 }>();
 
-const onSubmit = handleSubmit(async (values) => {
-    try {
-        submitError.value = "";
-        isLoading.value = true;
-        await $csrfFetch(`/api/assesments/${props.assesment.id}`, {
-            method: 'PUT',
-            body: values,
-        });
-        isSubmitted.value = true;
-        open.value = false;
-        emit('submitted');
-    } catch (e) {
-        const error = e as FetchError;
-        if (error.data?.data) {
-            setErrors(error.data.data);
-        }
-        submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occured.';
-    }
-    isLoading.value = false;
-});
-
-onBeforeRouteLeave(() => {
-    if (!isSubmitted.value && meta.value.dirty) {
-        const confirmed = confirm('Are you sure you want to leave? All unsaved changes will be lost.');
-        if (!confirmed) {
-            return false;
-        }
-    }
-    return true;
-});
-
-const open = ref(false);
-
-function handleInteract(event: Event) {
-    event.preventDefault();
-
-    if (!isSubmitted.value && meta.value.dirty) {
-        if (confirm('Are you sure you want to leave? All unsaved changes will be lost.')) {
-            open.value = false;
-            return;
-        }
-    }
-}
-
-const modulesStore = useModuleStore();
 const { modules } = storeToRefs(modulesStore);
 
-watch(open, (newVal) => {
-    if (newVal) modulesStore.refresh();
-});
+const onSubmit = submitHandler(async (values) => {
+    await $csrfFetch(`/api/assesments/${props.assesment.id}`, {
+        method: 'PUT',
+        body: values,
+    });
+    emit('submitted');
+}, setErrors);
 </script>
 
 <template>
-    <DialogRoot v-model:open="open">
+    <DialogRoot v-model:open="isOpen">
         <DialogTrigger as-child>
             <slot />
         </DialogTrigger>
@@ -116,7 +77,7 @@ watch(open, (newVal) => {
                             <option value="" disabled selected>(select a module)</option>
                             <option v-for="module in modules" :value="module.id">{{ module.name }}</option>
                         </AppFormFieldSelect>
-                        <AddModuleBtn @submitted="modulesStore.refresh">
+                        <AddModuleBtn>
                             <AppBtnPrimary @click.prevent>
                                 <Icon name="material-symbols:add" size="18" />
                             </AppBtnPrimary>
