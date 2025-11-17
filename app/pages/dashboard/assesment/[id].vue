@@ -77,33 +77,38 @@ async function toggleAssesmentCompleted() {
         </div>
 
         <div class="ml-8 mr-4 flex flex-col gap-2">
-            <div v-for="task in (tasks ?? []).filter((t) => t.assesment == (assesmentId as unknown as number | string))" class="p-2 bg-elevated rounded-sm flex items-center flex-row gap-2">
-                <input type="checkbox" @change="toggleTask(task)" :disabled="taskTogglesLoading.includes(task.id)">
-                <span>{{ task.name }}: {{ new Date(task.dueAt).toLocaleDateString() }}</span>
-                <div class="grow"></div>
-                <DropdownMenuRoot>
-                    <DropdownMenuTrigger
-                        class="rounded-sm data-[state='open']:bg-base hover:bg-elevated cursor-pointer p-2 size-8 flex items-center justify-center">
-                        <Icon name="material-symbols:more-vert" size="24" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuPortal>
-                        <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
-                            <EditTaskBtn 
-                                :task 
-                                :assesment="assesment.data"
-                                class="h-full">
+            <div 
+                v-for="task in (tasks ?? []).filter((t) => t.assesment == (assesmentId as unknown as number | string))" 
+                class="p-2 bg-elevated rounded-sm flex flex-col gap-2">
+                <div class="flex flex-row items-center gap-2">
+                    <input type="checkbox" @change="toggleTask(task)" :disabled="taskTogglesLoading.includes(task.id)">
+                    <span>{{ task.name }}: {{ new Date(task.dueAt).toLocaleDateString() }}</span>
+                    <div class="grow"></div>
+                    <DropdownMenuRoot>
+                        <DropdownMenuTrigger
+                            class="rounded-sm data-[state='open']:bg-base hover:bg-elevated cursor-pointer p-2 size-8 flex items-center justify-center">
+                            <Icon name="material-symbols:more-vert" size="24" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
+                                <EditTaskBtn 
+                                    :task 
+                                    :assesment="assesment.data"
+                                    class="h-full">
+                                    <CustomDropdownItem 
+                                        value="Edit" 
+                                        icon="material-symbols:edit-outline-rounded"
+                                        :select-action="(e) => e.preventDefault()" />
+                                </EditTaskBtn>
                                 <CustomDropdownItem 
-                                    value="Edit" 
-                                    icon="material-symbols:edit-outline-rounded"
-                                    :select-action="(e) => e.preventDefault()" />
-                            </EditTaskBtn>
-                            <CustomDropdownItem 
-                                value="Delete" 
-                                icon="material-symbols:delete-outline-rounded"
-                                :select-action="() => taskStore.deleteTask(task)" />
-                        </DropdownMenuContent>
-                    </DropdownMenuPortal>
-                </DropdownMenuRoot>
+                                    value="Delete" 
+                                    icon="material-symbols:delete-outline-rounded"
+                                    :select-action="() => taskStore.deleteTask(task)" />
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuRoot>
+                </div>
+                <p v-if="task.description" class="text-sm text-text-secondary">{{ task.description }}</p>
             </div>
             <AddTaskBtn :assesment="assesment.data" @submitted="taskStore.refresh()" />
         </div>
