@@ -39,6 +39,22 @@ async function toggleTask(task: TaskSchema) {
     });
     taskTogglesLoading.value = taskTogglesLoading.value.filter(t => t !== task.id);
 }
+
+const assesmentCompletedLoading = ref(false);
+
+async function toggleAssesmentCompleted() {
+    if (!assesment.value.valid) return;
+    assesment.value.data.completed = !assesment.value.data.completed;
+
+    assesmentCompletedLoading.value = true;
+    await $csrfFetch(`/api/assesments/${assesment.value.data.id}`, {
+        method: 'PUT',
+        body: {
+            ...assesment.value.data,
+        }
+    });
+    assesmentCompletedLoading.value = false;
+}
 </script>
 
 <template>
@@ -98,7 +114,8 @@ async function toggleTask(task: TaskSchema) {
         </div>
 
         <div class="flex flex-row gap-2">
-            <input type="checkbox" name="" id="">Completed? (placeholder)
+            <input type="checkbox" @change="toggleAssesmentCompleted">
+            <span class="text-lg">Completed</span>
         </div>
     </div>
 </template>
