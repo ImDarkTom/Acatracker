@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { AssesmentSchema } from '~~/lib/db/schema';
+import type { AssesmentSchema, TaskSchema } from '~~/lib/db/schema';
 
+const { $csrfFetch } = useNuxtApp();
 const route = useRoute();
 const assesmentId = route.params.id;
 
@@ -24,6 +25,20 @@ const assesment = computed<{
     return { valid: true, data: selectedAssesment };
 });
 
+const taskTogglesLoading = ref<number[]>([]);
+
+async function toggleTask(task: TaskSchema) {
+    task.completed = !task.completed;
+
+    taskTogglesLoading.value.push(task.id);
+    await $csrfFetch(`/api/tasks/${task.id}`, {
+        method: 'PUT',
+        body: {
+            ...task,
+        }
+    });
+    taskTogglesLoading.value = taskTogglesLoading.value.filter(t => t !== task.id);
+}
 </script>
 
 <template>
@@ -46,13 +61,33 @@ const assesment = computed<{
         </div>
 
         <div class="ml-8 mr-4 flex flex-col gap-2">
-            <div v-for="task in (tasks ?? []).filter((t) => t.assesment == (assesmentId as unknown as number | string))" class="p-2 bg-elevated rounded-sm flex flex-row gap-2">
-                <input type="checkbox">
+            <div v-for="task in (tasks ?? []).filter((t) => t.assesment == (assesmentId as unknown as number | string))" class="p-2 bg-elevated rounded-sm flex items-center flex-row gap-2">
+                <input type="checkbox" @change="toggleTask(task)" :disabled="taskTogglesLoading.includes(task.id)">
                 <span>{{ task.name }}: {{ new Date(task.dueAt).toLocaleDateString() }}</span>
-                <div v-if="task.description">
-                    -
-                    <span class="text-text-secondary">{{ task.description }}</span>
-                </div>
+                <div class="grow"></div>
+                <DropdownMenuRoot>
+                    <DropdownMenuTrigger
+                        class="rounded-sm data-[state='open']:bg-base hover:bg-elevated cursor-pointer p-2 size-8 flex items-center justify-center">
+                        <Icon name="material-symbols:more-vert" size="24" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuPortal>
+                        <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
+                            <EditTaskBtn 
+                                :task 
+                                :assesment="assesment.data"
+                                class="h-full">
+                                <CustomDropdownItem 
+                                    value="Edit" 
+                                    icon="material-symbols:edit-outline-rounded"
+                                    :select-action="(e) => e.preventDefault()" />
+                            </EditTaskBtn>
+                            <CustomDropdownItem 
+                                value="Delete" 
+                                icon="material-symbols:delete-outline-rounded"
+                                :select-action="() => taskStore.deleteTask(task)" />
+                        </DropdownMenuContent>
+                    </DropdownMenuPortal>
+                </DropdownMenuRoot>
             </div>
             <AddTaskBtn :assesment="assesment.data" @submitted="taskStore.refresh()" />
         </div>
