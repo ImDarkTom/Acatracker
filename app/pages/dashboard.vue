@@ -26,7 +26,19 @@ onMounted(() => {
                             :module
                             :assesments />
                     </div>
-                    <PopupAddModule />
+                    <div class="flex flex-row gap-2">
+                        <PopupAddAssesment>
+                            <AppBtnPrimary class="p-4 w-full px-auto">
+                                <Icon name="material-symbols:add-notes-outline-rounded" />
+                                Add Assesment
+                            </AppBtnPrimary>
+                        </PopupAddAssesment>
+                        <PopupAddModule>
+                            <AppBtnPrimary aria-label="Add Module" title="Add Module" class="p-4 px-auto">
+                                <Icon name="material-symbols:create-new-folder-outline-rounded" />
+                            </AppBtnPrimary>
+                        </PopupAddModule>
+                    </div>
                 </div>
                 <div v-else class="h-full flex flex-col gap-2 items-center justify-center">
                     <p>Add an assesment to get started</p>

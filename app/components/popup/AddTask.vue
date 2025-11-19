@@ -16,7 +16,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     }
 });
 
-const { isOpen, isLoading, submitHandler, confirmBeforeExiting } = useEditDialogForm({ meta, handleSubmit });
+const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
 const onSubmit = submitHandler(async (values) => {
         await $csrfFetch("/api/tasks", {
@@ -29,7 +29,7 @@ const onSubmit = submitHandler(async (values) => {
 </script>
 
 <template>
-    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting>
+    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError>
         <template #button>
             <slot>
                 <AppBtnPrimary class="w-full">
@@ -74,7 +74,7 @@ const onSubmit = submitHandler(async (values) => {
                 <div class="flex justify-end mt-2">
                     <AppBtnPrimary type="submit" :disabled="isLoading">
                         <Icon v-if="!isLoading" name="material-symbols:add-rounded" />
-                        <Icon v-else name="mdi:loading" class="animate-spin" />
+                        <LoadingIcon v-else />
                         Add
                     </AppBtnPrimary>
                 </div>

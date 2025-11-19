@@ -9,7 +9,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertModule)
 });
 
-const { isOpen, isLoading, submitHandler, confirmBeforeExiting } = useEditDialogForm({ meta, handleSubmit });
+const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
 const onSubmit = submitHandler(async (values) => {
     await $csrfFetch("/api/modules", {
@@ -22,7 +22,7 @@ const onSubmit = submitHandler(async (values) => {
 </script>
 
 <template>
-    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting>
+    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError>
         <template #button>
             <slot>
                 <AppBtnPrimary class="p-4 w-full px-auto">

@@ -20,7 +20,7 @@ const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     }
 });
 
-const { isOpen, isLoading, submitHandler, confirmBeforeExiting } = useEditDialogForm({ meta, handleSubmit });
+const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
 watch(isOpen, (justOpened) => {
     if (justOpened) {
@@ -38,7 +38,7 @@ const onSubmit = submitHandler(async (values) => {
 </script>
 
 <template>
-    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting>
+    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError>
         <template #button>
             <slot />
         </template>
@@ -72,7 +72,7 @@ const onSubmit = submitHandler(async (values) => {
                 <div class="flex justify-end mt-2">
                     <AppBtnPrimary type="submit" :disabled="isLoading">
                         <Icon v-if="!isLoading" name="material-symbols:edit-outline-rounded" />
-                        <Icon v-else name="mdi:loading" class="animate-spin" />
+                        <LoadingIcon v-else />
                         Edit
                     </AppBtnPrimary>
                 </div>

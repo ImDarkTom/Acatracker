@@ -2,6 +2,7 @@
 const props = defineProps<{
     isOpen: boolean,
     confirmBeforeExiting: boolean;
+    submitError?: string;
 }>();
 
 const emit = defineEmits<{
@@ -46,6 +47,9 @@ function handleExitClick(e: Event, exitFn: () => void) {
                 <DialogDescription class="mt-2 mb-1">
                     <slot name="description" />
                 </DialogDescription>
+                <div v-if="submitError" class="bg-errorbg p-2 rounded-sm">
+                    {{ submitError }}
+                </div>
 
                 <slot name="form" />
 
