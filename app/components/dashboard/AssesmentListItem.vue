@@ -45,14 +45,12 @@ async function deleteModule(module: ModuleSchema) {
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
-                        <EditModule 
-                            :module 
-                            @submitted="modulesStore.refresh()">
+                        <PopupEditModule :module>
                             <CustomDropdownItem 
                                 value="Edit" 
                                 icon="material-symbols:edit-outline-rounded"
                                 :select-action="(e) => e.preventDefault()" />
-                        </EditModule>
+                        </PopupEditModule>
                         <CustomDropdownItem 
                             value="Delete" 
                             icon="material-symbols:delete-outline-rounded"

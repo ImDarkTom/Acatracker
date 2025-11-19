@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { InsertModule, type ModuleSchema } from '~~/lib/db/schema';
 
-const { $csrfFetch } = useNuxtApp()
+const { $csrfFetch } = useNuxtApp();
+const modulesStore = useModuleStore();
 
 const props = defineProps<{
     module: ModuleSchema,
@@ -17,7 +18,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     },
 });
 
-const { isOpen, isLoading, handleInteract, submitHandler } = useEditDialogForm({ meta, handleSubmit });
+const { isOpen, isLoading, submitHandler, confirmBeforeExiting } = useEditDialogForm({ meta, handleSubmit });
 
 const emit = defineEmits<{
     (e: 'submitted'): void,
@@ -28,25 +29,24 @@ const onSubmit = submitHandler(async (values) => {
         method: 'PUT',
         body: values,
     });
-    emit('submitted');
+
+    modulesStore.refresh();
 }, setErrors)
 </script>
 
 <template>
-    <DialogRoot v-model:open="isOpen">
-        <DialogTrigger as-child>
+    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting>
+        <template #button>
             <slot />
-        </DialogTrigger>
-        <DialogPortal>
-            <DialogOverlay class="bg-black/35 fixed inset-0 z-30" />
-            <DialogContent
-                @escape-key-down="handleInteract"
-                @pointer-down-outside="handleInteract"
-                class="p-4 bg-base fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] h- w-md max-w-full rounded-lg shadow-md shadow-black z-100">
-                <DialogTitle class="text-lg font-semibold text-brand-100">
-                    Update {{ module.name }}
-                </DialogTitle>
-                <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
+        </template>
+        <template #title>
+            Edit Module 
+        </template>
+        <template #description>
+            Editing {{ module.name }}
+        </template>
+        <template #form>
+            <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
                     <AppFormField 
                         label="Name" 
                         name="name" 
@@ -83,14 +83,6 @@ const onSubmit = submitHandler(async (values) => {
                         </AppBtnPrimary>
                     </div>
                 </form>
-                <div @mousedown.stop="handleInteract" >
-                    <DialogClose
-                        class="absolute p-2 top-4 right-4 inline-flex cursor-pointer rounded-full hover:bg-elevated active:shadow-brand-700 shadow-sm"
-                        aria-label="Close">
-                        <Icon name="material-symbols:close-rounded" size="20" />
-                    </DialogClose>
-                </div>
-            </DialogContent>
-        </DialogPortal>
-    </DialogRoot>
+        </template>
+    </CustomDialog>
 </template>

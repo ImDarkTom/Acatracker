@@ -42,6 +42,7 @@ export function useEditDialogForm({
     });
 
     return {
+        isOpen,
         isLoading,
         submitError,
         submitHandler,

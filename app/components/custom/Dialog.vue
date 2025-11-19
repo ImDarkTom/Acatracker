@@ -1,7 +1,17 @@
 <script setup lang="ts">
 const props = defineProps<{
+    isOpen: boolean,
     confirmBeforeExiting: boolean;
 }>();
+
+const emit = defineEmits<{
+    (e: 'update:isOpen', value: boolean): void,
+}>();
+
+const open = computed({
+    get: () => props.isOpen,
+    set: (value: boolean) => emit('update:isOpen', value),
+});
 
 function handleExitClick(e: Event, exitFn: () => void) {
     if (props.confirmBeforeExiting) {
@@ -20,7 +30,7 @@ function handleExitClick(e: Event, exitFn: () => void) {
 </script>
 
 <template>
-    <DialogRoot v-bind="$attrs" v-slot="{ close: dialogClose }">
+    <DialogRoot v-model:open="open" v-bind="$attrs" v-slot="{ close: dialogClose }">
         <DialogTrigger as-child>
             <slot name="button" />
         </DialogTrigger>
@@ -33,7 +43,7 @@ function handleExitClick(e: Event, exitFn: () => void) {
                 <DialogTitle class="text-lg font-semibold text-brand-100">
                     <slot name="title" />
                 </DialogTitle>
-                <DialogDescription v-if="$slots.description" class="mt-2 mb-1">
+                <DialogDescription class="mt-2 mb-1">
                     <slot name="description" />
                 </DialogDescription>
 
