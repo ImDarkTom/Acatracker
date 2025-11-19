@@ -91,15 +91,14 @@ async function toggleAssesmentCompleted() {
                         </DropdownMenuTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
-                                <EditTaskBtn 
+                                <PopupEditTask 
                                     :task 
-                                    :assesment="assesment.data"
-                                    class="h-full">
+                                    :assesment="assesment.data">
                                     <CustomDropdownItem 
                                         value="Edit" 
                                         icon="material-symbols:edit-outline-rounded"
                                         :select-action="(e) => e.preventDefault()" />
-                                </EditTaskBtn>
+                                </PopupEditTask>
                                 <CustomDropdownItem 
                                     value="Delete" 
                                     icon="material-symbols:delete-outline-rounded"
@@ -110,7 +109,7 @@ async function toggleAssesmentCompleted() {
                 </div>
                 <p v-if="task.description" class="text-sm text-text-secondary">{{ task.description }}</p>
             </div>
-            <AddTaskBtn :assesment="assesment.data" @submitted="taskStore.refresh()" />
+            <PopupAddTask :assesment="assesment.data" />
         </div>
 
         <div 
