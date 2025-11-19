@@ -8,7 +8,7 @@ const props = defineProps<{
     module: ModuleSchema,
 }>();
 
-const { handleSubmit, errors, meta, setErrors } = useForm({
+const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertModule),
     initialValues: {
         code: props.module.code,
@@ -19,6 +19,12 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting } = useEditDialogForm({ meta, handleSubmit });
+
+watch(isOpen, (justOpened) => {
+    if (justOpened) {
+        resetForm();
+    };
+});
 
 const onSubmit = submitHandler(async (values) => {
     await $csrfFetch(`/api/modules/${props.module.id}`, {

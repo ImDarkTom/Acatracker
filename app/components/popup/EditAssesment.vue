@@ -9,7 +9,7 @@ const { $csrfFetch } = useNuxtApp()
 const modulesStore = useModuleStore();
 const assesmentsStore = useAssesmentsStore();
 
-const { handleSubmit, errors, meta, setErrors } = useForm({
+const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertAssesment),
     initialValues: {
         name: props.assesment.name,
@@ -22,9 +22,11 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting } = useEditDialogForm({ meta, handleSubmit });
 
-watch(isOpen, (newVal) => {
-    // When dialog is opened, refresh the modules list we can choose from.
-    if (newVal) modulesStore.refresh();
+watch(isOpen, (justOpened) => {
+    if (justOpened) {
+        modulesStore.refresh();
+        resetForm();
+    };
 });
 
 const { modules } = storeToRefs(modulesStore);

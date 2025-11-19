@@ -9,7 +9,7 @@ const props = defineProps<{
     task: TaskSchema,
 }>();
 
-const { handleSubmit, errors, meta, setErrors } = useForm({
+const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertTask),
     initialValues: {
         assesment: props.assesment.id,
@@ -21,6 +21,12 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting } = useEditDialogForm({ meta, handleSubmit });
+
+watch(isOpen, (justOpened) => {
+    if (justOpened) {
+        resetForm();
+    };
+});
 
 const onSubmit = submitHandler(async (values) => {
         await $csrfFetch(`/api/tasks/${props.task.id}`, {
