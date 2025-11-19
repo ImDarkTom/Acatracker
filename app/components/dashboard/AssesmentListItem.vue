@@ -92,10 +92,12 @@ async function deleteModule(module: ModuleSchema) {
                     </DropdownMenuTrigger>
                     <DropdownMenuPortal>
                         <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
-                            <EditAssesment :assesment @submitted="assesmentsStore.refresh()">
-                                <CustomDropdownItem value="Edit" icon="material-symbols:edit-outline-rounded"
+                            <PopupEditAssesment :assesment>
+                                <CustomDropdownItem 
+                                    value="Edit" 
+                                    icon="material-symbols:edit-outline-rounded"
                                     :select-action="(e) => e.preventDefault()" />
-                            </EditAssesment>
+                            </PopupEditAssesment>
                             <CustomDropdownItem value="Delete" icon="material-symbols:delete-outline-rounded"
                                 :select-action="() => deleteAssesment(assesment)" />
                         </DropdownMenuContent>

@@ -24,10 +24,12 @@ const onSubmit = submitHandler(async (values) => {
 <template>
     <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting>
         <template #button>
-            <AppBtnPrimary class="p-4 w-full px-auto">
-                <Icon name="material-symbols:create-new-folder-outline" />
-                Add Module
-            </AppBtnPrimary>
+            <slot>
+                <AppBtnPrimary class="p-4 w-full px-auto">
+                    <Icon name="material-symbols:create-new-folder-outline" />
+                    Add Module
+                </AppBtnPrimary>
+            </slot>
         </template>
         <template #title>
             Add new module

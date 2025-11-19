@@ -18,10 +18,6 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting } = useEditDialogForm({ meta, handleSubmit });
 
-const emit = defineEmits<{
-    (e: 'submitted'): void,
-}>();
-
 const onSubmit = submitHandler(async (values) => {
         await $csrfFetch("/api/tasks", {
             method: 'POST',
