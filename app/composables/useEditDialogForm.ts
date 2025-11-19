@@ -9,16 +9,7 @@ export function useEditDialogForm({
     const isSubmitted = ref(false);
     const submitError = ref('');
 
-    function handleInteract(event: Event) {
-        event.preventDefault();
-
-        if (!isSubmitted.value && meta.value.dirty) {
-            if (confirm('Are you sure you want to leave? All unsaved changes will be lost.')) {
-                isOpen.value = false;
-                return;
-            }
-        }
-    }
+    const confirmBeforeExiting = computed(() => !isSubmitted.value && meta.value.dirty);
 
     const submitHandler = (
         submitFn: (values: any) => Promise<void>, 
@@ -51,9 +42,9 @@ export function useEditDialogForm({
     });
 
     return {
-        isOpen,
         isLoading,
-        handleInteract,
-        submitHandler
+        submitError,
+        submitHandler,
+        confirmBeforeExiting,
     };
 }

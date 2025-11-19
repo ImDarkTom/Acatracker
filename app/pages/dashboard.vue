@@ -26,7 +26,7 @@ onMounted(() => {
                             :module
                             :assesments />
                     </div>
-                    <AddModuleBtn />
+                    <PopupAddModule />
                 </div>
                 <div v-else class="h-full flex flex-col gap-2 items-center justify-center">
                     <p>Add an assesment to get started</p>

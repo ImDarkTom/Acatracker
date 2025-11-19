@@ -82,11 +82,11 @@ onMounted(() => modulesStore.refresh());
                     <option value="" disabled selected>(select a module)</option>
                     <option v-for="module in modules" :value="module.id">{{ module.name }}</option>
                 </AppFormFieldSelect>
-                <AddModuleBtn>
+                <PopupAddModule>
                     <AppBtnPrimary @click.prevent>
                         <Icon name="material-symbols:add" size="18" />
                     </AppBtnPrimary>
-                </AddModuleBtn>
+                </PopupAddModule>
             </div>
             <AppFormField 
                 name="releasedAt" 
