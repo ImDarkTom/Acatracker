@@ -13,14 +13,16 @@ function updateSelected(value: DateValue | undefined) {
     selectedDate.value = value ?? null;
 }
 
-function happeningOnDate(calDateRaw: DateValue, type: 'due' | 'released') {
+function happeningOnDate(calDateRaw: DateValue) {
     const events = eventsOnDate(calDateRaw);
-    if (!events.exist) return false;
 
-    if (type === 'due') {
-        return events.due.length > 0;
+    if (events.exist) {
+        return events;
     } else {
-        return events.released.length > 0;
+        return {
+            due: [],
+            released: [],
+        }
     }
 }
 </script>
@@ -68,16 +70,25 @@ function happeningOnDate(calDateRaw: DateValue, type: 'due' | 'released') {
                             v-for="weekDate in weekDates" 
                             :key="weekDate.toString()" 
                             :date="weekDate"
-                            class="flex flex-col items-center justify-center ring-1 ring-white ring-inset">
+                            class="flex flex-col border border-text-secondary/20">
                             <CalendarCellTrigger 
                                 :day="weekDate" 
                                 :month="month.value"
-                                class="relative flex items-center justify-center rounded-full size-8 md:size-12 outline-none focus:ring-1 ring-inset focus:ring-brand-50 data-outside-view:text-brand-50/30 data-selected:bg-brand-100! data-selected:text-surface hover:bg-elevated data-unavailable:pointer-events-none data-unavailable:text-brand-50/50 data-unavailable:line-through data-today:font-semibold data-today:underline"
-                                :class="{ 
-                                    'before:absolute before:block before:top-1.5 before:rounded-full before:size-1 md:before:size-1.5 before:bg-red-500': happeningOnDate(weekDate, 'due'),
-                                    'before:absolute before:block before:top-1.5 before:rounded-full before:size-1 md:before:size-1.5 before:bg-teal-500': happeningOnDate(weekDate, 'released'),
-                                }" />
-                                test
+                                class="relative flex items-center justify-center w-full p-1 outline-none focus:ring-1 ring-inset focus:ring-brand-50 data-outside-view:text-brand-50/30 data-selected:bg-brand-100! data-selected:text-surface hover:bg-elevated data-unavailable:pointer-events-none data-unavailable:text-brand-50/50 data-unavailable:line-through data-today:font-semibold data-today:underline" />
+                                <div class="flex flex-col mt-1">
+                                    <div 
+                                        v-for="event in happeningOnDate(weekDate).due" 
+                                        :key="event.id"
+                                        class="px-1 text-xs truncate bg-red-500/20 text-red-500">
+                                        {{ event.name }}
+                                    </div>
+                                    <div 
+                                        v-for="event in happeningOnDate(weekDate).released" 
+                                        :key="event.id"
+                                        class="px-1 text-xs truncate bg-green-500/20 text-green-500">
+                                        {{ event.name }}
+                                    </div>
+                                </div>
                         </CalendarCell>
                     </CalendarGridRow>
                 </CalendarGridBody>
