@@ -32,7 +32,8 @@ function happeningOnDate(calDateRaw: DateValue, type: 'due' | 'released') {
         @update:model-value="updateSelected"
         :week-starts-on="1"
         :weekday-format="'short'"
-        fixed-weeks>
+        fixed-weeks
+        class="h-full flex flex-col">
         <CalendarHeader class="flex items-center justify-between">
             <CalendarPrev class=" size-8 flex items-center justify-center cursor-pointer hover:bg-elevated rounded-sm">
                 <Icon name="material-symbols:chevron-left-rounded" size="24" />
@@ -44,11 +45,11 @@ function happeningOnDate(calDateRaw: DateValue, type: 'due' | 'released') {
                 <Icon name="material-symbols:chevron-right-rounded" size="24" />
             </CalendarNext>
         </CalendarHeader>
-        <div class="flex flex-col pt-4">
+        <div class="h-full">
             <CalendarGrid 
                 v-for="month in grid" 
                 :key="month.value.toString()"
-                class="w-full select-none">
+                class="w-full h-full flex flex-col select-none">
                 <CalendarGridHead>
                     <CalendarGridRow class="mb-1 grid w-full grid-cols-7">
                         <CalendarHeadCell 
@@ -58,7 +59,7 @@ function happeningOnDate(calDateRaw: DateValue, type: 'due' | 'released') {
                         </CalendarHeadCell>
                     </CalendarGridRow>
                 </CalendarGridHead>
-                <CalendarGridBody class="grid">
+                <CalendarGridBody class="grid h-full">
                     <CalendarGridRow 
                         v-for="(weekDates, index) in month.rows" 
                         :key="`weekDate-${index}`"
@@ -67,7 +68,7 @@ function happeningOnDate(calDateRaw: DateValue, type: 'due' | 'released') {
                             v-for="weekDate in weekDates" 
                             :key="weekDate.toString()" 
                             :date="weekDate"
-                            class="text-center flex justify-center">
+                            class="flex flex-col items-center justify-center ring-1 ring-white ring-inset">
                             <CalendarCellTrigger 
                                 :day="weekDate" 
                                 :month="month.value"
@@ -76,6 +77,7 @@ function happeningOnDate(calDateRaw: DateValue, type: 'due' | 'released') {
                                     'before:absolute before:block before:top-1.5 before:rounded-full before:size-1 md:before:size-1.5 before:bg-red-500': happeningOnDate(weekDate, 'due'),
                                     'before:absolute before:block before:top-1.5 before:rounded-full before:size-1 md:before:size-1.5 before:bg-teal-500': happeningOnDate(weekDate, 'released'),
                                 }" />
+                                test
                         </CalendarCell>
                     </CalendarGridRow>
                 </CalendarGridBody>
