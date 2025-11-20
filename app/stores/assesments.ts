@@ -1,32 +1,36 @@
-import { CalendarDate, getLocalTimeZone } from "@internationalized/date";
-import type { DateValue } from "reka-ui";
-import type { AssesmentSchema } from "~~/lib/db/schema";
+import type { AssesmentSchema, ModuleSchema } from "~~/lib/db/schema";
 
 export const useAssesmentsStore = defineStore('useAssesmentsStore', () => {
     const { data, status, refresh } = useFetch('/api/assesments', { lazy: true });
 
-    function eventsOnDate(date: DateValue | Date): { exist: false } | { exist: true, released: AssesmentSchema[], due: AssesmentSchema[] } {
-        const calendarDate = date instanceof Date ? date : date.toDate(getLocalTimeZone());
-        const targetTime = calendarDate.getTime();
+    const eventsByDate = computed(() => {
+        const { modules } = useModuleStore();
+        const map = new Map<string, {type: 'released' | 'due', assesment: AssesmentSchema, module?: ModuleSchema }[]>();
 
-        const hasEventsOnDay = !!data.value
-            ?.some(i => i['dueAt'] === targetTime || i['releasedAt'] === targetTime);
+        for (const assesment of data.value ?? []) {
+            const dueKey = new Date(assesment.dueAt).toISOString().split('T')[0]!;
 
-        if (!hasEventsOnDay) {
-            return { exist: false };
+            if (!map.has(dueKey)) {
+                map.set(dueKey, []);
+            }
+            map.get(dueKey)?.push({type: 'due', assesment, module: modules?.find(m => m.id == assesment.module) });
+
+            if (!assesment.releasedAt) continue;
+            const releasedKey = new Date(assesment.releasedAt).toISOString().split('T')[0]!;
+
+            if (!map.has(releasedKey)) {
+                map.set(releasedKey, []);
+            }
+            map.get(releasedKey)?.push({ type: 'released', assesment, module: modules?.find(m => m.id == assesment.module) });
         }
 
-        return {
-            exist: true,
-            released: data.value?.filter(a => a['releasedAt'] === targetTime) ?? [],
-            due: data.value?.filter(a => a['dueAt'] === targetTime) ?? [],
-        }
-    }
+        return map;
+    });
 
     return {
         assesments: data,
         status,
         refresh,
-        eventsOnDate,
+        eventsByDate,
     };
 });

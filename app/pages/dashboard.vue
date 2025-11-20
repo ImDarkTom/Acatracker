@@ -18,13 +18,16 @@ onMounted(() => {
                 <div v-if="status === 'pending'" class="flex items-center justify-center h-full">
                     <LoadingIcon size="32" />
                 </div>
-                <div v-else-if="assesments && assesments.length > 0" class="flex flex-col p-2 grow">
-                    <div class="flex flex-col gap-2 grow">
+                <div v-else class="flex flex-col p-2 grow">
+                    <div v-if="assesments && assesments.length > 0" class="flex flex-col gap-2 grow">
                         <DashboardAssesmentListItem
                             v-for="module in modules"
                             :key="module.id"
                             :module
                             :assesments />
+                    </div>
+                    <div v-else class="flex grow items-center justify-center">
+                        Add an assessment to get started
                     </div>
                     <div class="flex flex-row gap-2">
                         <PopupAddAssesment>
@@ -39,15 +42,6 @@ onMounted(() => {
                             </AppBtnPrimary>
                         </PopupAddModule>
                     </div>
-                </div>
-                <div v-else class="h-full flex flex-col gap-2 items-center justify-center">
-                    <p>Add an assesment to get started</p>
-                    <NuxtLink to="/dashboard/add">
-                        <AppBtnPrimary>
-                            <Icon name="material-symbols:add" />
-                            Add Assesment
-                        </AppBtnPrimary>
-                    </NuxtLink>
                 </div>
             </div>
         </div>
