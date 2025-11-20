@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { getLocalTimeZone, today, type DateValue } from '@internationalized/date';
-import type { AssesmentSchema } from '~~/lib/db/schema';
 
-const assesmentsStore = useAssesmentsStore();
-const { eventsByDate } = storeToRefs(assesmentsStore);
-
-const props = defineProps<{
-    assesments: AssesmentSchema[],
-}>();
+const calendarStore = useCalendarStore();
+const { eventsByDate } = storeToRefs(calendarStore);
 
 const selectedDate = ref<DateValue | null>(today(getLocalTimeZone()));
 function updateSelected(value: DateValue | undefined) {
@@ -18,7 +13,7 @@ function happeningOnDate(calDateRaw: DateValue) {
     const dateObject = calDateRaw.toDate(getLocalTimeZone());
     const timeUnix = dateObject.toISOString().split('T')[0]!;
 
-    return eventsByDate.value.get(timeUnix) || [];
+    return eventsByDate.value.get(timeUnix) ?? [];
 }
 </script>
 
@@ -77,17 +72,18 @@ function happeningOnDate(calDateRaw: DateValue) {
                                 data-outside-view:text-brand-50/30" />
                                 <div class="mt-1">
                                     <RouterLink 
-                                        v-for="event in happeningOnDate(weekDate)"
-                                        :key="event.assesment.id"
-                                        :to="`/dashboard/assesment/${event.assesment.id}`">
+                                        v-for="(event, index) in happeningOnDate(weekDate)"
+                                        :key="index"
+                                        :to="event.link">
                                         <div 
-                                            
                                             class="p-1 text-xs overflow-hidden text-ellipsis line-clamp-2"
                                             :class="{
                                                 'bg-red-500/20 text-red-500': event.type === 'due',
                                                 'bg-green-500/20 text-green-500': event.type === 'released',
+                                                'bg-amber-500/20 text-amber-500': event.type === 'task',
+                                                'line-through opacity-60': event.completed
                                             }">
-                                            {{ event.module?.code ?? '?' }} • {{ event.assesment.name }}
+                                            {{ event.label }}
                                         </div>
                                     </RouterLink>
                                 </div>
