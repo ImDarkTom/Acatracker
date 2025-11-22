@@ -26,7 +26,7 @@ function happeningOnDate(calDateRaw: DateValue) {
         :weekday-format="'short'"
         fixed-weeks
         class="h-full flex flex-col gap-2">
-        <CalendarHeader class="flex items-center justify-between">
+        <CalendarHeader class="flex items-center justify-around gap-2">
             <CalendarPrev class="size-8 flex items-center justify-center cursor-pointer hover:bg-elevated rounded-sm">
                 <Icon name="material-symbols:chevron-left-rounded" size="24" />
             </CalendarPrev>
@@ -76,7 +76,7 @@ function happeningOnDate(calDateRaw: DateValue) {
                                         :key="index"
                                         :to="event.link">
                                         <div 
-                                            class="p-1 text-xs overflow-hidden text-ellipsis line-clamp-2"
+                                            class="p-1 text-xs overflow-hidden text-ellipsis line-clamp-2 rounded-sm"
                                             :class="{
                                                 'bg-red-500/20 text-red-500': event.type === 'due',
                                                 'bg-green-500/20 text-green-500': event.type === 'released',
