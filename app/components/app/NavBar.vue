@@ -10,7 +10,7 @@
                 <AppThemeToggle />
             </li>
             <li>
-                <AuthButton class="p-2" />
+                <AuthButton />
             </li>
         </ul>
     </nav>
