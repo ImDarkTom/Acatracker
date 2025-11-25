@@ -15,6 +15,13 @@
       "when": 1763260412814,
       "tag": "0001_peaceful_ravenous",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1763977285386,
+      "tag": "0002_brainy_redwing",
+      "breakpoints": true
     }
   ]
 }
