@@ -15,7 +15,7 @@ const assesmentName = computed<string | null>(() => {
 });
 
 useHead(() => ({
-    title: `${assesmentName.value} | Assessment | Acatracker`
+    title: `${assesmentName.value ?? 'Loading...'} | Assessment | Acatracker`
 }));
 </script>
 
