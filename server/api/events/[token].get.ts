@@ -1,15 +1,6 @@
-import ical from "ical-generator";
+import ical, { ICalCalendarMethod } from "ical-generator";
 import { getUserFromCalendarToken } from "../../../lib/db/queries/calendarTokens";
 import { getUserEvents } from "~~/server/utils/events";
-
-type Event = {
-    summary: string;
-    start: Date;
-    end: Date;
-    description?: string;
-    location?: string;
-    url?: string;
-};
 
 export default defineEventHandler(async (event) => {
     const token = getRouterParam(event, "token") as string;
@@ -23,11 +14,21 @@ export default defineEventHandler(async (event) => {
         }));
     }
 
-    const events = await getUserEvents(user.userId);
+    const events = await getUserEvents(user.userId, `${getRequestProtocol(event)}://${getRequestHost(event)}`);
+    const calendar = ical({ 
+        name: 'Acatracker',
+        description: 'Acatracker Assesments & Tasks',
+        ttl: 43200, //12h
+        method: ICalCalendarMethod.PUBLISH,
+        prodId: { company: 'Acatracker', product: 'Acatracker Calendar 1.0', language: "EN" },
+        events,
+    });
 
-    const calendar = ical({ name: 'events' });
-
-    events.map((event) => calendar.createEvent(event));
-
-    return calendar.toString();
+    return new Response(calendar.toString(), {
+        headers: {
+            "Content-Type": "text/calendar",
+            "Content-Disposition": 'attachment; filename="acatracker.ics"',
+            "Cache-Control": "no-cache",
+        }
+    });
 });
