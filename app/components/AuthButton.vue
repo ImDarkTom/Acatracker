@@ -28,7 +28,7 @@ const authStore = useAuthStore();
                     icon="material-symbols:add-notes-outline-rounded" 
                     :select-action="() => navigateTo('/dashboard')" />
                 <DropdownMenuSeparator class="h-px w-full bg-brand-50" />
-                <RouterLink to="/dashboard/external">
+                <RouterLink to="/dashboard/subscribe">
                     <CustomDropdownItem 
                         value="Subscribe" 
                         icon="material-symbols:calendar-add-on-outline-rounded" />
