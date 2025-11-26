@@ -53,8 +53,6 @@ export const useAuthStore = defineStore("useAuthStore", () => {
         });
         
         await nextTick();
-
-        navigateTo("/");
     }
 
     return {

@@ -1,6 +1,12 @@
 <script setup lang="ts">
 useHead({
-    title: 'Acatracker'
+    title: 'Acatracker | Personal Academic Tracker',
+    meta: [
+        {
+            name: 'description',
+            content: 'Easily track your upcoming assessments and exams with Acatracker.'
+        }
+    ]
 });
 
 const authStore = useAuthStore();

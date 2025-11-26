@@ -1,7 +1,11 @@
 <script setup lang="ts">
 const route = useRoute();
 
-const error = route.query.error || "An unknown error occured.";
+useHead({
+    title: 'An error occurred | Acatracker'
+});
+
+const error = route.query.error || "An unknown error occurred.";
 </script>
 
 <template>
