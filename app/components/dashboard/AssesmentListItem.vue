@@ -64,7 +64,7 @@ async function deleteModule(module: ModuleSchema) {
             class="bg-elevated p-2 rounded-sm flex flex-row has-[>.active]:bg-brand-700">
             <NuxtLink 
                 class="grow"
-                :to="`/dashboard/assessments/${assesment.id}`" 
+                :to="`/dashboard/assessment/${assesment.id}`" 
                 :exact-active-class="'active'"
                 >
                 <div class="flex flex-col grow hover:text-brand-300">

@@ -5,10 +5,10 @@ const { status, assesments } = storeToRefs(assesmentsStore);
 const modulesStore = useModuleStore();
 const { modules } = storeToRefs(modulesStore);
 
-onMounted(() => {
+function refresh() {
     modulesStore.refresh();
     assesmentsStore.refresh();
-});
+}
 </script>
 
 <template>
@@ -17,6 +17,13 @@ onMounted(() => {
             <LoadingIcon size="32" />
         </div>
         <div v-else class="flex flex-col max-h-full">
+            <div class="flex flex-row justify-between items-center p-2">
+                <span class="text-lg font-bold pl-2">{{ assesments?.filter(a => !a.completed)?.length ?? '?'  }} Pending Assessments</span>
+                <AppBtnSecondary @click="refresh" class="p-1.5!">
+                    <Icon name="material-symbols:refresh-rounded" size="24" />
+                    Refresh
+                </AppBtnSecondary>
+            </div>
             <div v-if="assesments && assesments.length > 0" class="p-2 flex grow flex-col gap-2 overflow-y-auto">
                 <DashboardAssesmentListItem v-for="module in modules" :key="module.id" :module :assesments />
             </div>

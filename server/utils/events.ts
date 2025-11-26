@@ -23,7 +23,7 @@ export async function getUserEvents(userId: number, host: string) {
                 description: `${assesment.name} for ${moduleInfo?.name} release date.`,
                 start: new Date(assesment.releasedAt),
                 allDay: true,
-                url: `${host}/dashboard/assessments/${assesment.id}#release`,
+                url: `${host}/dashboard/assessment/${assesment.id}#release`,
                 status: assesment.completed ? ICalEventStatus.CANCELLED : ICalEventStatus.CONFIRMED,
             });
         }
@@ -34,7 +34,7 @@ export async function getUserEvents(userId: number, host: string) {
             description: `${assesment.name} for ${moduleInfo?.name} due date.`,
             start: new Date(assesment.dueAt),
             allDay: true,
-            url: `${host}/dashboard/assessments/${assesment.id}#due`,
+            url: `${host}/dashboard/assessment/${assesment.id}#due`,
             status: assesment.completed ? ICalEventStatus.CANCELLED : ICalEventStatus.CONFIRMED,
         });
 
@@ -47,7 +47,7 @@ export async function getUserEvents(userId: number, host: string) {
                 description: `Task ${task.name} for ${assesment.name} in ${moduleInfo?.name}.`,
                 start: new Date(task.dueAt),
                 allDay: true,
-                url: `${host}/dashboard/assessments/${assesment.id}#task-${task.id}`,
+                url: `${host}/dashboard/assessment/${assesment.id}#task-${task.id}`,
                 status: task.completed ? ICalEventStatus.CANCELLED : ICalEventStatus.CONFIRMED,
             });
         }
