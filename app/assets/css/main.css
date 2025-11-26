@@ -22,7 +22,7 @@
 }
 
 body {
-    @apply bg-surface text-brand-50 overflow-hidden;
+    @apply bg-surface text-brand-50 md:overflow-hidden;
 }
 
 @layer base {

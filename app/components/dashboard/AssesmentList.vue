@@ -20,7 +20,7 @@ onMounted(() => {
             <div v-if="assesments && assesments.length > 0" class="p-2 flex grow flex-col gap-2 overflow-y-auto">
                 <DashboardAssesmentListItem v-for="module in modules" :key="module.id" :module :assesments />
             </div>
-            <div v-else class="flex h-full items-center justify-center">
+            <div v-else class="flex h-full grow items-center justify-center">
                 Add an assessment to get started
             </div>
             <div class="flex flex-row gap-2 p-2">
