@@ -75,7 +75,7 @@ async function deleteModule(module: ModuleSchema) {
                             {{ new Date(assesment.releasedAt).toLocaleDateString() }}
                         </span>
 
-                        <div class="w-full h-px my-auto border-b-2 border-dotted border-text-secondary"></div>
+                        <div v-if="assesment.releasedAt" class="w-full h-px my-auto border-b-2 border-dotted border-text-secondary"></div>
 
                         <span class="text-text-secondary flex flex-row gap-1 items-center">
                             <Icon name="material-symbols:nest-clock-farsight-analog-outline-rounded" size="12" />
