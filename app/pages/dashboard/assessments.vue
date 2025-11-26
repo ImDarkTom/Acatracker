@@ -3,7 +3,7 @@
         <div class="w-full md:w-1/3 bg-base rounded-lg">
             <DashboardAssesmentList />
         </div>
-        <div class="w-full md:w-2/3 bg-base rounded-lg p-2">
+        <div class="w-full md:w-2/3 bg-base rounded-lg p-2 hidden md:block">
             <NuxtPage />
         </div>
     </div>

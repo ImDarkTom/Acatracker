@@ -31,7 +31,7 @@ export const useCalendarStore = defineStore('useCalendarStore', () => {
                 map.get(getDateKey(item.dueAt))?.push({
                     type: 'task',
                     label: `${code} • ${item.name}`,
-                    link: `/dashboard/assesment/${item.assesment}`,
+                    link: `/dashboard/assessments/${item.assesment}`,
                     completed: Boolean(item.completed),
                 });
                 continue;
@@ -45,7 +45,7 @@ export const useCalendarStore = defineStore('useCalendarStore', () => {
                 map.get(getDateKey(item.releasedAt))?.push({
                     type: 'released',
                     label: getLabel(item),
-                    link: `/dashboard/assesment/${item.id}`,
+                    link: `/dashboard/assessments/${item.id}`,
                     completed: Boolean(item.completed),
                 });
             }
@@ -53,7 +53,7 @@ export const useCalendarStore = defineStore('useCalendarStore', () => {
             map.get(getDateKey(item.dueAt))?.push({
                 type: 'due',
                 label: getLabel(item),
-                link: `/dashboard/assesment/${item.id}`,
+                link: `/dashboard/assessments/${item.id}`,
                 completed: Boolean(item.completed),
             });
         };

@@ -18,7 +18,7 @@ const authStore = useAuthStore();
             <DropdownMenuContent 
                 :align="'start'"
                 :align-offset="16"
-                class="w-52 shadow-sm bg-elevated rounded-md overflow-hidden mx-2">
+                class="w-52 shadow-sm bg-elevated rounded-md overflow-hidden mx-2 z-100">
                 <CustomDropdownItem 
                     value="Dashboard" 
                     icon="material-symbols:dashboard-outline-rounded" 
