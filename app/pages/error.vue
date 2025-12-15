@@ -14,10 +14,10 @@ const error = route.query.error || "An unknown error occurred.";
             Oh no! {{ error }}
         </div>
         <NuxtLink to="/">
-            <AppBtnPrimary>
+            <ButtonPrimary>
                 <Icon name="material-symbols:arrow-back-rounded" />
                 Home
-            </AppBtnPrimary>
+            </ButtonPrimary>
         </NuxtLink>
     </div>
 </template>

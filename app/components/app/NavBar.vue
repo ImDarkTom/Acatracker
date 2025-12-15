@@ -1,10 +1,11 @@
 <template>
-    <nav class="bg-base flex items-center flex-row justify-between p-4 sticky top-0 left-0 z-90">
+    <nav class="bg-base ring-1 ring-highlight flex flex-row items-center justify-between p-4 sticky top-0 left-0 z-90">
         <ul class="flex flex-row gap-4">
             <li class="mr-2 text-brand-400 font-bold select-none hidden md:block">
                 Acatracker
             </li>
-            <NavbarItem 
+            <NavbarItem
+                class="md:hidden"
                 to="/dashboard/assessments" 
                 iconName="material-symbols:task-alt-rounded"
                 text="Assessments" />

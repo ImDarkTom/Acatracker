@@ -63,10 +63,10 @@ async function toggleAssesmentCompleted() {
     </div>
     <div v-else class="flex flex-col gap-2">
         <NuxtLink to="/dashboard">
-            <AppBtnPrimary>
+            <ButtonPrimary>
                 <Icon name="material-symbols:arrow-back-rounded" size="20" />
                 Back to calendar
-            </AppBtnPrimary>
+            </ButtonPrimary>
         </NuxtLink>
         <span class="text-3xl">{{ assesment.data.name }}</span>
         <p class="text-text-secondary">{{ assesment.data.description }}</p>

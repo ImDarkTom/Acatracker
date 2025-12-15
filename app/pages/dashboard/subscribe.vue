@@ -40,9 +40,9 @@ function copyText() {
                 <div class="flex flex-col gap-1 w-full">
                     Or add manually as an ICAL:
                     <input type="text" readonly :value="calendarUrl" class="bg-surface">
-                    <AppBtnPrimary @click="copyText" class="w-min">
+                    <ButtonPrimary @click="copyText" class="w-min">
                         {{ copyLabel }}
-                    </AppBtnPrimary>
+                    </ButtonPrimary>
                 </div>
             </div>
         </div>

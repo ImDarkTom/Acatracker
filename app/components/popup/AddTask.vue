@@ -32,10 +32,10 @@ const onSubmit = submitHandler(async (values) => {
     <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError>
         <template #button>
             <slot>
-                <AppBtnPrimary class="w-full">
+                <ButtonPrimary class="w-full">
                     <Icon name="material-symbols:add-task-rounded" size="18" />
                     Add Task
-                </AppBtnPrimary>
+                </ButtonPrimary>
             </slot>
         </template>
         <template #title>
@@ -72,11 +72,11 @@ const onSubmit = submitHandler(async (values) => {
                     :disabled="isLoading"
                     :error="errors.completed" />
                 <div class="flex justify-end mt-2">
-                    <AppBtnPrimary type="submit" :disabled="isLoading">
+                    <ButtonPrimary type="submit" :disabled="isLoading">
                         <Icon v-if="!isLoading" name="material-symbols:add-rounded" />
                         <LoadingIcon v-else />
                         Add
-                    </AppBtnPrimary>
+                    </ButtonPrimary>
                 </div>
             </form>
         </template>

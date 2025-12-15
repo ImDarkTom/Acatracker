@@ -33,8 +33,8 @@ async function deleteModule(module: ModuleSchema) {
 <template>
     <div class="flex flex-col gap-1">
         <div class="flex flex-row justify-between items-center">
-            <div class="text-text-secondary flex flex-row gap-2 items-center">
-                <code class="ring-1 ring-text-secondary text-sm p-0.5 rounded-sm h-min">{{ module.code }}</code>
+            <div class="flex flex-row gap-2 items-center">
+                <code class="ring-1 ring-inset ring-text-secondary text-sm p-1 rounded-sm h-min">{{ module.code }}</code>
                 <span class="text-lg">{{ module.name }}</span>
             </div>
 
@@ -44,7 +44,7 @@ async function deleteModule(module: ModuleSchema) {
                     <Icon name="material-symbols:more-vert" size="24" />
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>
-                    <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
+                    <DropdownMenuContent class="w-52 shadow-black shadow-sm bg-elevated card p-1 rounded-md overflow-hidden mt-1">
                         <PopupEditModule :module>
                             <CustomDropdownItem 
                                 value="Edit" 
@@ -60,47 +60,49 @@ async function deleteModule(module: ModuleSchema) {
             </DropdownMenuRoot>
         </div>
 
-        <div v-for="assesment in assesments.filter(a => a.module === module.id)" :key="assesment.id"
-            class="bg-elevated p-2 rounded-sm flex flex-row has-[>.active]:bg-brand-700">
+        <div 
+            v-for="assesment in assesments.filter(a => a.module === module.id)" 
+            :key="assesment.id"
+            class="flex flex-row items-center gap-2 card has-[>.active]:bg-elevated">
             <NuxtLink 
                 class="grow"
                 :to="`/dashboard/assessment/${assesment.id}`" 
                 :exact-active-class="'active'"
                 >
-                <div class="flex flex-col grow hover:text-brand-300">
-                    <span class="text-lg">{{ assesment.name }}</span>
-                    <div class="flex flex-row w-full gap-1 text-sm">
-                        <span v-if="assesment.releasedAt" class="text-text-secondary flex flex-row gap-1 items-center">
-                            <Icon name="material-symbols:rocket-launch-outline-rounded" size="12" />
+                <div class="flex flex-col group">
+                    <span class="text-lg text-text group-hover:text-brand-200">{{ assesment.name }}</span>
+                    <div class="flex flex-row gap-1 text-sm">
+                        <span v-if="assesment.releasedAt">
                             {{ new Date(assesment.releasedAt).toLocaleDateString() }}
                         </span>
 
-                        <div v-if="assesment.releasedAt" class="w-full h-px my-auto border-b-2 border-dotted border-text-secondary"></div>
+                        <div v-if="assesment.releasedAt" class="w-full h-px my-auto border-b-2 border-dotted"></div>
 
-                        <span class="text-text-secondary flex flex-row gap-1 items-center">
-                            <Icon name="material-symbols:nest-clock-farsight-analog-outline-rounded" size="12" />
+                        <span>
                             {{ new Date(assesment.dueAt).toLocaleDateString() }}
                         </span>
                     </div>
                 </div>
             </NuxtLink>
-            <div class="flex flex-col gap-2 items-center pl-2" @click.stop>
+            <div @click.stop>
                 <DropdownMenuRoot>
                     <DropdownMenuTrigger
-                        class="rounded-sm data-[state='open']:bg-base p-2 size-8 flex items-center justify-center">
+                        class="rounded-sm data-[state='open']:bg-elevated p-2 size-8 flex items-center justify-center">
                         <Icon name="material-symbols:more-vert" size="24" />
                     </DropdownMenuTrigger>
                     <DropdownMenuPortal>
-                        <DropdownMenuContent class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
-                            <PopupEditAssesment :assesment>
-                                <CustomDropdownItem 
+                        <Transition name="dropdown">
+                            <DropdownMenuContent class="w-52 shadow-black shadow-sm bg-elevated card p-1 rounded-md overflow-hidden mt-1">
+                                <PopupEditAssesment :assesment>
+                                    <CustomDropdownItem 
                                     value="Edit" 
                                     icon="material-symbols:edit-outline-rounded"
                                     :select-action="(e) => e.preventDefault()" />
-                            </PopupEditAssesment>
-                            <CustomDropdownItem value="Delete" icon="material-symbols:delete-outline-rounded"
+                                </PopupEditAssesment>
+                                <CustomDropdownItem value="Delete" icon="material-symbols:delete-outline-rounded"
                                 :select-action="() => deleteAssesment(assesment)" />
-                        </DropdownMenuContent>
+                            </DropdownMenuContent>
+                        </Transition>
                     </DropdownMenuPortal>
                 </DropdownMenuRoot>
             </div>

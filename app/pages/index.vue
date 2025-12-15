@@ -18,9 +18,9 @@ const authStore = useAuthStore();
         <p class="mb-2">Open-source academic tracker.</p>
 
         <NuxtLink v-if="authStore.user" :to="{ name: 'dashboard' }">
-            <AppBtnPrimary class="p-4">
+            <ButtonPrimary class="p-4">
                 Open Dashboard
-            </AppBtnPrimary>
+            </ButtonPrimary>
         </NuxtLink>
         <AuthButton v-else class="p-4" />
     </div>

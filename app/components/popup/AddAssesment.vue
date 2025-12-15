@@ -31,10 +31,10 @@ const onSubmit = submitHandler(async (values) => {
     <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError>
         <template #button>
             <slot>
-                <AppBtnPrimary class="p-4 w-full px-auto">
+                <ButtonPrimary class="p-4 w-full px-auto">
                     <Icon name="material-symbols:create-new-folder-outline" />
                     Add Module
-                </AppBtnPrimary>
+                </ButtonPrimary>
             </slot>
         </template>
         <template #title>
@@ -69,9 +69,9 @@ const onSubmit = submitHandler(async (values) => {
                         <option v-for="module in modules" :value="module.id">{{ module.name }}</option>
                     </AppFormFieldSelect>
                     <PopupAddModule>
-                        <AppBtnPrimary @click.prevent>
+                        <ButtonPrimary @click.prevent>
                             <Icon name="material-symbols:add" size="18" />
-                        </AppBtnPrimary>
+                        </ButtonPrimary>
                     </PopupAddModule>
                 </div>
                 <AppFormField 
@@ -87,11 +87,11 @@ const onSubmit = submitHandler(async (values) => {
                     :disabled="isLoading"
                     :error="errors.dueAt" />
                 <div class="flex justify-end mt-2">
-                    <AppBtnPrimary type="submit" :disabled="isLoading">
+                    <ButtonPrimary type="submit" :disabled="isLoading">
                         <Icon v-if="!isLoading" name="material-symbols:add-rounded" />
                         <LoadingIcon v-else />
                         Add
-                    </AppBtnPrimary>
+                    </ButtonPrimary>
                 </div>
             </form>
         </template>
