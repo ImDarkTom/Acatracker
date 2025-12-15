@@ -63,14 +63,17 @@ async function deleteModule(module: ModuleSchema) {
         <div 
             v-for="assesment in assesments.filter(a => a.module === module.id)" 
             :key="assesment.id"
-            class="flex flex-row items-center gap-2 card has-[>.active]:bg-elevated">
+            class="flex flex-row items-center gap-2 card has-[>.active]:bg-elevated"
+            :class="{ 'opacity-65': assesment.completed }">
             <NuxtLink 
                 class="grow"
                 :to="`/dashboard/assessment/${assesment.id}`" 
                 :exact-active-class="'active'"
                 >
                 <div class="flex flex-col group">
-                    <span class="text-lg text-text group-hover:text-brand-200">{{ assesment.name }}</span>
+                    <span 
+                        class="text-lg text-text group-hover:text-brand-200"
+                        :class="{ 'line-through': assesment.completed }">{{ assesment.name }}</span>
                     <div class="flex flex-row gap-1 text-sm">
                         <span v-if="assesment.releasedAt">
                             {{ new Date(assesment.releasedAt).toLocaleDateString() }}
