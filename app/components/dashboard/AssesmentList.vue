@@ -12,25 +12,25 @@ function refresh() {
 </script>
 
 <template>
-    <div class="h-full">
-        <div v-if="status === 'pending'" class="flex items-center justify-center h-full">
+    <div class="h-full flex flex-col">
+        <div v-if="status === 'pending'" class="h-full flex items-center justify-center">
             <LoadingIcon size="32" />
         </div>
-        <div v-else class="flex flex-col max-h-full">
-            <div class="flex flex-row justify-between items-center p-2">
-                <span class="text-lg font-bold pl-2">{{ assesments?.filter(a => !a.completed)?.length ?? '?'  }} Pending Assessments</span>
-                <AppBtnSecondary @click="refresh" class="p-1.5!">
+        <template v-else>
+            <div class="flex flex-row justify-between items-center">
+                <span class="text-lg">{{ assesments?.filter(a => !a.completed)?.length ?? '?'  }} Pending Assessment(s)</span>
+                <AppBtnSecondary @click="refresh">
                     <Icon name="material-symbols:refresh-rounded" size="24" />
                     Refresh
                 </AppBtnSecondary>
             </div>
-            <div v-if="assesments && assesments.length > 0" class="p-2 flex grow flex-col gap-2 overflow-y-auto">
+            <div v-if="assesments && assesments.length > 0" class="flex grow flex-col gap-2 overflow-y-auto">
                 <DashboardAssesmentListItem v-for="module in modules" :key="module.id" :module :assesments />
             </div>
             <div v-else class="flex h-full grow items-center justify-center">
                 Add an assessment to get started
             </div>
-            <div class="flex flex-row gap-2 p-2">
+            <div class="flex flex-row gap-2">
                 <PopupAddAssesment>
                     <AppBtnPrimary class="p-4 w-full px-auto">
                         <Icon name="material-symbols:add-notes-outline-rounded" />
@@ -43,6 +43,6 @@ function refresh() {
                     </AppBtnPrimary>
                 </PopupAddModule>
             </div>
-        </div>
+        </template>
     </div>
 </template>

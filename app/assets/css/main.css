@@ -8,7 +8,10 @@
     --color-text: hsl(190, 15%, 90%);
     --color-text-secondary: hsl(190, 15%, 80%);
 
+    --color-highlight: hsl(190, 15%, 30%);
+
     --color-brand-700: hsl(190, 50%, 30%);
+    
     --color-brand-600: hsl(190, 50%, 40%);
     --color-brand-500: hsl(190, 50%, 50%);
     --color-brand-400: hsl(190, 50%, 60%);
@@ -22,7 +25,7 @@
 }
 
 body {
-    @apply bg-surface text-brand-50 md:overflow-hidden;
+    @apply bg-surface text-text-secondary md:overflow-hidden;
 }
 
 @layer base {
@@ -45,6 +48,12 @@ body {
 
         --color-errortxt: hsl(0, 40%, 50%);
         --color-errorbg: hsl(0, 50%, 75%);
+    }
+}
+
+@layer components {
+    .card {
+        @apply bg-base rounded-lg p-2 ring-1 ring-inset ring-highlight;
     }
 }
 

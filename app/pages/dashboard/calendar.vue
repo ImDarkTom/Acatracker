@@ -5,7 +5,7 @@ useHead({
 </script>
 
 <template>
-    <div class="w-full min-h-full max-h-[calc(100vh-7rem)] bg-base rounded-md p-2">
+    <div class="w-full min-h-full max-h-[calc(100vh-7rem)] card">
         <DashboardCalendar />
     </div>
 </template>

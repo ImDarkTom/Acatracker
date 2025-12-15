@@ -69,16 +69,20 @@ onMounted(() => {
                     <CalendarGridRow 
                         v-for="(weekDates, index) in month.rows" 
                         :key="`weekDate-${index}`"
-                        class="grid grid-cols-7">
+                        class="grid grid-cols-7 group">
                         <CalendarCell 
                             v-for="weekDate in weekDates" 
                             :key="weekDate.toString()" 
                             :date="weekDate"
-                            class="border border-text-secondary/20">
+                            class="border border-highlight 
+                            group-first:first:rounded-tl-md
+                            group-first:last:rounded-tr-md
+                            group-last:first:rounded-bl-md
+                            group-last:last:rounded-br-md">
                             <CalendarCellTrigger 
                                 :day="weekDate" 
                                 :month="month.value"
-                                class="flex justify-center p-1 ring-inset rounded-sm
+                                class="flex justify-center p-1 ring-inset rounded-b-md
                                 hover:bg-elevated 
                                 focus:ring-1 focus:ring-brand-50
                                 data-selected:bg-brand-100! data-selected:text-surface 
