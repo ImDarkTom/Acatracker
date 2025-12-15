@@ -62,25 +62,38 @@ async function toggleAssesmentCompleted() {
         Invalid assesment.
     </div>
     <div v-else class="flex flex-col gap-2">
-        <NuxtLink to="/dashboard">
-            <ButtonPrimary>
-                <Icon name="material-symbols:arrow-back-rounded" size="20" />
-                Back to calendar
-            </ButtonPrimary>
-        </NuxtLink>
+        <div class="flex flex-row gap-2">
+            <NuxtLink to="/dashboard">
+                <ButtonPrimary>
+                    <Icon name="material-symbols:arrow-back-rounded" size="20" />
+                    Back to calendar
+                </ButtonPrimary>
+            </NuxtLink>
+            <PopupEditAssesment :assesment="assesment.data">
+                <ButtonPrimary>
+                    <Icon name="material-symbols:edit-outline-rounded" size="20" />
+                    Edit
+                </ButtonPrimary>
+            </PopupEditAssesment>
+        </div>
         <span class="text-3xl">{{ assesment.data.name }}</span>
         <p class="text-text-secondary">{{ assesment.data.description }}</p>
-        <div v-if="assesment.data.releasedAt" class="text-lg p-2 bg-elevated rounded-sm">
+        <div v-if="assesment.data.releasedAt" class="text-lg card bg-elevated rounded-sm">
             Release: {{ new Date(assesment.data.releasedAt).toLocaleDateString() }}
         </div>
 
         <div class="ml-8 mr-4 flex flex-col gap-2">
-            <div v-for="task in (tasks ?? []).filter((t) => t.assesment == (assesmentId as unknown as number | string))"
-                class="p-2 bg-elevated rounded-sm flex flex-col gap-2">
-                <div class="flex flex-row items-center gap-2">
-                    <input type="checkbox" @change="toggleTask(task)" :disabled="taskTogglesLoading.includes(task.id)">
-                    <span>{{ task.name }}: {{ new Date(task.dueAt).toLocaleDateString() }}</span>
-                    <div class="grow"></div>
+            <div 
+                v-for="task in (tasks ?? []).filter((t) => t.assesment == (assesmentId as unknown as number | string))"
+                class="card bg-elevated rounded-sm flex flex-col gap-2">
+                <div class="flex flex-row items-center justify-between">
+                    <label class="flex flex-row gap-2">
+                        <input 
+                            type="checkbox"
+                            :checked="!!task.completed"
+                            @change="toggleTask(task)" :disabled="taskTogglesLoading.includes(task.id)">
+                        <span class="select-none" :class="{ 'line-through': !!task.completed }">{{ task.name }}: {{ new Date(task.dueAt).toLocaleDateString() }}</span>
+                    </label>
                     <DropdownMenuRoot>
                         <DropdownMenuTrigger
                             class="rounded-sm data-[state='open']:bg-base hover:bg-elevated cursor-pointer p-2 size-8 flex items-center justify-center">
@@ -89,7 +102,9 @@ async function toggleAssesmentCompleted() {
                         <DropdownMenuPortal>
                             <DropdownMenuContent
                                 class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
-                                <PopupEditTask :task :assesment="assesment.data">
+                                <PopupEditTask 
+                                    :task 
+                                    :assesment="assesment.data">
                                     <CustomDropdownItem value="Edit" icon="material-symbols:edit-outline-rounded"
                                         :select-action="(e) => e.preventDefault()" />
                                 </PopupEditTask>
@@ -104,13 +119,13 @@ async function toggleAssesmentCompleted() {
             <PopupAddTask :assesment="assesment.data" />
         </div>
 
-        <div class="text-lg p-2 bg-elevated rounded-sm">
+        <div class="text-lg card bg-elevated rounded-sm">
             Due: {{ new Date(assesment.data.dueAt).toLocaleDateString() }}
         </div>
 
-        <div class="flex flex-row gap-2">
-            <input type="checkbox" @change="toggleAssesmentCompleted">
+        <label class="flex flex-row gap-2">
+            <input type="checkbox" :checked="!!assesment.data.completed"  @change="toggleAssesmentCompleted">
             <span class="text-lg">Completed</span>
-        </div>
+        </label>
     </div>
 </template>
