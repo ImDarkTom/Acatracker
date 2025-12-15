@@ -17,10 +17,9 @@ function happeningOnDate(calDateRaw: DateValue) {
 }
 
 const assesmentsStore = useAssesmentsStore();
-const { status, assesments } = storeToRefs(assesmentsStore);
+const { status } = storeToRefs(assesmentsStore);
 
 const tasksStore = useTaskStore();
-const { tasks } = storeToRefs(tasksStore);
 
 onMounted(() => {
     tasksStore.refresh();
@@ -31,7 +30,7 @@ onMounted(() => {
     <div v-if="status === 'pending'" class="h-full flex items-center justify-center">
         <LoadingIcon size="32" />
     </div>
-    <template v-else>
+    <template v-if="status !== 'pending'">
         <CalendarRoot
             v-slot="{ weekDays, grid }" 
             :default-value="today(getLocalTimeZone())"
@@ -51,7 +50,6 @@ onMounted(() => {
                     <Icon name="material-symbols:chevron-right-rounded" size="24" />
                 </CalendarNext>
             </CalendarHeader>
-            <div class="h-full">
                 <CalendarGrid 
                     v-for="month in grid" 
                     :key="month.value.toString()"
@@ -94,13 +92,13 @@ onMounted(() => {
                                         :key="index"
                                         :to="event.link">
                                         <div 
-                                        class="p-1 text-xs font-semibold overflow-hidden text-ellipsis line-clamp-2 rounded-sm"
-                                        :class="{
-                                            'bg-red-500/40': event.type === 'due',
-                                            'bg-green-500/40': event.type === 'released',
-                                            'bg-amber-500/40': event.type === 'task',
-                                            'line-through opacity-60': event.completed
-                                        }">
+                                            class="p-1 text-xs font-semibold overflow-hidden text-clip line-clamp-1 rounded-sm"
+                                            :class="{
+                                                'bg-red-500/40': event.type === 'due',
+                                                'bg-green-500/40': event.type === 'released',
+                                                'bg-amber-500/40': event.type === 'task',
+                                                'line-through opacity-60': event.completed
+                                            }">
                                             {{ event.label }}
                                         </div>
                                     </RouterLink>
@@ -109,7 +107,6 @@ onMounted(() => {
                         </CalendarGridRow>
                     </CalendarGridBody>
                 </CalendarGrid>
-            </div>
         </CalendarRoot>
     </template>
 </template>
