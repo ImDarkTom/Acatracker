@@ -5,14 +5,14 @@ const authStore = useAuthStore();
 <template>
     <DropdownMenuRoot v-if="!authStore.isLoading && authStore.user">
         <DropdownMenuTrigger as-child>
-            <ButtonPrimary aria-label="My Account" class="data-[state=open]:bg-brand-500">
+            <ButtonSecondary aria-label="My Account" class="data-[state=open]:bg-brand-700 rounded-lg">
                 <img 
-                v-if="authStore.user.image" 
-                :src="authStore.user.image" 
-                :alt="authStore.user.name" 
-                class="rounded-full size-8">
+                    v-if="authStore.user.image" 
+                    :src="authStore.user.image" 
+                    :alt="authStore.user.name" 
+                    class="rounded-full size-8">
                 <span>{{ authStore.user.name }}</span>
-            </ButtonPrimary>
+            </ButtonSecondary>
         </DropdownMenuTrigger>
         <DropdownMenuPortal>
             <Transition name="dropdown">

@@ -9,7 +9,9 @@ export function useEditDialogForm({
     const isSubmitted = ref(false);
     const submitError = ref('');
 
-    const confirmBeforeExiting = computed(() => !isSubmitted.value && meta.value.dirty);
+    const confirmBeforeExiting = computed(() => {
+        return !isSubmitted.value && meta.value.touched;
+    });
 
     const submitHandler = (
         submitFn: (values: any) => Promise<void>, 
@@ -33,7 +35,7 @@ export function useEditDialogForm({
     });
     
     onBeforeRouteLeave(() => {
-        if (!isSubmitted.value && meta.value.dirty) {
+        if (confirmBeforeExiting.value) {
             if (!confirm('Are you sure you want to leave? All unsaved changes will be lost.')) {
                 return false;
             }

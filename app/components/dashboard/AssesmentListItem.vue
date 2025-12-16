@@ -40,7 +40,7 @@ async function deleteModule(module: ModuleSchema) {
 
             <DropdownMenuRoot>
                 <DropdownMenuTrigger
-                    class="rounded-sm data-[state='open']:bg-base hover:bg-elevated cursor-pointer p-2 size-8 flex items-center justify-center">
+                    class="rounded-sm hover:bg-base data-[state='open']:bg-elevated p-2 size-8 flex items-center justify-center">
                     <Icon name="material-symbols:more-vert" size="24" />
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>

@@ -70,10 +70,10 @@ async function toggleAssesmentCompleted() {
                 </ButtonPrimary>
             </NuxtLink>
             <PopupEditAssesment :assesment="assesment.data">
-                <ButtonPrimary>
+                <ButtonSecondary>
                     <Icon name="material-symbols:edit-outline-rounded" size="20" />
                     Edit
-                </ButtonPrimary>
+                </ButtonSecondary>
             </PopupEditAssesment>
         </div>
         <span class="text-3xl">{{ assesment.data.name }}</span>
