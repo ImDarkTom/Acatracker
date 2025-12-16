@@ -1,19 +1,19 @@
 <script setup lang="ts">
 const props = defineProps<{
+    type?: 'text' | 'textarea' | 'date' | 'number' | 'checkbox';
     label: string;
     name: string;
     disabled?: boolean;
     placeholder?: string;
-    type?: 'text' | 'textarea' | 'date' | 'number' | 'checkbox';
     error?: string;
 }>();
 </script>
 
 <template>
-    <fieldset :class="{ 'flex flex-row gap-2': type === 'checkbox' }">
-        <legend>
+    <label :class="{ 'flex flex-row gap-2': type === 'checkbox' }">
+        <span>
             {{ props.label }}
-        </legend>
+        </span>
         <Field
             :as="props.type === 'textarea' ? 'textarea' : 'input'"
             :name
@@ -21,14 +21,12 @@ const props = defineProps<{
             :type="props.type || 'text'"
             :value="type === 'checkbox' ? true : undefined"
             :placeholder
-            class="w-full bg-elevated p-2 rounded-md" 
+            class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-300 p-2 rounded-md"
             :class="{
                 'w-4! size-8': type === 'checkbox',
-                'ring-1 ring-errortxt/50 ring-inset': props.error,
+                'ring-errortxt!': props.error,
                 'opacity-50': disabled,
             }" />
-        <p v-if="props.error" class="text-sm text-errortxt">
-            {{ props.error }}
-        </p>
-    </fieldset>
+        <ErrorMessage :name class="text-sm text-errortxt" />
+    </label>
 </template>

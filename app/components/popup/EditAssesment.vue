@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { InsertAssesment, type AssesmentSchema } from '~~/lib/db/schema';
+import AddModuleSideButton from './AddModuleSideButton.vue';
 
 const props = defineProps<{
     assesment: AssesmentSchema,
@@ -39,6 +40,10 @@ const onSubmit = submitHandler(async (values) => {
 
     assesmentsStore.refresh();
 }, setErrors);
+
+const moduleOptions = computed<[number, string][]>(() => {
+    return (modules.value || []).map((m) => [ m.id, m.name ]);
+});
 </script>
 
 <template>
@@ -53,56 +58,50 @@ const onSubmit = submitHandler(async (values) => {
             Editing {{ assesment.name }}
         </template>
         <template #form>
-            <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
-                <AppFormField 
-                    label="Name" 
-                    name="name" 
-                    :placeholder="assesment.name"
-                    :disabled="isLoading" 
-                    :error="errors.name" />
-                <AppFormField 
-                    type="textarea"
-                    label="Description" 
-                    name="description" 
-                    :placeholder="assesment.description || undefined" 
-                    :disabled="isLoading"
-                    :error="errors.description" />
-                <div class="flex flex-row gap-2 items-end">
-                    <AppFormFieldSelect
-                        class="w-full"
-                        name="module" 
-                        label="Module"
-                        :disabled="isLoading"
-                        :errors="errors.module">
-                        <option value="" disabled selected>(select a module)</option>
-                        <option v-for="module in modules" :value="module.id">{{ module.name }}</option>
-                    </AppFormFieldSelect>
-                    <PopupAddModule>
-                        <ButtonPrimary @click.prevent>
-                            <Icon name="material-symbols:add" size="18" />
-                        </ButtonPrimary>
-                    </PopupAddModule>
-                </div>
-                <AppFormField 
-                    name="releasedAt" 
-                    label="Release date (optional)" 
-                    type="date"
-                    :disabled="isLoading"
-                    :error="errors.releasedAt" />
-                <AppFormField 
-                    name="dueAt" 
-                    label="Due date" 
-                    type="date"
-                    :disabled="isLoading"
-                    :error="errors.dueAt" />
-                <div class="flex justify-end mt-2">
-                    <ButtonPrimary type="submit" :disabled="isLoading">
-                        <Icon v-if="!isLoading" name="material-symbols:edit-outline-rounded" />
-                        <LoadingIcon v-else />
-                        Edit
-                    </ButtonPrimary>
-                </div>
-            </form>
+            <DynamicForm
+                :onSubmit 
+                :isLoading
+                :errors
+                :submitBtn="{
+                    icon: 'material-symbols:material-symbols:edit-outline-rounded',
+                    label: 'Edit'
+                }"
+                :fields="[
+                    {
+                        name: 'name',
+                        label: 'Name',
+                        as: 'input',
+                        type: 'text',
+                        placeholder: 'e.g. Important Exam',
+                    },
+                    {
+                        name: 'description',
+                        label: 'Description',
+                        as: 'textarea',
+                        type: 'text',
+                        placeholder: '(Optional)'
+                    },
+                    {
+                        name: 'releasedAt',
+                        label: 'Release Date (optional)',
+                        as: 'input',
+                        type: 'date'
+                    },
+                    {
+                        name: 'dueAt',
+                        label: 'Due Date',
+                        as: 'input',
+                        type: 'date'
+                    },
+                    {
+                        name: 'module',
+                        label: 'Module',
+                        as: 'select',
+                        optionsList: moduleOptions,
+                        hintText: '(Select a Module)',
+                        sideBtn: AddModuleSideButton,
+                    }
+                ]" />
         </template>
     </CustomDialog>
 </template>
