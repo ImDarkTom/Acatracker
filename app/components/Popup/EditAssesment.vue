@@ -1,24 +1,40 @@
 <script setup lang="ts">
-import { InsertAssesment } from '~~/lib/db/schema';
+import { InsertAssesment, type AssesmentSchema } from '~~/lib/db/schema';
 import AddModuleSideButton from './AddModuleSideButton.vue';
 
-const { $csrfFetch } = useNuxtApp();
-const assesmentsStore = useAssesmentsStore();
+const props = defineProps<{
+    assesment: AssesmentSchema,
+}>();
+
+const { $csrfFetch } = useNuxtApp()
 const modulesStore = useModuleStore();
+const assesmentsStore = useAssesmentsStore();
 
-const { modules } = storeToRefs(modulesStore);
-
-onMounted(() => modulesStore.refresh());
-
-const { handleSubmit, errors, meta, setErrors } = useForm({
-    validationSchema: toTypedSchema(InsertAssesment)
+const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
+    validationSchema: toTypedSchema(InsertAssesment),
+    initialValues: {
+        name: props.assesment.name,
+        description: props.assesment.description,
+        module: props.assesment.module,
+        releasedAt: props.assesment.releasedAt,
+        dueAt: props.assesment.dueAt,
+    }
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
+watch(isOpen, (justOpened) => {
+    if (justOpened) {
+        modulesStore.refresh();
+        resetForm();
+    };
+});
+
+const { modules } = storeToRefs(modulesStore);
+
 const onSubmit = submitHandler(async (values) => {
-    await $csrfFetch("/api/assesments", {
-        method: 'POST',
+    await $csrfFetch(`/api/assesments/${props.assesment.id}`, {
+        method: 'PUT',
         body: values,
     });
 
@@ -33,27 +49,22 @@ const moduleOptions = computed<[number, string][]>(() => {
 <template>
     <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError>
         <template #button>
-            <slot>
-                <ButtonPrimary class="p-4 w-full px-auto">
-                    <Icon name="material-symbols:create-new-folder-outline" />
-                    Add Module
-                </ButtonPrimary>
-            </slot>
+            <slot />
         </template>
         <template #title>
-            Add a new assesment
+            Edit assessment
         </template>
         <template #description>
-            This can be an assignment, exam date, project due date, etc.
+            Editing {{ assesment.name }}
         </template>
         <template #form>
-            <DynamicForm 
+            <DynamicForm
                 :onSubmit 
                 :isLoading
                 :errors
                 :submitBtn="{
-                    icon: 'material-symbols:add-rounded',
-                    label: 'Add'
+                    icon: 'material-symbols:edit-outline-rounded',
+                    label: 'Edit'
                 }"
                 :fields="[
                     {
@@ -61,14 +72,14 @@ const moduleOptions = computed<[number, string][]>(() => {
                         label: 'Name',
                         as: 'input',
                         type: 'text',
-                        placeholder: 'e.g. Important Exam',
+                        placeholder: assesment.name,
                     },
                     {
                         name: 'description',
                         label: 'Description',
                         as: 'textarea',
                         type: 'text',
-                        placeholder: '(Optional)'
+                        placeholder: assesment.description ?? '(Optional)'
                     },
                     {
                         name: 'releasedAt',
