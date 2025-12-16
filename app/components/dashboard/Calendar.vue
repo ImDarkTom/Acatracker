@@ -82,10 +82,10 @@ onMounted(() => {
                                     :month="month.value"
                                     class="flex justify-center p-1 ring-inset rounded-b-md
                                     hover:bg-elevated 
-                                    focus:ring-1 focus:ring-brand-50
-                                    data-selected:bg-brand-100! data-selected:text-surface 
+                                    focus:ring-1 focus:ring-text-secondary
+                                    data-selected:bg-text-secondary data-selected:text-surface 
                                     data-today:font-semibold data-today:underline
-                                    data-outside-view:text-brand-50/30" />
+                                    data-outside-view:text-text-secondary/35" />
                                 <div class="mt-1">
                                     <RouterLink 
                                         v-for="(event, index) in happeningOnDate(weekDate)"

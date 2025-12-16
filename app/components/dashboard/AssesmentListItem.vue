@@ -72,7 +72,7 @@ async function deleteModule(module: ModuleSchema) {
                 >
                 <div class="flex flex-col group">
                     <span 
-                        class="text-lg text-text group-hover:text-brand-200"
+                        class="text-lg text-text group-hover:text-brand-300"
                         :class="{ 'line-through': assesment.completed }">{{ assesment.name }}</span>
                     <div class="flex flex-row gap-1 text-sm">
                         <span v-if="assesment.releasedAt">

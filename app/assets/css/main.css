@@ -14,11 +14,7 @@
     
     --color-brand-600: hsl(190, 50%, 40%);
     --color-brand-500: hsl(190, 50%, 50%);
-    --color-brand-400: hsl(190, 50%, 60%);
     --color-brand-300: hsl(190, 50%, 70%);
-    --color-brand-200: hsl(190, 50%, 80%);
-    --color-brand-100: hsl(190, 50%, 90%);
-    --color-brand-50: hsl(190, 50%, 95%);
 
     --color-errortxt: hsl(0, 40%, 50%);
     --color-errorbg: hsl(0, 50%, 25%)
@@ -33,18 +29,17 @@ body {
         --color-surface: hsl(190, 10%, 86%);
         --color-base: hsl(190, 10%, 92%);
         --color-elevated: hsl(190, 10%, 96%);
-        
-        --color-brand-700: hsl(190, 50%, 70%);
-        --color-brand-600: hsl(190, 50%, 60%);
-        --color-brand-500: hsl(190, 50%, 50%);
-        --color-brand-400: hsl(190, 50%, 40%);
-        --color-brand-300: hsl(190, 50%, 30%);
-        --color-brand-200: hsl(190, 50%, 20%);
-        --color-brand-100: hsl(190, 50%, 10%);
-        --color-brand-50:  hsl(190, 50%, 5%);
 
         --color-text: hsl(190, 10%, 10%);
         --color-text-secondary: hsl(190, 10%, 20%);
+
+        --color-highlight: hsl(190, 15%, 70%);
+        
+        --color-brand-700: hsl(190, 50%, 70%);
+
+        --color-brand-600: hsl(190, 50%, 60%);
+        --color-brand-500: hsl(190, 50%, 50%);
+        --color-brand-300: hsl(190, 50%, 30%);
 
         --color-errortxt: hsl(0, 40%, 50%);
         --color-errorbg: hsl(0, 50%, 75%);
