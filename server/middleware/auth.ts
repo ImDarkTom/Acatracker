@@ -7,8 +7,12 @@ export default defineEventHandler(async (event) => {
 
     event.context.user = session?.user as unknown as UserWithId;
 
-    if (event.path.startsWith('/dashboard')) {
-        if (!session?.user) {
+    if (session?.user) {
+        if (event.path === '/') {
+            await sendRedirect(event, '/dashboard', 302);
+        }
+    } else {
+        if (event.path.startsWith('/dashboard')) {
             await sendRedirect(event, '/', 302);
         }
     }
