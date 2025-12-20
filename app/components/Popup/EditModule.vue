@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { InsertModule, type ModuleSchema } from '~~/lib/db/schema';
 
-const { $csrfFetch } = useNuxtApp();
-const modulesStore = useModuleStore();
+const { editModule } = useModuleStore();
 
 const props = defineProps<{
     module: ModuleSchema,
@@ -26,14 +25,7 @@ watch(isOpen, (justOpened) => {
     };
 });
 
-const onSubmit = submitHandler(async (values) => {
-    await $csrfFetch(`/api/modules/${props.module.id}`, {
-        method: 'PUT',
-        body: values,
-    });
-
-    modulesStore.refresh();
-}, setErrors)
+const onSubmit = submitHandler(async (values) => editModule(values, props.module.id), setErrors)
 </script>
 
 <template>

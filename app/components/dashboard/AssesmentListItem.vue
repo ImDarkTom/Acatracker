@@ -1,33 +1,13 @@
 <script setup lang="ts">
 import type { AssesmentSchema, ModuleSchema } from '~~/lib/db/schema';
 
-const assesmentsStore = useAssesmentsStore();
-const modulesStore = useModuleStore();
-
 defineProps<{
     module: ModuleSchema,
     assesments: AssesmentSchema[],
 }>();
 
-async function deleteAssesment(assesment: AssesmentSchema) {
-    if (!confirm(`Are you sure you want to delete '${assesment.name}'?`)) return;
-
-    await $fetch(`/api/assesments/${assesment.id}`, {
-        method: 'DELETE'
-    });
-
-    assesmentsStore.refresh();
-}
-
-async function deleteModule(module: ModuleSchema) {
-    if (!confirm(`Are you sure you want to delete the '${module.name}' module?`)) return;
-
-    await $fetch(`/api/modules/${module.id}`, {
-        method: 'DELETE'
-    });
-
-    modulesStore.refresh();
-}
+const { deleteAssesment } = useAssesmentsStore();
+const { deleteModule } = useModuleStore();
 </script>
 
 <template>

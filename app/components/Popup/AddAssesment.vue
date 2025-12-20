@@ -2,8 +2,7 @@
 import { InsertAssesment } from '~~/lib/db/schema';
 import AddModuleSideButton from './AddModuleSideButton.vue';
 
-const { $csrfFetch } = useNuxtApp();
-const assesmentsStore = useAssesmentsStore();
+const { addAssessment } = useAssesmentsStore();
 const modulesStore = useModuleStore();
 
 onMounted(() => modulesStore.refresh());
@@ -14,14 +13,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(async (values) => {
-    await $csrfFetch("/api/assesments", {
-        method: 'POST',
-        body: values,
-    });
-
-    assesmentsStore.refresh();
-}, setErrors);
+const onSubmit = submitHandler(addAssessment, setErrors);
 </script>
 
 <template>

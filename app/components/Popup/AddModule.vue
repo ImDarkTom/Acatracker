@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { InsertModule } from '~~/lib/db/schema';
 
-const { $csrfFetch } = useNuxtApp();
-const modulesStore = useModuleStore();
+const { addModule } = useModuleStore();
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertModule)
@@ -10,14 +9,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(async (values) => {
-    await $csrfFetch("/api/modules", {
-        method: 'POST',
-        body: values,
-    });
-
-    modulesStore.refresh();
-}, setErrors);
+const onSubmit = submitHandler(addModule, setErrors);
 </script>
 
 <template>

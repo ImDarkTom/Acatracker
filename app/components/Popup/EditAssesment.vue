@@ -6,9 +6,8 @@ const props = defineProps<{
     assesment: AssesmentSchema,
 }>();
 
-const { $csrfFetch } = useNuxtApp()
 const modulesStore = useModuleStore();
-const assesmentsStore = useAssesmentsStore();
+const { editAssessment } = useAssesmentsStore();
 
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertAssesment),
@@ -23,21 +22,14 @@ const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
+const onSubmit = submitHandler(async (values) => editAssessment(values, props.assesment.id), setErrors);
+
 watch(isOpen, (justOpened) => {
     if (justOpened) {
         modulesStore.refresh();
         resetForm();
     };
 });
-
-const onSubmit = submitHandler(async (values) => {
-    await $csrfFetch(`/api/assesments/${props.assesment.id}`, {
-        method: 'PUT',
-        body: values,
-    });
-
-    assesmentsStore.refresh();
-}, setErrors);
 </script>
 
 <template>

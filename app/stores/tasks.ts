@@ -18,7 +18,6 @@ export const useTaskStore = defineStore('useTaskStore', () => {
             method: 'PUT',
             body: values,
         });
-        
 
         refresh()
     }
