@@ -19,16 +19,20 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
             :weekday-format="'short'"
             fixed-weeks
             class="h-full flex flex-col gap-2">
-            <CalendarHeader class="flex items-center justify-around gap-2">
-                <CalendarPrev class="size-8 flex items-center justify-center cursor-pointer hover:bg-elevated rounded-sm">
-                    <Icon name="material-symbols:chevron-left-rounded" size="24" />
+            <CalendarHeader class="flex items-center gap-2">
+                <CalendarPrev :as-child="true">
+                    <ButtonOutlined class="pr-2!">
+                        <Icon name="material-symbols:chevron-left-rounded" size="24" />
+                    </ButtonOutlined>
                 </CalendarPrev>
                 
-                <CalendarHeading class="select-none" />
-                
-                <CalendarNext class="size-8 flex items-center justify-center cursor-pointer hover:bg-elevated rounded-sm">
-                    <Icon name="material-symbols:chevron-right-rounded" size="24" />
+                <CalendarNext :as-child="true">
+                    <ButtonOutlined class="pr-2!">
+                        <Icon name="material-symbols:chevron-right-rounded" size="24" />
+                    </ButtonOutlined>
                 </CalendarNext>
+                
+                <CalendarHeading class="select-none text-lg font-medium ml-1" />    
             </CalendarHeader>
                 <CalendarGrid 
                     v-for="month in grid" 
@@ -52,7 +56,9 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                                 v-for="weekDate in weekDates" 
                                 :key="weekDate.toString()" 
                                 :date="weekDate"
-                                class="border border-highlight 
+                                class="border-r border-b border-highlight 
+                                first:border-l
+                                group-first:border-t
                                 group-first:first:rounded-tl-md
                                 group-first:last:rounded-tr-md
                                 group-last:first:rounded-bl-md
