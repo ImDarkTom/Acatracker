@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { InsertTask, type AssesmentSchema } from '~~/lib/db/schema';
 
-const { $csrfFetch } = useNuxtApp()
-const taskStore = useTaskStore();
+const { addTask } = useTaskStore();
 
 const props = defineProps<{
     assesment: AssesmentSchema,
@@ -18,14 +17,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(async (values) => {
-        await $csrfFetch("/api/tasks", {
-            method: 'POST',
-            body: values,
-        });
-
-        taskStore.refresh();
-}, setErrors);
+const onSubmit = submitHandler(addTask, setErrors);
 </script>
 
 <template>

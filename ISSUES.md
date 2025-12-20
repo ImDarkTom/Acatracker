@@ -1,0 +1,2 @@
+- show previous date in all edit forms
+- show popup box with info about event when we click, instead of fullscreen menu
