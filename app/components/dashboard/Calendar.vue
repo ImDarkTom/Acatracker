@@ -1,40 +1,20 @@
 <script setup lang="ts">
-import { getLocalTimeZone, today, type DateValue } from '@internationalized/date';
+import { getLocalTimeZone, today } from '@internationalized/date';
 
-const calendarStore = useCalendarStore();
-const { eventsByDate } = storeToRefs(calendarStore);
-
-const selectedDate = ref<DateValue | null>(today(getLocalTimeZone()));
-function updateSelected(value: DateValue | undefined) {
-    selectedDate.value = value ?? null;
-}
-
-function happeningOnDate(calDateRaw: DateValue) {
-    const dateObject = calDateRaw.toDate(getLocalTimeZone());
-    const timeUnix = dateObject.toISOString().split('T')[0]!;
-
-    return eventsByDate.value.get(timeUnix) ?? [];
-}
-
-const assesmentsStore = useAssesmentsStore();
-const { status } = storeToRefs(assesmentsStore);
-
-const tasksStore = useTaskStore();
-
-onMounted(() => {
-    tasksStore.refresh();
-});
+const { getEventsForDate, pending, error } = useCalendarEvents();
 </script>
 
 <template>
-    <div v-if="status === 'pending'" class="h-full flex items-center justify-center">
+    <div v-if="pending" class="h-full flex items-center justify-center">
         <LoadingIcon size="32" />
     </div>
-    <template v-if="status !== 'pending'">
+    <div v-if="error">
+        Oh no! {{ error.statusMessage }}
+    </div>
+    <template v-if="!pending && !error">
         <CalendarRoot
             v-slot="{ weekDays, grid }" 
             :default-value="today(getLocalTimeZone())"
-            @update:model-value="updateSelected"
             :week-starts-on="1"
             :weekday-format="'short'"
             fixed-weeks
@@ -80,15 +60,12 @@ onMounted(() => {
                                 <CalendarCellTrigger 
                                     :day="weekDate" 
                                     :month="month.value"
-                                    class="flex justify-center p-1 ring-inset rounded-b-md
-                                    hover:bg-elevated 
-                                    focus:ring-1 focus:ring-text-secondary
-                                    data-selected:bg-text-secondary data-selected:text-surface 
-                                    data-today:font-semibold data-today:underline
-                                    data-outside-view:text-text-secondary/35" />
+                                    class="size-6 text-center mx-auto rounded-full
+                                    data-today:bg-text-secondary data-today:text-surface 
+                                    data-outside-view:text-text-secondary/35 data-outside-view:hover:bg-elevated data-outside-view:cursor-pointer" />
                                 <div class="mt-1">
                                     <RouterLink 
-                                        v-for="(event, index) in happeningOnDate(weekDate)"
+                                        v-for="event in getEventsForDate(weekDate)"
                                         :key="index"
                                         :to="event.link">
                                         <div 

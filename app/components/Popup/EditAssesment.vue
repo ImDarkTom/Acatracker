@@ -30,8 +30,6 @@ watch(isOpen, (justOpened) => {
     };
 });
 
-const { modules } = storeToRefs(modulesStore);
-
 const onSubmit = submitHandler(async (values) => {
     await $csrfFetch(`/api/assesments/${props.assesment.id}`, {
         method: 'PUT',
@@ -40,10 +38,6 @@ const onSubmit = submitHandler(async (values) => {
 
     assesmentsStore.refresh();
 }, setErrors);
-
-const moduleOptions = computed<[number, string][]>(() => {
-    return (modules.value || []).map((m) => [ m.id, m.name ]);
-});
 </script>
 
 <template>
@@ -97,7 +91,7 @@ const moduleOptions = computed<[number, string][]>(() => {
                         name: 'module',
                         label: 'Module',
                         as: 'select',
-                        optionsList: moduleOptions,
+                        optionsList: modulesStore.moduleSelectorOptions,
                         hintText: '(Select a Module)',
                         sideBtn: AddModuleSideButton,
                     }

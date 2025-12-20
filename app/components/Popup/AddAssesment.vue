@@ -6,13 +6,7 @@ const { $csrfFetch } = useNuxtApp();
 const assesmentsStore = useAssesmentsStore();
 const modulesStore = useModuleStore();
 
-const { modules } = storeToRefs(modulesStore);
-
 onMounted(() => modulesStore.refresh());
-
-const moduleOptions = computed<[number, string][]>(() => {
-    return (modules.value || []).map((m) => [ m.id, m.name ]);
-});
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertAssesment)
@@ -86,7 +80,7 @@ const onSubmit = submitHandler(async (values) => {
                         name: 'module',
                         label: 'Module',
                         as: 'select',
-                        optionsList: moduleOptions,
+                        optionsList: modulesStore.moduleSelectorOptions,
                         hintText: '(Select a Module)',
                         sideBtn: AddModuleSideButton,
                     }
