@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { InsertAssessment, type AssessmentSchema } from '~~/lib/db/schema';
 import AddModuleSideButton from './AddModuleSideButton.vue';
+import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
 
 const props = defineProps<{
     assessment: AssessmentSchema,
@@ -9,15 +10,17 @@ const props = defineProps<{
 const modulesStore = useModuleStore();
 const { editAssessment } = useAssessmentsStore();
 
+const initialValues = {
+    name: props.assessment.name,
+    description: props.assessment.description,
+    module: props.assessment.module,
+    releasedAt: props.assessment.releasedAt,
+    dueAt: props.assessment.dueAt,
+}
+
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertAssessment),
-    initialValues: {
-        name: props.assessment.name,
-        description: props.assessment.description,
-        module: props.assessment.module,
-        releasedAt: props.assessment.releasedAt,
-        dueAt: props.assessment.dueAt,
-    }
+    initialValues,
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
@@ -71,13 +74,15 @@ watch(isOpen, (justOpened) => {
                         name: 'releasedAt',
                         label: 'Release Date (optional)',
                         as: 'input',
-                        type: 'date'
+                        type: 'date',
+                        value: initialValues.releasedAt ? unixTimestampToISO(initialValues.releasedAt) : undefined,
                     },
                     {
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'date'
+                        type: 'date',
+                        value: unixTimestampToISO(initialValues.dueAt),
                     },
                     {
                         name: 'module',

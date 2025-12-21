@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { InsertTask, type AssessmentSchema, type TaskSchema } from '~~/lib/db/schema';
+import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
 
 const { editTask } = useTaskStore();
 
@@ -8,15 +9,17 @@ const props = defineProps<{
     task: TaskSchema,
 }>();
 
+const initialValues = {
+    assessment: props.assessment.id,
+    completed: props.task.completed,
+    name: props.task.name,
+    description: props.task.description,
+    dueAt: props.task.dueAt,
+}
+
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertTask),
-    initialValues: {
-        assessment: props.assessment.id,
-        completed: props.task.completed,
-        name: props.task.name,
-        description: props.task.description,
-        dueAt: props.task.dueAt,
-    }
+    initialValues,
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
@@ -69,7 +72,8 @@ const onSubmit = submitHandler(async (values) => editTask(values, props.task.id)
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'date'
+                        type: 'date',
+                        value: unixTimestampToISO(initialValues.dueAt)
                     },
                     {
                         name: 'completed',
