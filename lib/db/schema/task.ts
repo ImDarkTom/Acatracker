@@ -1,7 +1,7 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 
-import { assesment } from '.';
+import { assessment } from '.';
 import { user } from "./auth";
 import z from "zod";
 
@@ -27,7 +27,7 @@ export const task = sqliteTable("task", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text().notNull(),
     description: text(),
-    assesment: int().notNull().references(() => assesment.id),
+    assessment: int().notNull().references(() => assessment.id),
     dueAt: int().notNull(),
     completed: int({ mode: 'boolean' }),
     userId: int().notNull().references(() => user.id),

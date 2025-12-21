@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { InsertAssesment, type AssesmentSchema } from '~~/lib/db/schema';
+import { InsertAssessment, type AssessmentSchema } from '~~/lib/db/schema';
 import AddModuleSideButton from './AddModuleSideButton.vue';
 
 const props = defineProps<{
-    assesment: AssesmentSchema,
+    assessment: AssessmentSchema,
 }>();
 
 const modulesStore = useModuleStore();
-const { editAssessment } = useAssesmentsStore();
+const { editAssessment } = useAssessmentsStore();
 
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
-    validationSchema: toTypedSchema(InsertAssesment),
+    validationSchema: toTypedSchema(InsertAssessment),
     initialValues: {
-        name: props.assesment.name,
-        description: props.assesment.description,
-        module: props.assesment.module,
-        releasedAt: props.assesment.releasedAt,
-        dueAt: props.assesment.dueAt,
+        name: props.assessment.name,
+        description: props.assessment.description,
+        module: props.assessment.module,
+        releasedAt: props.assessment.releasedAt,
+        dueAt: props.assessment.dueAt,
     }
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(async (values) => editAssessment(values, props.assesment.id), setErrors);
+const onSubmit = submitHandler(async (values) => editAssessment(values, props.assessment.id), setErrors);
 
 watch(isOpen, (justOpened) => {
     if (justOpened) {
@@ -41,7 +41,7 @@ watch(isOpen, (justOpened) => {
             Edit assessment
         </template>
         <template #description>
-            Editing {{ assesment.name }}
+            Editing {{ assessment.name }}
         </template>
         <template #form>
             <DynamicForm
@@ -58,14 +58,14 @@ watch(isOpen, (justOpened) => {
                         label: 'Name',
                         as: 'input',
                         type: 'text',
-                        placeholder: assesment.name,
+                        placeholder: assessment.name,
                     },
                     {
                         name: 'description',
                         label: 'Description',
                         as: 'textarea',
                         type: 'text',
-                        placeholder: assesment.description ?? '(Optional)'
+                        placeholder: assessment.description ?? '(Optional)'
                     },
                     {
                         name: 'releasedAt',

@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import type { AssesmentSchema, TaskSchema } from '~~/lib/db/schema';
+import type { AssessmentSchema, TaskSchema } from '~~/lib/db/schema';
 
 const { $csrfFetch } = useNuxtApp();
 const route = useRoute();
-const assesmentId = route.params.id;
+const assessmentId = route.params.id;
 
 const taskStore = useTaskStore();
 const { tasks } = storeToRefs(taskStore);
 
-const { assesments } = useAssesmentsStore();
+const { assessments } = useAssessmentsStore();
 
-const assesment = computed<{
+const assessment = computed<{
     valid: false,
 } | {
     valid: true,
-    data: AssesmentSchema,
+    data: AssessmentSchema,
 }>(() => {
-    if (!assesments) return { valid: false };
-    if (!assesmentId || typeof assesmentId === 'object' || isNaN(parseInt(assesmentId))) return { valid: false };
+    if (!assessments) return { valid: false };
+    if (!assessmentId || typeof assessmentId === 'object' || isNaN(parseInt(assessmentId))) return { valid: false };
 
-    const selectedAssesment = assesments.find((a) => a.id === parseInt(assesmentId));
-    if (!selectedAssesment) return { valid: false };
+    const selectedAssessment = assessments.find((a) => a.id === parseInt(assessmentId));
+    if (!selectedAssessment) return { valid: false };
 
-    return { valid: true, data: selectedAssesment };
+    return { valid: true, data: selectedAssessment };
 });
 
 const taskTogglesLoading = ref<number[]>([]);
@@ -40,26 +40,26 @@ async function toggleTask(task: TaskSchema) {
     taskTogglesLoading.value = taskTogglesLoading.value.filter(t => t !== task.id);
 }
 
-const assesmentCompletedLoading = ref(false);
+const assessmentCompletedLoading = ref(false);
 
-async function toggleAssesmentCompleted() {
-    if (!assesment.value.valid) return;
-    assesment.value.data.completed = !assesment.value.data.completed;
+async function toggleAssessmentCompleted() {
+    if (!assessment.value.valid) return;
+    assessment.value.data.completed = !assessment.value.data.completed;
 
-    assesmentCompletedLoading.value = true;
-    await $csrfFetch(`/api/assesments/${assesment.value.data.id}`, {
+    assessmentCompletedLoading.value = true;
+    await $csrfFetch(`/api/assessments/${assessment.value.data.id}`, {
         method: 'PUT',
         body: {
-            ...assesment.value.data,
+            ...assessment.value.data,
         }
     });
-    assesmentCompletedLoading.value = false;
+    assessmentCompletedLoading.value = false;
 }
 </script>
 
 <template>
-    <div v-if="!assesment.valid">
-        Invalid assesment.
+    <div v-if="!assessment.valid">
+        Invalid assessment.
     </div>
     <div v-else class="flex flex-col gap-2">
         <div class="flex flex-row gap-2">
@@ -69,22 +69,22 @@ async function toggleAssesmentCompleted() {
                     Back to calendar
                 </ButtonPrimary>
             </NuxtLink>
-            <PopupEditAssesment :assesment="assesment.data">
+            <PopupEditAssessment :assessment="assessment.data">
                 <ButtonSecondary>
                     <Icon name="material-symbols:edit-outline-rounded" size="20" />
                     Edit
                 </ButtonSecondary>
-            </PopupEditAssesment>
+            </PopupEditAssessment>
         </div>
-        <span class="text-3xl">{{ assesment.data.name }}</span>
-        <p class="text-text-secondary">{{ assesment.data.description }}</p>
-        <div v-if="assesment.data.releasedAt" class="text-lg card bg-elevated rounded-sm">
-            Release: {{ new Date(assesment.data.releasedAt).toLocaleDateString() }}
+        <span class="text-3xl">{{ assessment.data.name }}</span>
+        <p class="text-text-secondary">{{ assessment.data.description }}</p>
+        <div v-if="assessment.data.releasedAt" class="text-lg card bg-elevated rounded-sm">
+            Release: {{ new Date(assessment.data.releasedAt).toLocaleDateString() }}
         </div>
 
         <div class="ml-8 mr-4 flex flex-col gap-2">
             <div 
-                v-for="task in (tasks ?? []).filter((t) => t.assesment == (assesmentId as unknown as number | string))"
+                v-for="task in (tasks ?? []).filter((t) => t.assessment == (assessmentId as unknown as number | string))"
                 class="card bg-elevated rounded-sm flex flex-col gap-2">
                 <div class="flex flex-row items-center justify-between">
                     <label class="flex flex-row gap-2">
@@ -104,7 +104,7 @@ async function toggleAssesmentCompleted() {
                                 class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
                                 <PopupEditTask 
                                     :task 
-                                    :assesment="assesment.data">
+                                    :assessment="assessment.data">
                                     <CustomDropdownItem value="Edit" icon="material-symbols:edit-outline-rounded"
                                         :select-action="(e) => e.preventDefault()" />
                                 </PopupEditTask>
@@ -116,15 +116,15 @@ async function toggleAssesmentCompleted() {
                 </div>
                 <p v-if="task.description" class="text-sm text-text-secondary">{{ task.description }}</p>
             </div>
-            <PopupAddTask :assesment="assesment.data" />
+            <PopupAddTask :assessment="assessment.data" />
         </div>
 
         <div class="text-lg card bg-elevated rounded-sm">
-            Due: {{ new Date(assesment.data.dueAt).toLocaleDateString() }}
+            Due: {{ new Date(assessment.data.dueAt).toLocaleDateString() }}
         </div>
 
         <label class="flex flex-row gap-2">
-            <input type="checkbox" :checked="!!assesment.data.completed"  @change="toggleAssesmentCompleted">
+            <input type="checkbox" :checked="!!assessment.data.completed"  @change="toggleAssessmentCompleted">
             <span class="text-lg">Completed</span>
         </label>
     </div>

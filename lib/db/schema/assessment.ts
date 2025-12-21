@@ -23,7 +23,7 @@ const preprocessDate = z.preprocess((arg) => {
     return arg;
 }, z.number().int())
 
-export const assesment = sqliteTable("assesment", {
+export const assessment = sqliteTable("assessment", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text().notNull(),
     slug: text().notNull().unique(),
@@ -37,7 +37,7 @@ export const assesment = sqliteTable("assesment", {
     updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
 
-export const InsertAssesment = createInsertSchema(assesment, {
+export const InsertAssessment = createInsertSchema(assessment, {
     name: (field) => field.min(1).max(100),
     description: (field) => field.max(1000),
     module: (field) => field,
@@ -51,6 +51,6 @@ export const InsertAssesment = createInsertSchema(assesment, {
     updatedAt: true,
 });
 
-export type AssesmentSchema = typeof assesment.$inferSelect;
+export type AssessmentSchema = typeof assessment.$inferSelect;
 
-export type InsertAssesment = z.infer<typeof InsertAssesment>;
+export type InsertAssessment = z.infer<typeof InsertAssessment>;

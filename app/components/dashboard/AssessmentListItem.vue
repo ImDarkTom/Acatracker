@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { AssesmentSchema, ModuleSchema } from '~~/lib/db/schema';
+import type { AssessmentSchema, ModuleSchema } from '~~/lib/db/schema';
 
 defineProps<{
     module: ModuleSchema,
-    assesments: AssesmentSchema[],
+    assessments: AssessmentSchema[],
 }>();
 
-const { deleteAssesment } = useAssesmentsStore();
+const { deleteAssessment } = useAssessmentsStore();
 const { deleteModule } = useModuleStore();
 </script>
 
@@ -41,28 +41,28 @@ const { deleteModule } = useModuleStore();
         </div>
 
         <div 
-            v-for="assesment in assesments.filter(a => a.module === module.id)" 
-            :key="assesment.id"
+            v-for="assessment in assessments.filter(a => a.module === module.id)" 
+            :key="assessment.id"
             class="flex flex-row items-center gap-2 card has-[>.active]:bg-elevated"
-            :class="{ 'opacity-65': assesment.completed }">
+            :class="{ 'opacity-65': assessment.completed }">
             <NuxtLink 
                 class="grow"
-                :to="`/dashboard/assessment/${assesment.id}`" 
+                :to="`/dashboard/assessment/${assessment.id}`" 
                 :exact-active-class="'active'"
                 >
                 <div class="flex flex-col group">
                     <span 
                         class="text-lg text-text group-hover:text-brand-300"
-                        :class="{ 'line-through': assesment.completed }">{{ assesment.name }}</span>
+                        :class="{ 'line-through': assessment.completed }">{{ assessment.name }}</span>
                     <div class="flex flex-row gap-1 text-sm">
-                        <span v-if="assesment.releasedAt">
-                            {{ new Date(assesment.releasedAt).toLocaleDateString() }}
+                        <span v-if="assessment.releasedAt">
+                            {{ new Date(assessment.releasedAt).toLocaleDateString() }}
                         </span>
 
-                        <div v-if="assesment.releasedAt" class="w-full h-px my-auto border-b-2 border-dotted"></div>
+                        <div v-if="assessment.releasedAt" class="w-full h-px my-auto border-b-2 border-dotted"></div>
 
                         <span>
-                            {{ new Date(assesment.dueAt).toLocaleDateString() }}
+                            {{ new Date(assessment.dueAt).toLocaleDateString() }}
                         </span>
                     </div>
                 </div>
@@ -76,14 +76,14 @@ const { deleteModule } = useModuleStore();
                     <DropdownMenuPortal>
                         <Transition name="dropdown">
                             <DropdownMenuContent class="w-52 shadow-black shadow-sm bg-elevated card p-1 rounded-md overflow-hidden mt-1">
-                                <PopupEditAssesment :assesment>
+                                <PopupEditAssessment :assessment>
                                     <CustomDropdownItem 
                                     value="Edit" 
                                     icon="material-symbols:edit-outline-rounded"
                                     :select-action="(e) => e.preventDefault()" />
-                                </PopupEditAssesment>
+                                </PopupEditAssessment>
                                 <CustomDropdownItem value="Delete" icon="material-symbols:delete-outline-rounded"
-                                :select-action="() => deleteAssesment(assesment)" />
+                                :select-action="() => deleteAssessment(assessment)" />
                             </DropdownMenuContent>
                         </Transition>
                     </DropdownMenuPortal>

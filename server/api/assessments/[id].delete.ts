@@ -1,16 +1,16 @@
-import { deleteAssesmentById } from "~~/lib/db/queries/assesments";
+import { deleteAssessmentById } from "~~/lib/db/queries/assessments";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
 
 export default defineAuthenticatedEventHander(async (event) => {
     const idString = getRouterParam(event, "id") as string;
     const id = parseInt(idString);
 
-    const deleted = deleteAssesmentById(id, event.context.user.id);
+    const deleted = deleteAssessmentById(id, event.context.user.id);
 
     if (!deleted) {
         return sendError(event, createError({
             statusCode: 404,
-            statusMessage: "Assesment not found."
+            statusMessage: "Assessment not found."
         }));
     }
 

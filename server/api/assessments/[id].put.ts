@@ -1,12 +1,12 @@
-import { updateAssesmentById } from "~~/lib/db/queries/assesments";
-import { InsertAssesment } from "~~/lib/db/schema";
+import { updateAssessmentById } from "~~/lib/db/queries/assessments";
+import { InsertAssessment } from "~~/lib/db/schema";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
 
 export default defineAuthenticatedEventHander(async (event) => {
     const idString = getRouterParam(event, "id") as string;
     const id = parseInt(idString);
 
-    const result = await readValidatedBody(event, InsertAssesment.safeParse);
+    const result = await readValidatedBody(event, InsertAssessment.safeParse);
 
     if (!result.success) {
         const statusMessage = result.error.issues
@@ -26,12 +26,12 @@ export default defineAuthenticatedEventHander(async (event) => {
         }));
     }
 
-    const updated = updateAssesmentById(id, result.data, event.context.user.id);
+    const updated = updateAssessmentById(id, result.data, event.context.user.id);
 
     if (!updated) {
         return sendError(event, createError({
             statusCode: 404,
-            statusMessage: "Assesment not found."
+            statusMessage: "Assessment not found."
         }));
     }
 

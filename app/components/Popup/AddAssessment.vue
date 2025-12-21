@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { InsertAssesment } from '~~/lib/db/schema';
+import { InsertAssessment } from '~~/lib/db/schema';
 import AddModuleSideButton from './AddModuleSideButton.vue';
 
-const { addAssessment } = useAssesmentsStore();
+const { addAssessment } = useAssessmentsStore();
 const modulesStore = useModuleStore();
 
 onMounted(() => modulesStore.refresh());
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
-    validationSchema: toTypedSchema(InsertAssesment)
+    validationSchema: toTypedSchema(InsertAssessment)
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
@@ -27,7 +27,7 @@ const onSubmit = submitHandler(addAssessment, setErrors);
             </slot>
         </template>
         <template #title>
-            Add a new assesment
+            Add a new assessment
         </template>
         <template #description>
             This can be an assignment, exam date, project due date, etc.

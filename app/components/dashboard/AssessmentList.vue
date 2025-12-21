@@ -1,13 +1,13 @@
 <script setup lang="ts">
-const assesmentsStore = useAssesmentsStore();
-const { assesments, pending, assessmentsCount } = storeToRefs(assesmentsStore);
+const assessmentsStore = useAssessmentsStore();
+const { assessments, pending, assessmentsCount } = storeToRefs(assessmentsStore);
 
 const modulesStore = useModuleStore();
 const { modules } = storeToRefs(modulesStore);
 
 function refresh() {
     modulesStore.refresh();
-    assesmentsStore.refresh();
+    assessmentsStore.refresh();
 }
 </script>
 
@@ -33,23 +33,23 @@ function refresh() {
             <LoadingIcon size="32" />
         </div>
         <template v-else>
-            <div v-if="!assesments || assessmentsCount.total === 0" class="flex h-full grow items-center justify-center">
+            <div v-if="!assessments || assessmentsCount.total === 0" class="flex h-full grow items-center justify-center">
                 Add an assessment to get started
             </div>
             <div v-else class="flex grow flex-col gap-2 overflow-y-auto">
-                <DashboardAssesmentListItem 
+                <DashboardAssessmentListItem 
                     v-for="module in modules" 
                     :key="module.id" 
                     :module 
-                    :assesments />
+                    :assessments />
             </div>
             <div class="flex flex-row gap-2">
-                <PopupAddAssesment>
+                <PopupAddAssessment>
                     <ButtonSecondary class="p-4 w-full px-auto">
                         <Icon name="material-symbols:add-notes-outline-rounded" />
-                        Add Assesment
+                        Add Assessment
                     </ButtonSecondary>
-                </PopupAddAssesment>
+                </PopupAddAssessment>
                 <PopupAddModule>
                     <ButtonSecondary aria-label="Add Module" title="Add Module" class="aspect-square flex justify-center">
                         <Icon name="material-symbols:create-new-folder-outline-rounded" />

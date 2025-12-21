@@ -1,6 +1,6 @@
-import { findAssesments } from "~~/lib/db/queries/assesments";
+import { findAssessments } from "~~/lib/db/queries/assessments";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
 
 export default defineAuthenticatedEventHander(async (event) => {
-    return findAssesments(event.context.user.id);
+    return findAssessments(event.context.user.id);
 });

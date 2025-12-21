@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     const events = await getUserEvents(user.userId, `${getRequestProtocol(event)}://${getRequestHost(event)}`);
     const calendar = ical({ 
         name: 'Acatracker',
-        description: 'Acatracker Assesments & Tasks',
+        description: 'Acatracker Assessments & Tasks',
         ttl: 43200, //12h
         method: ICalCalendarMethod.PUBLISH,
         prodId: { company: 'Acatracker', product: 'Acatracker Calendar 1.0', language: "EN" },

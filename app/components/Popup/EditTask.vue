@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { InsertTask, type AssesmentSchema, type TaskSchema } from '~~/lib/db/schema';
+import { InsertTask, type AssessmentSchema, type TaskSchema } from '~~/lib/db/schema';
 
 const { editTask } = useTaskStore();
 
 const props = defineProps<{
-    assesment: AssesmentSchema,
+    assessment: AssessmentSchema,
     task: TaskSchema,
 }>();
 
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertTask),
     initialValues: {
-        assesment: props.assesment.id,
+        assessment: props.assessment.id,
         completed: props.task.completed,
         name: props.task.name,
         description: props.task.description,
@@ -39,7 +39,7 @@ const onSubmit = submitHandler(async (values) => editTask(values, props.task.id)
             Edit task {{ task.name }}
         </template>
         <template #description>
-            Editing task for {{ assesment.name }}.
+            Editing task for {{ assessment.name }}.
         </template>
         <template #form>
             <DynamicForm 

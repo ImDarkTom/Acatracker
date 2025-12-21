@@ -1,7 +1,7 @@
-import type { AssesmentSchema } from "~~/lib/db/schema";
+import type { AssessmentSchema } from "~~/lib/db/schema";
 
-export const useAssesmentsStore = defineStore('useAssesmentsStore', () => {
-    const { data: assessments, pending, refresh } = useFetch('/api/assesments', { lazy: true });
+export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
+    const { data: assessments, pending, refresh } = useFetch('/api/assessments', { lazy: true });
     const { $csrfFetch } = useNuxtApp();
 
     const assessmentsCount = computed(() => {
@@ -21,7 +21,7 @@ export const useAssesmentsStore = defineStore('useAssesmentsStore', () => {
     });
 
     async function addAssessment(values: Record<string, any>) {
-        await $csrfFetch("/api/assesments", {
+        await $csrfFetch("/api/assessments", {
             method: 'POST',
             body: values,
         });
@@ -31,7 +31,7 @@ export const useAssesmentsStore = defineStore('useAssesmentsStore', () => {
     }
 
     async function editAssessment(values: Record<string, any>, assessmentId: number) {
-        await $csrfFetch(`/api/assesments/${assessmentId}`, {
+        await $csrfFetch(`/api/assessments/${assessmentId}`, {
             method: 'PUT',
             body: values,
         });
@@ -42,10 +42,10 @@ export const useAssesmentsStore = defineStore('useAssesmentsStore', () => {
         useCalendarEvents().refresh();
     }
 
-    async function deleteAssesment(assesment: AssesmentSchema) {
-        if (!confirm(`Are you sure you want to delete '${assesment.name}'?`)) return;
+    async function deleteAssessment(assessment: AssessmentSchema) {
+        if (!confirm(`Are you sure you want to delete '${assessment.name}'?`)) return;
 
-        await $fetch(`/api/assesments/${assesment.id}`, {
+        await $fetch(`/api/assessments/${assessment.id}`, {
             method: 'DELETE'
         });
 
@@ -54,12 +54,12 @@ export const useAssesmentsStore = defineStore('useAssesmentsStore', () => {
     }
 
     return {
-        assesments: assessments,
+        assessments,
         pending,
         refresh,
         assessmentsCount,
         addAssessment,
         editAssessment,
-        deleteAssesment,
+        deleteAssessment,
     };
 });

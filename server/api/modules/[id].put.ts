@@ -31,7 +31,7 @@ export default defineAuthenticatedEventHander(async (event) => {
     if (!updated) {
         return sendError(event, createError({
             statusCode: 404,
-            statusMessage: "Assesment not found."
+            statusMessage: "Assessment not found."
         }));
     }
 

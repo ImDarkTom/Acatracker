@@ -26,7 +26,7 @@ const onSubmit = submitHandler(addModule, setErrors);
             Add new module
         </template>
         <template #description>
-            Create a new module to add assesments to.
+            Create a new module to add assessments to.
         </template>
         <template #form>
             <DynamicForm

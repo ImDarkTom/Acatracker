@@ -1,12 +1,12 @@
 import { LibsqlError } from "@libsql/client";
 import { DrizzleError } from "drizzle-orm";
 import slugify from "slug";
-import { InsertAssesment } from "~~/lib/db/schema";
-import { findUniqueSlug, insertAssesment } from "~~/lib/db/queries/assesments";
+import { InsertAssessment } from "~~/lib/db/schema";
+import { findUniqueSlug, insertAssessment } from "~~/lib/db/queries/assessments";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
 
 export default defineAuthenticatedEventHander(async (event) => {
-    const result = await readValidatedBody(event, InsertAssesment.safeParse);
+    const result = await readValidatedBody(event, InsertAssessment.safeParse);
 
     if (!result.success) {
         const statusMessage = result.error.issues
@@ -29,13 +29,13 @@ export default defineAuthenticatedEventHander(async (event) => {
     const slug = await findUniqueSlug(slugify(result.data.name));
 
     try {
-        return insertAssesment(result.data, slug, event.context.user.id);
+        return insertAssessment(result.data, slug, event.context.user.id);
     } catch (e) {
         const error = e as DrizzleError;
-        if ((error.cause as LibsqlError).message.trim() === "SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: assesment.slug") {
+        if ((error.cause as LibsqlError).message.trim() === "SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: assessment.slug") {
             return sendError(event, createError({
                 statusCode: 409,
-                statusMessage: "Slug must be unique (the assesment name is used to generate the slug)."
+                statusMessage: "Slug must be unique (the assessment name is used to generate the slug)."
             }));
         }
         throw error;
