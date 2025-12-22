@@ -17,7 +17,11 @@
     --color-brand-300: hsl(190, 50%, 70%);
 
     --color-errortxt: hsl(0, 40%, 50%);
-    --color-errorbg: hsl(0, 50%, 25%)
+    --color-errorbg: hsl(0, 50%, 25%);
+
+    --color-event-released: var(--color-green-500);
+    --color-event-due: var(--color-red-500);
+    --color-event-task: var(--color-amber-500);
 }
 
 body {
@@ -43,6 +47,10 @@ body {
 
         --color-errortxt: hsl(0, 40%, 50%);
         --color-errorbg: hsl(0, 50%, 75%);
+
+        --color-event-released: var(--color-green-700);
+        --color-event-due: var(--color-red-700);
+        --color-event-task: var(--color-amber-700);
     }
 }
 

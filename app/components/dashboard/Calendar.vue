@@ -70,21 +70,10 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                                     data-today:bg-text-secondary data-today:text-surface 
                                     data-outside-view:text-text-secondary/35 data-outside-view:hover:bg-elevated data-outside-view:cursor-pointer" />
                                 <div class="mt-1">
-                                    <RouterLink 
-                                        v-for="event in getEventsForDate(weekDate)"
+                                    <DashboardCalendarEntry 
+                                        v-for="(event, index) in getEventsForDate(weekDate)"
                                         :key="index"
-                                        :to="event.link">
-                                        <div 
-                                            class="p-1 text-xs font-semibold overflow-hidden text-clip line-clamp-1 rounded-sm"
-                                            :class="{
-                                                'bg-red-500/40': event.type === 'due',
-                                                'bg-green-500/40': event.type === 'released',
-                                                'bg-amber-500/40': event.type === 'task',
-                                                'line-through opacity-60': event.completed
-                                            }">
-                                            {{ event.label }}
-                                        </div>
-                                    </RouterLink>
+                                        :eventProp="event" />
                                 </div>
                             </CalendarCell>
                         </CalendarGridRow>

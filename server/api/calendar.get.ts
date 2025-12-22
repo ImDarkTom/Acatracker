@@ -3,13 +3,6 @@ import { findModules } from "~~/lib/db/queries/modules";
 import { findTasks } from "~~/lib/db/queries/tasks";
 import { AssessmentSchema } from "~~/lib/db/schema";
 
-type IterableEvent = { 
-    type: 'released' | 'due' | 'task',
-    label: string,
-    link: string,
-    completed: boolean,
-}
-
 export default defineAuthenticatedEventHandler(async (event) => {
     const user = event.context.user;
 
