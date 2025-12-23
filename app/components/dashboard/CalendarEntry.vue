@@ -33,35 +33,37 @@ const infoOpened = ref(false);
             </div>
         </PopoverTrigger>
         <PopoverPortal>
-            <Transition name="fade">
-                <PopoverContent 
-                    :avoid-collisions="true"
-                    :collision-padding="8"
-                    :side-offset="8"
-                    class="card bg-bg-active flex flex-col gap-2 shadow-md shadow-shadow-base p-4 min-w-60 max-w-md">
-                    <span :class="{
-                        'text-event-due': eventProp.type === 'due',
-                        'text-event-released': eventProp.type === 'released',
-                        'text-event-task': eventProp.type === 'task',
-                    }">{{ eventTypeMap[eventProp.type] }}</span>
-                    <span class="font-medium text-text text-lg">{{ eventProp.label }}</span>
-                    <label class="flex flex-row gap-2">
-                        <span>Completed?</span>
-                        <input type="checkbox" :value="eventProp.completed">
-                    </label>
-                    <RouterLink :to="eventProp.link">
-                        <ButtonPrimary>
-                        View Details
-                        </ButtonPrimary>
-                    </RouterLink>
-                    <PopoverArrow class="fill-highlight" />
-                    <PopoverClose class="absolute top-2 right-2">
-                        <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-highlight active:bg-bg-focus">
-                            <Icon name="material-symbols:close-rounded" size="20" />
-                        </div>
-                    </PopoverClose>
-                </PopoverContent>
-            </Transition>
+            <PopoverContent
+                :avoid-collisions="true"
+                :collision-padding="8"
+                :side-offset="8"
+                class="card bg-bg-active flex flex-col gap-2 shadow-md shadow-shadow-base p-4 min-w-60 max-w-md
+                    data-[side=top]:animate-slide-up
+                    data-[side=top]:data-[state=closed]:animate-fade-out
+                    data-[side=bottom]:animate-slide-down
+                    data-[side=bottom]:data-[state=closed]:animate-fade-out">
+                <span :class="{
+                    'text-event-due': eventProp.type === 'due',
+                    'text-event-released': eventProp.type === 'released',
+                    'text-event-task': eventProp.type === 'task',
+                }">{{ eventTypeMap[eventProp.type] }}</span>
+                <span class="font-medium text-text text-lg">{{ eventProp.label }}</span>
+                <label class="flex flex-row gap-2">
+                    <span>Completed?</span>
+                    <input type="checkbox" :value="eventProp.completed">
+                </label>
+                <RouterLink :to="eventProp.link">
+                    <ButtonPrimary>
+                    View Details
+                    </ButtonPrimary>
+                </RouterLink>
+                <PopoverArrow class="fill-highlight" />
+                <PopoverClose class="absolute top-2 right-2">
+                    <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-highlight active:bg-bg-focus">
+                        <Icon name="material-symbols:close-rounded" size="20" />
+                    </div>
+                </PopoverClose>
+            </PopoverContent>
         </PopoverPortal>
     </PopoverRoot>
 </template>
