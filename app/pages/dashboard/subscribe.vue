@@ -21,7 +21,7 @@ function copyText() {
 
 <template>
     <div class="w-full h-72 flex flex-row gap-4 my-auto max-w-md mx-auto">
-        <div class="w-full bg-base rounded-lg">
+        <div class="w-full bg-bg-base rounded-lg">
             <div v-if="error || !data">
                 Error occured getting calendar token: {{ error }}
             </div>
@@ -39,7 +39,7 @@ function copyText() {
                 </div>
                 <div class="flex flex-col gap-1 w-full">
                     Or add manually as an ICAL:
-                    <input type="text" readonly :value="calendarUrl" class="bg-surface">
+                    <input type="text" readonly :value="calendarUrl" class="bg-bg-muted">
                     <ButtonPrimary @click="copyText" class="w-min">
                         {{ copyLabel }}
                     </ButtonPrimary>

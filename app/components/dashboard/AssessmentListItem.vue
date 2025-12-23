@@ -20,11 +20,11 @@ const { deleteModule } = useModuleStore();
 
             <DropdownMenuRoot>
                 <DropdownMenuTrigger
-                    class="rounded-sm hover:bg-base data-[state='open']:bg-elevated p-2 size-8 flex items-center justify-center">
+                    class="rounded-sm hover:bg-bg-base data-[state='open']:bg-bg-active p-2 size-8 flex items-center justify-center">
                     <Icon name="material-symbols:more-vert" size="24" />
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>
-                    <DropdownMenuContent class="w-52 shadow-black shadow-sm bg-elevated card p-1 rounded-md overflow-hidden mt-1">
+                    <DropdownMenuContent class="dropdown-content">
                         <PopupEditModule :module>
                             <CustomDropdownItem 
                                 value="Edit" 
@@ -43,7 +43,7 @@ const { deleteModule } = useModuleStore();
         <div 
             v-for="assessment in assessments.filter(a => a.module === module.id)" 
             :key="assessment.id"
-            class="flex flex-row items-center gap-2 card has-[>.active]:bg-elevated"
+            class="flex flex-row items-center gap-2 card has-[>.active]:bg-bg-active"
             :class="{ 'opacity-65': assessment.completed }">
             <NuxtLink 
                 class="grow"
@@ -70,12 +70,12 @@ const { deleteModule } = useModuleStore();
             <div @click.stop>
                 <DropdownMenuRoot>
                     <DropdownMenuTrigger
-                        class="rounded-sm data-[state='open']:bg-elevated p-2 size-8 flex items-center justify-center">
+                        class="rounded-sm data-[state='open']:bg-bg-active p-2 size-8 flex items-center justify-center">
                         <Icon name="material-symbols:more-vert" size="24" />
                     </DropdownMenuTrigger>
                     <DropdownMenuPortal>
                         <Transition name="dropdown">
-                            <DropdownMenuContent class="w-52 shadow-black shadow-sm bg-elevated card p-1 rounded-md overflow-hidden mt-1">
+                            <DropdownMenuContent class="dropdown-content">
                                 <PopupEditAssessment :assessment>
                                     <CustomDropdownItem 
                                     value="Edit" 

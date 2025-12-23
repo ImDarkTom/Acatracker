@@ -66,10 +66,10 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                                 <CalendarCellTrigger 
                                     :day="weekDate" 
                                     :month="month.value"
-                                    class="size-6 text-center mx-auto rounded-full
-                                    data-today:bg-text-secondary data-today:text-surface 
-                                    data-outside-view:text-text-secondary/35 data-outside-view:hover:bg-elevated data-outside-view:cursor-pointer" />
-                                <div class="mt-1">
+                                    class="size-6 text-center mx-auto rounded-full mt-0.5
+                                    data-today:bg-text-secondary data-today:text-bg-muted 
+                                    data-outside-view:text-text-secondary/35 data-outside-view:hover:bg-bg-active data-outside-view:cursor-pointer" />
+                                <div class="mt-0.5">
                                     <DashboardCalendarEntry 
                                         v-for="(event, index) in getEventsForDate(weekDate)"
                                         :key="index"

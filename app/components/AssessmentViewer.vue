@@ -78,14 +78,14 @@ async function toggleAssessmentCompleted() {
         </div>
         <span class="text-3xl">{{ assessment.data.name }}</span>
         <p class="text-text-secondary">{{ assessment.data.description }}</p>
-        <div v-if="assessment.data.releasedAt" class="text-lg card bg-elevated rounded-sm">
+        <div v-if="assessment.data.releasedAt" class="text-lg card bg-bg-active rounded-sm">
             Release: {{ new Date(assessment.data.releasedAt).toLocaleDateString() }}
         </div>
 
         <div class="ml-8 mr-4 flex flex-col gap-2">
             <div 
                 v-for="task in (tasks ?? []).filter((t) => t.assessment == (assessmentId as unknown as number | string))"
-                class="card bg-elevated rounded-sm flex flex-col gap-2">
+                class="card bg-bg-active rounded-sm flex flex-col gap-2">
                 <div class="flex flex-row items-center justify-between">
                     <label class="flex flex-row gap-2">
                         <input 
@@ -96,12 +96,12 @@ async function toggleAssessmentCompleted() {
                     </label>
                     <DropdownMenuRoot>
                         <DropdownMenuTrigger
-                            class="rounded-sm data-[state='open']:bg-base hover:bg-elevated cursor-pointer p-2 size-8 flex items-center justify-center">
+                            class="rounded-sm data-[state='open']:bg-bg-focus cursor-pointer p-2 size-8 flex items-center justify-center">
                             <Icon name="material-symbols:more-vert" size="24" />
                         </DropdownMenuTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuContent
-                                class="w-52 shadow-base shadow-sm bg-elevated rounded-md overflow-hidden mt-1">
+                                class="dropdown-card">
                                 <PopupEditTask 
                                     :task 
                                     :assessment="assessment.data">
@@ -119,7 +119,7 @@ async function toggleAssessmentCompleted() {
             <PopupAddTask :assessment="assessment.data" />
         </div>
 
-        <div class="text-lg card bg-elevated rounded-sm">
+        <div class="text-lg card bg-bg-active rounded-sm">
             Due: {{ new Date(assessment.data.dueAt).toLocaleDateString() }}
         </div>
 

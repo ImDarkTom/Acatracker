@@ -43,7 +43,7 @@ function handleExitClick(e: Event, exitFn: () => void) {
                 <DialogContent
                     @escape-key-down="handleExitClick($event, dialogClose)"
                     @pointer-down-outside="handleExitClick($event, dialogClose)"
-                    class="card p-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-md max-w-full shadow-md shadow-black z-110">
+                    class="card p-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-md max-w-full shadow-md shadow-shadow-base z-110">
                     <DialogTitle class="text-lg font-semibold text-text">
                         <slot name="title" />
                     </DialogTitle>
@@ -60,7 +60,7 @@ function handleExitClick(e: Event, exitFn: () => void) {
                         class="absolute top-4 right-4"
                         aria-label="Close"
                         @click="handleExitClick($event, dialogClose)">
-                        <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-elevated active:shadow-brand-muted shadow-sm">
+                        <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-bg-active active:bg-bg-focus">
                             <Icon name="material-symbols:close-rounded" size="20" />
                         </div>
                     </button>

@@ -35,7 +35,7 @@ const infoOpened = ref(false);
         <PopoverPortal>
             <PopoverContent 
                 side="left"
-                class="bg-elevated flex flex-col gap-2 shadow-md shadow-black card p-4 min-w-60 max-w-md">
+                class="card bg-bg-active flex flex-col gap-2 shadow-md shadow-shadow-base p-4 min-w-60 max-w-md">
                 <span :class="{
                     'text-event-due': eventProp.type === 'due',
                     'text-event-released': eventProp.type === 'released',
@@ -53,7 +53,7 @@ const infoOpened = ref(false);
                 </RouterLink>
                 <PopoverArrow class="fill-highlight" />
                 <PopoverClose class="absolute top-2 right-2">
-                    <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-highlight active:shadow-highlight active:shadow-sm">
+                    <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-highlight active:bg-bg-focus">
                         <Icon name="material-symbols:close-rounded" size="20" />
                     </div>
                 </PopoverClose>

@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-    --color-surface: hsl(190, 15%, 5%);
-    --color-base: hsl(190, 15%, 10%);
-    --color-elevated: hsl(190, 15%, 20%);
+    --color-bg-muted: hsl(190, 15%, 5%);
+    --color-bg-base: hsl(190, 15%, 10%);
+    --color-bg-active: hsl(190, 15%, 20%);
+    --color-bg-focus: hsl(190, 15%, 40%);
 
     --color-text: hsl(190, 15%, 90%);
     --color-text-secondary: hsl(190, 15%, 80%);
@@ -21,17 +22,20 @@
     --color-event-released: var(--color-green-500);
     --color-event-due: var(--color-red-500);
     --color-event-task: var(--color-amber-500);
+
+    --color-shadow-base: hsla(190, 15%, 5%, 0.7);
 }
 
 body {
-    @apply bg-surface text-text-secondary md:overflow-hidden;
+    @apply bg-bg-muted text-text-secondary md:overflow-hidden;
 }
 
 @layer base {
     html[data-theme='light'] {
-        --color-surface: hsl(190, 10%, 86%);
-        --color-base: hsl(190, 10%, 92%);
-        --color-elevated: hsl(190, 10%, 96%);
+        --color-bg-muted: hsl(190, 10%, 86%);
+        --color-bg-base: hsl(190, 10%, 92%);
+        --color-bg-active: hsl(190, 10%, 96%);
+        --color-bg-focus: hsl(190, 15%, 100%);
 
         --color-text: hsl(190, 10%, 10%);
         --color-text-secondary: hsl(190, 10%, 20%);
@@ -49,12 +53,18 @@ body {
         --color-event-released: var(--color-green-700);
         --color-event-due: var(--color-red-700);
         --color-event-task: var(--color-amber-700);
+
+        --color-shadow-base: hsla(190, 15%, 5%, 0.3);
     }
 }
 
 @layer components {
     .card {
-        @apply bg-base rounded-lg p-2 ring-1 ring-inset ring-highlight;
+        @apply bg-bg-base rounded-lg p-2 ring-1 ring-inset ring-highlight;
+    }
+
+    .dropdown-content {
+        @apply w-52 bg-bg-active rounded-md p-1 shadow-sm shadow-shadow-base ring-1 ring-inset ring-highlight mt-1 overflow-hidden;
     }
 }
 
