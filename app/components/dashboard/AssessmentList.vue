@@ -5,9 +5,16 @@ const { assessments, pending, assessmentsCount } = storeToRefs(assessmentsStore)
 const modulesStore = useModuleStore();
 const { modules } = storeToRefs(modulesStore);
 
+const isRefreshing = ref(false);
+
 function refresh() {
+    isRefreshing.value = true;
     modulesStore.refresh();
     assessmentsStore.refresh();
+}
+
+const stopRefreshAnim = () => {
+    isRefreshing.value = false;
 }
 </script>
 
@@ -24,10 +31,19 @@ function refresh() {
                     class="text-lg">
                     {{ assessmentsCount.pending }} Pending Assessment(s)
                 </span>
-                <ButtonOutlined @click="refresh" :disabled="pending">
-                    <Icon name="material-symbols:refresh-rounded" size="24" />
-                    Refresh
-                </ButtonOutlined>
+                <AppTooltip content="Refresh">
+                    <ButtonGhost 
+                        @click="refresh" 
+                        :disabled="pending">
+                        <Icon 
+                            name="material-symbols:refresh-rounded" 
+                            size="24"
+                            :class="{
+                                'animate-spin-once': isRefreshing
+                            }"
+                            @animationend="stopRefreshAnim" />
+                    </ButtonGhost>
+                </AppTooltip>
             </div>
         <div v-if="pending" class="h-full flex items-center justify-center">
             <LoadingIcon size="32" />
@@ -41,7 +57,7 @@ function refresh() {
                     v-for="module in modules" 
                     :key="module.id" 
                     :module 
-                    :assessments />
+                    :assessments="assessments.filter(a => a.module === module.id)" />
             </div>
             <div class="flex flex-row gap-2">
                 <PopupAddAssessment>

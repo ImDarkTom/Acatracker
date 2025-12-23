@@ -20,8 +20,10 @@ const { deleteModule } = useModuleStore();
 
             <DropdownMenuRoot>
                 <DropdownMenuTrigger
-                    class="rounded-sm hover:bg-bg-base data-[state='open']:bg-bg-active p-2 size-8 flex items-center justify-center">
-                    <Icon name="material-symbols:more-vert" size="24" />
+                    :as-child="true">
+                    <ButtonGhost class="size-8 justify-center data-[state='open']:bg-bg-active">
+                        <Icon name="material-symbols:more-vert" size="24" />
+                    </ButtonGhost>
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuContent class="dropdown-content">
@@ -41,7 +43,7 @@ const { deleteModule } = useModuleStore();
         </div>
 
         <div 
-            v-for="assessment in assessments.filter(a => a.module === module.id)" 
+            v-for="assessment in assessments" 
             :key="assessment.id"
             class="flex flex-row items-center gap-2 card has-[>.active]:bg-bg-active"
             :class="{ 'opacity-65': assessment.completed }">
@@ -70,11 +72,13 @@ const { deleteModule } = useModuleStore();
             <div @click.stop>
                 <DropdownMenuRoot>
                     <DropdownMenuTrigger
-                        class="rounded-sm data-[state='open']:bg-bg-active p-2 size-8 flex items-center justify-center">
-                        <Icon name="material-symbols:more-vert" size="24" />
+                        :as-child="true">
+                        <ButtonGhost class="size-8 justify-center data-[state='open']:bg-bg-active">
+                            <Icon name="material-symbols:more-vert" size="24" />
+                        </ButtonGhost>
                     </DropdownMenuTrigger>
                     <DropdownMenuPortal>
-                        <Transition name="dropdown">
+                        <Transition name="fade">
                             <DropdownMenuContent class="dropdown-content">
                                 <PopupEditAssessment :assessment>
                                     <CustomDropdownItem 

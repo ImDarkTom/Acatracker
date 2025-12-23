@@ -15,7 +15,7 @@ const authStore = useAuthStore();
             </ButtonSecondary>
         </DropdownMenuTrigger>
         <DropdownMenuPortal>
-            <Transition name="dropdown">
+            <Transition name="fade">
                 <DropdownMenuContent 
                     :align="'start'"
                     :align-offset="16"

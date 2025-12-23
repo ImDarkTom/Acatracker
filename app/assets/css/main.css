@@ -24,6 +24,17 @@
     --color-event-task: var(--color-amber-500);
 
     --color-shadow-base: hsla(190, 15%, 5%, 0.7);
+
+    --animate-spin-once: spin-once 500ms ease-out;
+
+    @keyframes spin-once {
+        0% {      
+            transform: rotate(0deg);    
+        }    
+        100% {      
+            transform: rotate(360deg);    
+        }
+    }
 }
 
 body {
@@ -71,8 +82,9 @@ body {
 /* transitions */
 .fade-enter-active,
 .fade-leave-active {
-    transition: all 0.1s;
+    transition: opacity 0.1s;
 }
+
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
@@ -86,14 +98,5 @@ body {
 .scale-enter-from,
 .scale-leave-to {
     transform: scale(0.85);
-    opacity: 0;
-}
-
-.dropdown-enter-active,
-.dropdown-leave-active {
-    transition: opacity 0.1s;
-}
-.dropdown-enter-from,
-.dropdown-leave-to {
     opacity: 0;
 }

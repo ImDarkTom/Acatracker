@@ -20,17 +20,21 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
             fixed-weeks
             class="h-full flex flex-col gap-2">
             <CalendarHeader class="flex items-center gap-2">
-                <CalendarPrev :as-child="true">
-                    <ButtonOutlined class="pr-2!">
-                        <Icon name="material-symbols:chevron-left-rounded" size="24" />
-                    </ButtonOutlined>
-                </CalendarPrev>
+                <AppTooltip content="Previous month">
+                    <CalendarPrev :as-child="true">
+                        <ButtonGhost>
+                            <Icon name="material-symbols:chevron-left-rounded" size="24" />
+                        </ButtonGhost>
+                    </CalendarPrev>
+                </AppTooltip>
                 
-                <CalendarNext :as-child="true">
-                    <ButtonOutlined class="pr-2!">
-                        <Icon name="material-symbols:chevron-right-rounded" size="24" />
-                    </ButtonOutlined>
-                </CalendarNext>
+                <AppTooltip content="Next month">
+                    <CalendarNext :as-child="true">
+                        <ButtonGhost>
+                            <Icon name="material-symbols:chevron-right-rounded" size="24" />
+                        </ButtonGhost>
+                    </CalendarNext>
+                </AppTooltip>
                 
                 <CalendarHeading class="select-none text-lg font-medium ml-1" />    
             </CalendarHeader>
