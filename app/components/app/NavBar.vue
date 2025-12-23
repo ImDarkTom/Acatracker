@@ -1,7 +1,7 @@
 <template>
     <nav class="bg-base ring-1 ring-highlight flex flex-row items-center justify-between p-2 sticky top-0 left-0 z-90">
         <ul class="flex flex-row gap-4">
-            <li class="mr-2 text-brand-300 font-bold select-none hidden md:block">
+            <li class="mr-2 text-brand-active font-bold select-none hidden md:block">
                 Acatracker
             </li>
             <NavbarItem

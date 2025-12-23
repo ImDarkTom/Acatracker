@@ -5,7 +5,7 @@ const authStore = useAuthStore();
 <template>
     <DropdownMenuRoot v-if="!authStore.isLoading && authStore.user">
         <DropdownMenuTrigger as-child>
-            <ButtonSecondary aria-label="My Account" class="data-[state=open]:bg-brand-700 rounded-lg">
+            <ButtonSecondary aria-label="My Account" class="data-[state=open]:bg-brand-muted rounded-lg">
                 <img 
                     v-if="authStore.user.image" 
                     :src="authStore.user.image" 

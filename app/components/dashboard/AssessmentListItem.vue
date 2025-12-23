@@ -52,7 +52,7 @@ const { deleteModule } = useModuleStore();
                 >
                 <div class="flex flex-col group">
                     <span 
-                        class="text-lg text-text group-hover:text-brand-300"
+                        class="text-lg text-text group-hover:text-brand-focus transition-colors duration-75"
                         :class="{ 'line-through': assessment.completed }">{{ assessment.name }}</span>
                     <div class="flex flex-row gap-1 text-sm">
                         <span v-if="assessment.releasedAt">

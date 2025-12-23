@@ -38,7 +38,7 @@ defineProps<{
                         :disabled="isLoading"
                         :error="errors[name]"
                         v-bind="attrs"
-                        class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-300 p-2 rounded-md"
+                        class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
                         :class="{
                             'ring-errortxt!': errors[name],
                             'opacity-50': isLoading,

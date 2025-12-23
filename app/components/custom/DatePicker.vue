@@ -9,7 +9,7 @@ const date = ref(new Date());
             v-slot="{ segments }"
             v-model:model-value="date"
             locale="gb"
-            class="flex ring-1 focus:ring-2 ring-highlight focus:ring-brand-300 p-2 rounded-md">
+            class="flex ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md">
             <template
                 v-for="item in segments"
                 :key="item.part">
