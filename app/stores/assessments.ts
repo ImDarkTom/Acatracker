@@ -20,6 +20,11 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
         };
     });
 
+
+    // ----
+    // CRUD
+    // ----
+
     async function addAssessment(values: Record<string, any>) {
         await $csrfFetch("/api/assessments", {
             method: 'POST',
@@ -53,6 +58,19 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
         useCalendarEvents().refresh();
     }
 
+
+    async function toggleAssessmentCompleted(assessmentId: number, checkedValue: boolean) {
+        await $csrfFetch(`/api/assessments/${assessmentId}`, {
+            method: 'PATCH',
+            body: {
+                completed: checkedValue,
+            }
+        });
+
+        refresh();
+        useCalendarEvents().refresh();
+    }
+
     return {
         assessments,
         pending,
@@ -61,5 +79,6 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
         addAssessment,
         editAssessment,
         deleteAssessment,
+        toggleAssessmentCompleted
     };
 });

@@ -3,6 +3,8 @@ const props = defineProps<{
     eventProp: IterableEvent,
 }>();
 
+const { toggleAssessmentCompleted } = useAssessmentsStore();
+
 const eventTypeMap = {
     due: 'Due Date',
     released: 'Release Date',
@@ -10,6 +12,8 @@ const eventTypeMap = {
 };
 
 const infoOpened = ref(false);
+
+const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventProp.id, (e.target as HTMLInputElement).checked);
 </script>
 
 <template>
@@ -37,7 +41,7 @@ const infoOpened = ref(false);
                 :avoid-collisions="true"
                 :collision-padding="8"
                 :side-offset="8"
-                class="card bg-bg-active flex flex-col gap-2 shadow-md shadow-shadow-base p-4 min-w-60 max-w-md
+                class="card bg-bg-active flex flex-col gap-2 shadow-md shadow-shadow-base p-4 pr-10 min-w-60 max-w-md
                     data-[side=top]:animate-slide-up
                     data-[side=top]:data-[state=closed]:animate-fade-out
                     data-[side=bottom]:animate-slide-down
@@ -50,7 +54,10 @@ const infoOpened = ref(false);
                 <span class="font-medium text-text text-lg">{{ eventProp.label }}</span>
                 <label class="flex flex-row gap-2">
                     <span>Completed?</span>
-                    <input type="checkbox" :value="eventProp.completed">
+                    <input 
+                        type="checkbox" 
+                        :checked="eventProp.completed" 
+                        @change="onToggleCompleted">
                 </label>
                 <RouterLink :to="eventProp.link">
                     <ButtonPrimary>

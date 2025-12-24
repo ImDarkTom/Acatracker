@@ -56,7 +56,7 @@ export async function deleteAssessmentById(id: number, userId: number) {
     return removed;
 }
 
-export async function updateAssessmentById(id: number, newAssessment: InsertAssessment, userId: number) {
+export async function updateAssessmentById(id: number, newAssessment: Partial<InsertAssessment>, userId: number) {
     const [ updated ] = await db.update(assessment)
         .set(newAssessment)
         .where(

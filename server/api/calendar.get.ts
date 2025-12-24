@@ -27,6 +27,7 @@ export default defineAuthenticatedEventHandler(async (event) => {
 
             // If it's a task
             map.get(getDateKey(item.dueAt))?.push({
+                id: item.assessment,
                 type: 'task',
                 label: `${code} • ${item.name}`,
                 link: `/dashboard/assessment/${item.assessment}`,
@@ -41,6 +42,7 @@ export default defineAuthenticatedEventHandler(async (event) => {
             }
 
             map.get(getDateKey(item.releasedAt))?.push({
+                id: item.id,
                 type: 'released',
                 label: getLabel(item),
                 link: `/dashboard/assessment/${item.id}`,
@@ -49,6 +51,7 @@ export default defineAuthenticatedEventHandler(async (event) => {
         }
 
         map.get(getDateKey(item.dueAt))?.push({
+            id: item.id,
             type: 'due',
             label: getLabel(item),
             link: `/dashboard/assessment/${item.id}`,
