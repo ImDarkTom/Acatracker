@@ -9,3 +9,4 @@
 - show popup box with info about event when we click, instead of fullscreen menu
 - if a module has all assessments completed, move it to bottom of list, collapse it, and strikethough
 - user ids use default system
+- improve reloading state (especially when we toggle completed via the calendar)
