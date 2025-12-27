@@ -117,6 +117,13 @@ body {
     .dropdown-content {
         @apply w-52 bg-bg-active rounded-md p-1 shadow-sm shadow-shadow-base ring-1 ring-inset ring-highlight mt-1 overflow-hidden;
     }
+
+    .animate-dynamic-slide {
+        @apply data-[side=top]:animate-slide-up
+            data-[side=top]:data-[state=closed]:animate-fade-out
+            data-[side=bottom]:animate-slide-down
+            data-[side=bottom]:data-[state=closed]:animate-fade-out;
+    }
 }
 
 /* transitions */

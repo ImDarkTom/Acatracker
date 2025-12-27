@@ -1,5 +1,5 @@
 import db from './db/index';
-import { betterAuth, User } from "better-auth";
+import { betterAuth, type User } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware } from "better-auth/plugins";
 import env from './env';

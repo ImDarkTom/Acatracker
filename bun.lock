@@ -1,10 +1,11 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "acatracker",
       "dependencies": {
-        "@internationalized/date": "^3.10.0",
+        "@internationalized/date": "^3.10.1",
         "@libsql/client": "^0.15.15",
         "@nuxt/icon": "2.1.0",
         "@nuxtjs/color-mode": "^3.5.2",
@@ -13,7 +14,7 @@
         "@types/node": "^24.10.4",
         "@vee-validate/nuxt": "^4.15.1",
         "@vee-validate/zod": "^4.15.1",
-        "better-auth": "^1.4.7",
+        "better-auth": "^1.4.9",
         "concurrently": "^9.2.1",
         "drizzle-orm": "^0.44.7",
         "drizzle-zod": "^0.8.3",
@@ -24,12 +25,12 @@
         "nuxt-csurf": "1.6.5",
         "pathe": "^2.0.3",
         "pinia": "^3.0.4",
-        "reka-ui": "^2.6.1",
+        "reka-ui": "^2.7.0",
         "slug": "^11.0.1",
         "tailwindcss": "^4.1.18",
-        "vue": "^3.5.25",
+        "vue": "^3.5.26",
         "vue-router": "^4.6.4",
-        "zod": "^4.1.13",
+        "zod": "^4.2.1",
       },
       "devDependencies": {
         "@iconify-json/material-symbols": "^1.2.50",

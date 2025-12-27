@@ -19,8 +19,7 @@ const { deleteModule } = useModuleStore();
             </div>
 
             <DropdownMenuRoot>
-                <DropdownMenuTrigger
-                    :as-child="true">
+                <DropdownMenuTrigger :as-child="true">
                     <ButtonGhost class="size-8 justify-center data-[state='open']:bg-bg-active">
                         <Icon name="material-symbols:more-vert" size="24" />
                     </ButtonGhost>
@@ -31,12 +30,12 @@ const { deleteModule } = useModuleStore();
                             <CustomDropdownItem 
                                 value="Edit" 
                                 icon="material-symbols:edit-outline-rounded"
-                                :select-action="(e) => e.preventDefault()" />
+                                @select="e => e.preventDefault()"/>
                         </PopupEditModule>
                         <CustomDropdownItem 
                             value="Delete" 
                             icon="material-symbols:delete-outline-rounded"
-                            :select-action="() => deleteModule(module)" />
+                            @select="deleteModule(module)" />
                     </DropdownMenuContent>
                 </DropdownMenuPortal>
             </DropdownMenuRoot>
@@ -84,10 +83,12 @@ const { deleteModule } = useModuleStore();
                                     <CustomDropdownItem 
                                     value="Edit" 
                                     icon="material-symbols:edit-outline-rounded"
-                                    :select-action="(e) => e.preventDefault()" />
+                                    @select="e => e.preventDefault()" />
                                 </PopupEditAssessment>
-                                <CustomDropdownItem value="Delete" icon="material-symbols:delete-outline-rounded"
-                                :select-action="() => deleteAssessment(assessment)" />
+                                <CustomDropdownItem 
+                                    value="Delete" 
+                                    icon="material-symbols:delete-outline-rounded"
+                                    @select="deleteAssessment(assessment)" />
                             </DropdownMenuContent>
                         </Transition>
                     </DropdownMenuPortal>

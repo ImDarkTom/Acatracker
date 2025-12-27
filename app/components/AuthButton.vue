@@ -4,39 +4,38 @@ const authStore = useAuthStore();
 
 <template>
     <DropdownMenuRoot v-if="!authStore.isLoading && authStore.user">
-        <DropdownMenuTrigger as-child>
-            <ButtonSecondary aria-label="My Account" class="data-[state=open]:bg-brand-muted rounded-lg">
+        <DropdownMenuTrigger class="data-[state=open]:*:ring-1">
+            <AppTooltip :content="authStore.user.name">
                 <img 
-                    v-if="authStore.user.image" 
-                    :src="authStore.user.image" 
+                    v-if="authStore.user.image"
+                    :src="authStore.user.image"  
                     :alt="authStore.user.name" 
-                    class="rounded-full size-8">
-                <span>{{ authStore.user.name }}</span>
-            </ButtonSecondary>
+                    class="rounded-full size-8 cursor-pointer ring-brand-focus">
+                <div v-else class="rounded-full size-8 bg-brand-muted flex items-center justify-center font-black cursor-pointer">
+                    {{ authStore.user.name[0] ?? '?' }}
+                </div>
+            </AppTooltip>
         </DropdownMenuTrigger>
         <DropdownMenuPortal>
-            <Transition name="fade">
-                <DropdownMenuContent 
-                    :align="'start'"
-                    :align-offset="16"
-                    class="dropdown-content z-100">
-                    <CustomDropdownItem 
-                        value="Dashboard" 
-                        icon="material-symbols:dashboard-outline-rounded" 
-                        :select-action="() => navigateTo('/dashboard')" />
-                    <DropdownMenuSeparator class="h-px w-full bg-text-secondary my-1" />
-                    <RouterLink to="/dashboard/subscribe">
-                        <CustomDropdownItem 
-                            value="Subscribe" 
-                            icon="material-symbols:calendar-add-on-outline-rounded" />
-                    </RouterLink>
-                    <DropdownMenuSeparator class="h-px w-full bg-text-secondary my-1" />
-                    <CustomDropdownItem 
-                        value="Sign Out"
-                        icon="material-symbols:logout-rounded" 
-                        :select-action="() => navigateTo('/sign-out')" />
-                </DropdownMenuContent>
-            </Transition>
+            <DropdownMenuContent 
+                :align="'start'"
+                :align-offset="16"
+                class="dropdown-content z-100">
+                <CustomDropdownItem 
+                    value="Dashboard" 
+                    icon="material-symbols:dashboard-outline-rounded" 
+                    link="/dashboard" />
+                <CustomDropdownSeparator />
+                <CustomDropdownItem 
+                    value="Subscribe" 
+                    icon="material-symbols:calendar-add-on-outline-rounded"
+                    link="/dashboard/subscribe" />
+                <CustomDropdownSeparator />
+                <CustomDropdownItem 
+                    value="Sign Out"
+                    icon="material-symbols:logout-rounded" 
+                    link="/sign-out" />
+            </DropdownMenuContent>
         </DropdownMenuPortal>
     </DropdownMenuRoot>
     <ButtonPrimary 

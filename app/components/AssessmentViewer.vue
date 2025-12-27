@@ -106,10 +106,10 @@ async function toggleAssessmentCompleted() {
                                     :task 
                                     :assessment="assessment.data">
                                     <CustomDropdownItem value="Edit" icon="material-symbols:edit-outline-rounded"
-                                        :select-action="(e) => e.preventDefault()" />
+                                        :on-select="(e) => e.preventDefault()" />
                                 </PopupEditTask>
                                 <CustomDropdownItem value="Delete" icon="material-symbols:delete-outline-rounded"
-                                    :select-action="() => taskStore.deleteTask(task)" />
+                                    :on-select="() => taskStore.deleteTask(task)" />
                             </DropdownMenuContent>
                         </DropdownMenuPortal>
                     </DropdownMenuRoot>

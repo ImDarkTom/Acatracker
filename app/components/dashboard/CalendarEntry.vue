@@ -41,11 +41,7 @@ const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventPro
                 :avoid-collisions="true"
                 :collision-padding="8"
                 :side-offset="8"
-                class="card bg-bg-active flex flex-col gap-2 shadow-md shadow-shadow-base p-4 pr-10 min-w-60 max-w-md
-                    data-[side=top]:animate-slide-up
-                    data-[side=top]:data-[state=closed]:animate-fade-out
-                    data-[side=bottom]:animate-slide-down
-                    data-[side=bottom]:data-[state=closed]:animate-fade-out">
+                class="card bg-bg-active flex flex-col gap-2 shadow-md shadow-shadow-base p-4 pr-10 min-w-60 max-w-md animate-dynamic-slide">
                 <span :class="{
                     'text-event-due': eventProp.type === 'due',
                     'text-event-released': eventProp.type === 'released',

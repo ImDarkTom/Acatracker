@@ -1,4 +1,4 @@
-import { ICalCategory, ICalEvent, ICalEventData, ICalEventStatus } from "ical-generator";
+import { ICalEventData, ICalEventStatus } from "ical-generator";
 import { findAssessments } from "~~/lib/db/queries/assessments";
 import { findModules } from "~~/lib/db/queries/modules";
 import { findTasks } from "~~/lib/db/queries/tasks";
