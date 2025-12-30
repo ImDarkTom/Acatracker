@@ -31,5 +31,16 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     'nuxt-csurf',
     'reka-ui/nuxt',
-  ]
+  ],
+
+  icon: {
+    clientBundle: {
+      scan: true,
+
+      icons: [
+        'material-symbols:light-mode-outline-rounded',
+        'material-symbols:dark-mode-outline-rounded'
+      ]
+    }
+  }
 })
