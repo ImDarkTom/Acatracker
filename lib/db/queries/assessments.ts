@@ -5,13 +5,13 @@ import { customAlphabet } from "nanoid";
 
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvqxyz", 5);
 
-export async function findAssessments(userId: number) {
+export async function findAssessments(userId: number): Promise<AssessmentSchema[]> {
     return db.query.assessment.findMany({
         where: eq(assessment.userId, userId),
     });
 }
 
-export async function findAssessmentBySlug(slug: string) {
+export async function findAssessmentBySlug(slug: string): Promise<AssessmentSchema | undefined> {
     return db.query.assessment.findFirst({
         where: eq(assessment.slug, slug),
     });
@@ -35,7 +35,11 @@ export async function findUniqueSlug(slug: string): Promise<string> {
     return slug;
 }
 
-export async function insertAssessment(insertable: InsertAssessment, slug: string, userId: number) {
+export async function insertAssessment(
+    insertable: InsertAssessment, 
+    slug: string, 
+    userId: number
+): Promise<AssessmentSchema | undefined> {
     const [ created ] = await db.insert(assessment).values({
         ...insertable,
         slug,
@@ -45,7 +49,10 @@ export async function insertAssessment(insertable: InsertAssessment, slug: strin
     return created;
 }
 
-export async function deleteAssessmentById(id: number, userId: number) {
+export async function deleteAssessmentById(
+    id: number, 
+    userId: number
+): Promise<AssessmentSchema | undefined> {
     const [ removed ] = await db.delete(assessment).where(
         and(
             eq(assessment.id, id),
@@ -56,7 +63,11 @@ export async function deleteAssessmentById(id: number, userId: number) {
     return removed;
 }
 
-export async function updateAssessmentById(id: number, newAssessment: Partial<InsertAssessment>, userId: number) {
+export async function updateAssessmentById(
+    id: number, 
+    newAssessment: Partial<InsertAssessment>, 
+    userId: number
+): Promise<AssessmentSchema | undefined> {
     const [ updated ] = await db.update(assessment)
         .set(newAssessment)
         .where(
