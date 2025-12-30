@@ -21,7 +21,7 @@ const { deleteModule } = useModuleStore();
             <DropdownMenuRoot>
                 <DropdownMenuTrigger :as-child="true">
                     <ButtonGhost class="size-8 justify-center data-[state='open']:bg-bg-active">
-                        <Icon name="material-symbols:more-vert" size="24" />
+                        <Icon name="lucide:ellipsis-vertical" size="24" />
                     </ButtonGhost>
                 </DropdownMenuTrigger>
                 <DropdownMenuPortal>
@@ -29,12 +29,12 @@ const { deleteModule } = useModuleStore();
                         <PopupEditModule :module>
                             <CustomDropdownItem 
                                 value="Edit" 
-                                icon="material-symbols:edit-outline-rounded"
+                                icon="lucide:pencil"
                                 @select="e => e.preventDefault()"/>
                         </PopupEditModule>
                         <CustomDropdownItem 
                             value="Delete" 
-                            icon="material-symbols:delete-outline-rounded"
+                            icon="lucide:trash-2"
                             @select="deleteModule(module)" />
                     </DropdownMenuContent>
                 </DropdownMenuPortal>
@@ -73,7 +73,7 @@ const { deleteModule } = useModuleStore();
                     <DropdownMenuTrigger
                         :as-child="true">
                         <ButtonGhost class="size-8 justify-center data-[state='open']:bg-bg-active">
-                            <Icon name="material-symbols:more-vert" size="24" />
+                            <Icon name="lucide:ellipsis-vertical" size="24" />
                         </ButtonGhost>
                     </DropdownMenuTrigger>
                     <DropdownMenuPortal>
@@ -82,12 +82,12 @@ const { deleteModule } = useModuleStore();
                                 <PopupEditAssessment :assessment>
                                     <CustomDropdownItem 
                                     value="Edit" 
-                                    icon="material-symbols:edit-outline-rounded"
+                                    icon="lucide:pencil"
                                     @select="e => e.preventDefault()" />
                                 </PopupEditAssessment>
                                 <CustomDropdownItem 
                                     value="Delete" 
-                                    icon="material-symbols:delete-outline-rounded"
+                                    icon="lucide:trash-2"
                                     @select="deleteAssessment(assessment)" />
                             </DropdownMenuContent>
                         </Transition>

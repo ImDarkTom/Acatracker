@@ -50,7 +50,7 @@ const onSubmit = submitHandler(async (values) => editTask(values, props.task.id)
                 :isLoading
                 :errors
                 :submitBtn="{
-                    icon: 'material-symbols:edit-outline-rounded',
+                    icon: 'lucide:pencil',
                     label: 'Edit'
                 }"
                 :fields="[

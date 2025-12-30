@@ -61,7 +61,7 @@ function handleExitClick(e: Event, exitFn: () => void) {
                         aria-label="Close"
                         @click="handleExitClick($event, dialogClose)">
                         <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-bg-active active:bg-bg-focus">
-                            <Icon name="material-symbols:close-rounded" size="20" />
+                            <Icon name="lucide:x" size="20" />
                         </div>
                     </button>
                 </DialogContent>

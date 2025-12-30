@@ -63,7 +63,7 @@ const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventPro
                 <PopoverArrow class="fill-highlight" />
                 <PopoverClose class="absolute top-2 right-2">
                     <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-highlight active:bg-bg-focus">
-                        <Icon name="material-symbols:close-rounded" size="20" />
+                        <Icon name="lucide:x" size="20" />
                     </div>
                 </PopoverClose>
             </PopoverContent>

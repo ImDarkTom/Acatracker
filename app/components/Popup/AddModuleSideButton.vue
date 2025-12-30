@@ -1,7 +1,7 @@
 <template>
     <PopupAddModule>
         <ButtonPrimary @click.prevent>
-            <Icon name="material-symbols:add" size="18" />
+            <Icon name="lucide:plus" />
         </ButtonPrimary>
     </PopupAddModule>
 </template>

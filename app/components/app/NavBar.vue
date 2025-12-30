@@ -7,12 +7,12 @@
             <NavbarItem
                 class="md:hidden"
                 to="/dashboard/assessments" 
-                iconName="material-symbols:task-alt-rounded"
+                iconName="lucide:list"
                 text="Assessments" />
             <NavbarItem
                 class="md:hidden"
                 to="/dashboard/calendar" 
-                iconName="material-symbols:calendar-month-outline-rounded"
+                iconName="lucide:calendar"
                 text="Calendar" />
         </ul>
         <ul class="flex flex-row gap-2">

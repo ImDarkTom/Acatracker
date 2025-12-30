@@ -15,7 +15,7 @@ const error = route.query.error || "An unknown error occurred.";
         </div>
         <NuxtLink to="/">
             <ButtonPrimary>
-                <Icon name="material-symbols:arrow-back-rounded" />
+                <Icon name="lucide:arrow-left" />
                 Home
             </ButtonPrimary>
         </NuxtLink>

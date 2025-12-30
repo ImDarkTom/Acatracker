@@ -23,7 +23,7 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                 <AppTooltip content="Previous month">
                     <CalendarPrev :as-child="true">
                         <ButtonGhost>
-                            <Icon name="material-symbols:chevron-left-rounded" size="24" />
+                            <Icon name="lucide:chevron-left" />
                         </ButtonGhost>
                     </CalendarPrev>
                 </AppTooltip>
@@ -31,7 +31,7 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                 <AppTooltip content="Next month">
                     <CalendarNext :as-child="true">
                         <ButtonGhost>
-                            <Icon name="material-symbols:chevron-right-rounded" size="24" />
+                            <Icon name="lucide:chevron-right" />
                         </ButtonGhost>
                     </CalendarNext>
                 </AppTooltip>

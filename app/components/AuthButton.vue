@@ -23,17 +23,17 @@ const authStore = useAuthStore();
                 class="dropdown-content z-100">
                 <CustomDropdownItem 
                     value="Dashboard" 
-                    icon="material-symbols:dashboard-outline-rounded" 
+                    icon="lucide:layout-dashboard" 
                     link="/dashboard" />
                 <CustomDropdownSeparator />
                 <CustomDropdownItem 
                     value="Subscribe" 
-                    icon="material-symbols:calendar-add-on-outline-rounded"
+                    icon="lucide:calendar-plus"
                     link="/dashboard/subscribe" />
                 <CustomDropdownSeparator />
                 <CustomDropdownItem 
                     value="Sign Out"
-                    icon="material-symbols:logout-rounded" 
+                    icon="lucide:log-out" 
                     link="/sign-out" />
             </DropdownMenuContent>
         </DropdownMenuPortal>
