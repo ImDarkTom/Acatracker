@@ -32,6 +32,10 @@ const authStore = useAuthStore();
                     link="/dashboard/subscribe" />
                 <CustomDropdownSeparator />
                 <CustomDropdownItem 
+                    value="My Account"
+                    icon="lucide:circle-user" 
+                    link="/dashboard/account" />
+                <CustomDropdownItem 
                     value="Sign Out"
                     icon="lucide:log-out" 
                     link="/sign-out" />
