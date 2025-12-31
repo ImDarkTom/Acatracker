@@ -14,13 +14,15 @@ export function useEditDialogForm({
     });
 
     const submitHandler = (
-        submitFn: (values: any) => Promise<void>, 
+        submitFn: (values: any) => void | Promise<void>, 
         setErrors: ReturnType<typeof useForm>['setErrors'], 
     ) => handleSubmit(async (values) => {
         try {
             submitError.value = "";
             isLoading.value = true;
+
             await submitFn(values);
+            
             isSubmitted.value = true;
             isOpen.value = false;
         } catch (e) {
