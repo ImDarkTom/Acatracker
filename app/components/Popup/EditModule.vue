@@ -45,7 +45,7 @@ const onSubmit = submitHandler(async (values) => editModule(values, props.module
                 :isLoading
                 :errors
                 :submitBtn="{
-                    icon: 'material-symbols:edit-outline-rounded',
+                    icon: 'lucide:pencil',
                     label: 'Edit'
                 }"
                 :fields="[

@@ -38,8 +38,8 @@ export default defineNuxtConfig({
       scan: true,
 
       icons: [
-        'material-symbols:light-mode-outline-rounded',
-        'material-symbols:dark-mode-outline-rounded'
+        'lucide:sun',
+        'lucide:moon'
       ]
     }
   }

@@ -15,12 +15,7 @@ const onSubmit = submitHandler(addModule, setErrors);
 <template>
     <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError>
         <template #button>
-            <slot>
-                <ButtonPrimary class="p-4 w-full px-auto">
-                    <Icon name="material-symbols:create-new-folder-outline" />
-                    Add Module
-                </ButtonPrimary>
-            </slot>
+            <slot />
         </template>
         <template #title>
             Add new module
@@ -34,7 +29,7 @@ const onSubmit = submitHandler(addModule, setErrors);
                 :isLoading
                 :errors
                 :submitBtn="{
-                    icon: 'material-symbols:add-rounded',
+                    icon: 'lucide:plus',
                     label: 'Add'
                 }"
                 :fields="[

@@ -23,12 +23,7 @@ const onSubmit = submitHandler(addTask, setErrors);
 <template>
     <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError>
         <template #button>
-            <slot>
-                <ButtonPrimary class="w-full">
-                    <Icon name="material-symbols:add-task-rounded" size="18" />
-                    Add Task
-                </ButtonPrimary>
-            </slot>
+            <slot />
         </template>
         <template #title>
             Add New Task
@@ -42,7 +37,7 @@ const onSubmit = submitHandler(addTask, setErrors);
                 :isLoading
                 :errors
                 :submitBtn="{
-                    icon: 'material-symbols:add-rounded',
+                    icon: 'lucide:plus',
                     label: 'Add'
                 }"
                 :fields="[

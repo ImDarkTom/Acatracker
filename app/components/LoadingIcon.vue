@@ -1,3 +1,3 @@
 <template>
-    <Icon name="material-symbols:thermostat-carbon-outline" class="animate-spin" />
+    <Icon name="lucide:loader-circle" class="animate-spin" />
 </template>

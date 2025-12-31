@@ -65,13 +65,13 @@ async function toggleAssessmentCompleted() {
         <div class="flex flex-row gap-2">
             <NuxtLink to="/dashboard">
                 <ButtonPrimary>
-                    <Icon name="material-symbols:arrow-back-rounded" size="20" />
+                    <Icon name="lucide:arrow-left" />
                     Back to calendar
                 </ButtonPrimary>
             </NuxtLink>
             <PopupEditAssessment :assessment="assessment.data">
                 <ButtonSecondary>
-                    <Icon name="material-symbols:edit-outline-rounded" size="20" />
+                    <Icon name="lucide:pencil" />
                     Edit
                 </ButtonSecondary>
             </PopupEditAssessment>
@@ -97,18 +97,18 @@ async function toggleAssessmentCompleted() {
                     <DropdownMenuRoot>
                         <DropdownMenuTrigger
                             class="rounded-sm data-[state='open']:bg-bg-focus cursor-pointer p-2 size-8 flex items-center justify-center">
-                            <Icon name="material-symbols:more-vert" size="24" />
+                            <Icon name="lucide:ellipsis-vertical" size="24" />
                         </DropdownMenuTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuContent
-                                class="dropdown-card">
+                                class="dropdown-content">
                                 <PopupEditTask 
                                     :task 
                                     :assessment="assessment.data">
-                                    <CustomDropdownItem value="Edit" icon="material-symbols:edit-outline-rounded"
+                                    <CustomDropdownItem value="Edit" icon="lucide:pencil"
                                         :on-select="(e) => e.preventDefault()" />
                                 </PopupEditTask>
-                                <CustomDropdownItem value="Delete" icon="material-symbols:delete-outline-rounded"
+                                <CustomDropdownItem value="Delete" icon="lucide:trash-2"
                                     :on-select="() => taskStore.deleteTask(task)" />
                             </DropdownMenuContent>
                         </DropdownMenuPortal>
@@ -116,7 +116,12 @@ async function toggleAssessmentCompleted() {
                 </div>
                 <p v-if="task.description" class="text-sm text-text-secondary">{{ task.description }}</p>
             </div>
-            <PopupAddTask :assessment="assessment.data" />
+            <PopupAddTask :assessment="assessment.data" >
+                <ButtonPrimary class="w-full">
+                    <Icon name="lucide:circle-check-big" />
+                    Add Task
+                </ButtonPrimary>
+            </PopupAddTask>
         </div>
 
         <div class="text-lg card bg-bg-active rounded-sm">

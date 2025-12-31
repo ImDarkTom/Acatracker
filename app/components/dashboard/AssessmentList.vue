@@ -36,8 +36,7 @@ const stopRefreshAnim = () => {
                         @click="refresh" 
                         :disabled="pending">
                         <Icon 
-                            name="material-symbols:refresh-rounded" 
-                            size="24"
+                            name="lucide:refresh-cw" 
                             :class="{
                                 'animate-spin-once': isRefreshing
                             }"
@@ -62,13 +61,13 @@ const stopRefreshAnim = () => {
             <div class="flex flex-row gap-2">
                 <PopupAddAssessment>
                     <ButtonSecondary class="p-4 w-full px-auto">
-                        <Icon name="material-symbols:add-notes-outline-rounded" />
+                        <Icon name="lucide:clipboard-list" />
                         Add Assessment
                     </ButtonSecondary>
                 </PopupAddAssessment>
                 <PopupAddModule>
                     <ButtonSecondary aria-label="Add Module" title="Add Module" class="aspect-square flex justify-center">
-                        <Icon name="material-symbols:create-new-folder-outline-rounded" />
+                        <Icon name="lucide:layers" />
                     </ButtonSecondary>
                 </PopupAddModule>
             </div>

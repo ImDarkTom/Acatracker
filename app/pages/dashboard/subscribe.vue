@@ -22,11 +22,11 @@ function copyText() {
 <template>
     <div class="w-full h-72 flex flex-row gap-4 my-auto max-w-md mx-auto">
         <div class="w-full bg-bg-base rounded-lg">
-            <div v-if="error || !data">
-                Error occured getting calendar token: {{ error }}
-            </div>
-            <div v-else-if="pending">
+            <div v-if="pending">
                 <LoadingIcon />
+            </div>
+            <div v-else-if="error || !data">
+                Error occured getting calendar token: {{ error }}
             </div>
             <div v-else class="h-full flex flex-col gap-2 items-center justify-between p-2">
                 <span>Subscribe to your calendar inside other apps</span>

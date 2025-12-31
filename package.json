@@ -39,7 +39,7 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
-    "@iconify-json/material-symbols": "^1.2.50",
+    "@iconify-json/lucide": "^1.2.82",
     "@types/slug": "^5.0.9",
     "drizzle-kit": "^0.31.8",
     "typescript": "^5.9.3"
