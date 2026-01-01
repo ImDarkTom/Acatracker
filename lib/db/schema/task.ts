@@ -27,10 +27,10 @@ export const task = sqliteTable("task", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text().notNull(),
     description: text(),
-    assessment: int().notNull().references(() => assessment.id),
+    assessment: int().notNull().references(() => assessment.id, { onDelete: 'cascade' }),
     dueAt: int().notNull(),
     completed: int({ mode: 'boolean' }),
-    userId: int().notNull().references(() => user.id),
+    userId: int().notNull().references(() => user.id, { onDelete: 'cascade' }),
     createdAt: int().notNull().$default(() => Date.now()),
     updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });

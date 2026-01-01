@@ -9,7 +9,7 @@ const relativeFetch =(<T>(url: string, opts?: UseFetchOptions<T>) => {
     return useFetch(url, opts);
 });
 
-const authClient = createAuthClient();
+export const authClient = createAuthClient();
 
 export const useAuthStore = defineStore("useAuthStore", () => {
     const session = ref<Awaited<ReturnType<typeof authClient.useSession>> | null>(null);

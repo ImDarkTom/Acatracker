@@ -2,8 +2,13 @@ import { FetchError } from "ofetch";
 
 export function useEditDialogForm({ 
     meta,
-    handleSubmit
-}: Pick<ReturnType<typeof useForm>, 'meta' | 'handleSubmit'>) {
+    handleSubmit,
+}: Pick<ReturnType<typeof useForm>, 'meta' | 'handleSubmit'>, 
+formSettings: {
+    confirmBeforeExiting: boolean,
+} = { 
+    confirmBeforeExiting: true
+}) {
     const isOpen = ref(false);
     const isLoading = ref(false);
     const isSubmitted = ref(false);
@@ -36,14 +41,16 @@ export function useEditDialogForm({
         }
     });
     
-    onBeforeRouteLeave(() => {
-        if (confirmBeforeExiting.value) {
-            if (!confirm('Are you sure you want to leave? All unsaved changes will be lost.')) {
-                return false;
+    if (formSettings.confirmBeforeExiting) {
+        onBeforeRouteLeave(() => {
+            if (confirmBeforeExiting.value) {
+                if (!confirm('Are you sure you want to leave? All unsaved changes will be lost.')) {
+                    return false;
+                }
             }
-        }
-        return true;
-    });
+            return true;
+        });
+    }
 
     return {
         isOpen,

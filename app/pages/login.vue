@@ -2,11 +2,11 @@
 import z from 'zod';
 
 useHead({
-    title: 'Sign Up | Acatracker',
+    title: 'Login | Acatracker',
     meta: [
         {
             name: 'description',
-            content: 'Create your Acatracker account.'
+            content: 'Login to your Acatracker account.'
         }
     ]
 });
@@ -14,40 +14,47 @@ useHead({
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(z.object({
         email: z.email('Invalid email address.'),
-        password: z.string("A password is required.").min(8, "Password must be at least 8 characters.").max(128, "Password must be under 128 characters."),
-        name: z.string('A username is required.').max(30, 'Username must be under 30 characters.')
+        password: z.string("A password is required."),
     })),
     initialValues: {}
 });
 
-const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit }, { confirmBeforeExiting: false });
+const { isLoading, submitHandler } = useEditDialogForm({ meta, handleSubmit }, { confirmBeforeExiting: false });
+const errorText = ref<string>('');
 
-const onSubmit = submitHandler(async (values: { email: string, password: string, name: string }) => {
+const onSubmit = submitHandler(async (values: { email: string, password: string }) => {
+    errorText.value = '';
+
     const { csrf } = useCsrf();
 
     const headers = new Headers();
     headers.append('csrf-token', csrf);
 
-    await authClient.signUp.email({
+    const { data, error } = await authClient.signIn.email({
         email: values.email,
         password: values.password,
-        name: values.name,
         callbackURL: '/dashboard',
         fetchOptions: {
             headers,
         }
     });
 
+    if (error) {
+        errorText.value = error.message ?? 'An unknown error occurred.';
+        return;
+    }
+
     navigateTo('/dashboard');
 }, setErrors);
-
-const authStore = useAuthStore();
 </script>
 
 <template>
     <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
         <div class="card w-full md:w-md p-4">
-            <h1 class="text-xl font-bold">Sign Up</h1>
+            <h1 class="text-xl font-bold">Login</h1>
+            <div v-if="errorText" class="bg-errorbg p-2 rounded-sm">
+                {{ errorText }}
+            </div>
             <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
                 <label>
                     <span class="font-medium">
@@ -72,34 +79,13 @@ const authStore = useAuthStore();
                 </label>
                 <label>
                     <span class="font-medium">
-                        Username
-                    </span>
-                    <div class="flex flex-row gap-2">
-                        <Field
-                            name="name"
-                            type="text"
-                            placeholder="Enter a username"
-                            required
-                            :disabled="isLoading"
-                            :error="errors.name"
-                            class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
-                            :class="{
-                                'ring-errortxt!': errors.name,
-                                'opacity-50': isLoading,
-                            }">
-                        </Field>
-                    </div>
-                    <ErrorMessage name="name" class="text-sm text-errortxt" />
-                </label>
-                <label>
-                    <span class="font-medium">
                         Password
                     </span>
                     <div class="flex flex-row gap-2">
                         <Field
                             name="password"
                             type="password"
-                            placeholder="Enter a password"
+                            placeholder="Enter your password"
                             :disabled="isLoading"
                             :error="errors.password"
                             class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
@@ -115,9 +101,9 @@ const authStore = useAuthStore();
                     <ButtonPrimary 
                         type="submit" 
                         :disabled="isLoading">
-                        <Icon v-if="!isLoading" name="lucide:plus" />
+                        <Icon v-if="!isLoading" name="lucide:log-in" />
                         <LoadingIcon v-else />
-                        Sign Up
+                        Login
                     </ButtonPrimary>
                 </div>
             </form>

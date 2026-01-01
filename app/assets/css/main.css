@@ -19,6 +19,11 @@
     --color-errortxt: hsl(0, 40%, 50%);
     --color-errorbg: hsl(0, 50%, 25%);
 
+    --color-danger-muted: hsl(0, 30%, 30%);
+    --color-danger-base: hsl(0, 30%, 40%);
+    --color-danger-active: hsl(0, 50%, 50%);
+    --color-danger-focus: hsl(0, 50%, 70%);
+
     --color-event-released: var(--color-green-500);
     --color-event-due: var(--color-red-500);
     --color-event-task: var(--color-amber-500);
