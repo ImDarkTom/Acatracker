@@ -1,9 +1,9 @@
 import { deleteAssessmentById } from "~~/lib/db/queries/assessments";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
+import { parseIdParam } from "~~/server/utils/validation";
 
 export default defineAuthenticatedEventHander(async (event) => {
-    const idString = getRouterParam(event, "id") as string;
-    const id = parseInt(idString);
+    const id = parseIdParam(event);
 
     const deleted = deleteAssessmentById(id, event.context.user.id);
 
@@ -15,4 +15,4 @@ export default defineAuthenticatedEventHander(async (event) => {
     }
 
     setResponseStatus(event, 204);
-})
+});

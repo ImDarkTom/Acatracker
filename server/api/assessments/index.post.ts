@@ -4,39 +4,22 @@ import slugify from "slug";
 import { InsertAssessment } from "~~/lib/db/schema";
 import { findUniqueSlug, insertAssessment } from "~~/lib/db/queries/assessments";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
+import { validateBody } from "~~/server/utils/validation";
 
 export default defineAuthenticatedEventHander(async (event) => {
-    const result = await readValidatedBody(event, InsertAssessment.safeParse);
+    const bodyData = await validateBody(event, InsertAssessment);
 
-    if (!result.success) {
-        const statusMessage = result.error.issues
-            .map((issue) => `${issue.path.join('')}: ${issue.message}`)
-            .join("; ");
-
-        const statusData = result.error.issues
-            .reduce((errors, issue) => {
-                errors[issue.path.join('')] = issue.message;
-                return errors;
-            }, {} as Record<string, string>);
-        
-        return sendError(event, createError({
-            status: 422,
-            statusMessage,
-            data: statusData,
-        }));
-    }
-
-    const slug = await findUniqueSlug(slugify(result.data.name));
+    const createdSlug = await findUniqueSlug(slugify(bodyData.name));
 
     try {
-        return insertAssessment(result.data, slug, event.context.user.id);
+        return insertAssessment(bodyData, createdSlug, event.context.user.id);
     } catch (e) {
         const error = e as DrizzleError;
         if ((error.cause as LibsqlError).message.trim() === "SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: assessment.slug") {
-            return sendError(event, createError({
+            throw createError({
                 statusCode: 409,
                 statusMessage: "Slug must be unique (the assessment name is used to generate the slug)."
-            }));
+            });
         }
         throw error;
     }
