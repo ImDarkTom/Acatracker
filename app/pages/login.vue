@@ -11,6 +11,8 @@ useHead({
     ]
 });
 
+const authStore = useAuthStore();
+
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(z.object({
         email: z.email('Invalid email address.'),
@@ -50,11 +52,27 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
 
 <template>
     <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
-        <div class="card w-full md:w-md p-4">
+        <div class="card w-full md:w-md p-4 flex flex-col gap-2">
             <h1 class="text-xl font-bold">Login</h1>
             <div v-if="errorText" class="bg-errorbg p-2 rounded-sm">
                 {{ errorText }}
             </div>
+
+            <ButtonSecondary
+                class="w-full justify-center"
+                @click="authStore.signIn">
+                <LoadingIcon v-if="authStore.isLoading" />
+                <Icon v-else name="mdi:github" />
+                
+                <span>Sign in with Github</span>
+            </ButtonSecondary>
+
+            <div class="flex flex-row gap-2 items-center">
+                <div class="w-full h-px bg-text-secondary"></div>
+                <span class="text-sm">or</span>
+                <div class="w-full h-px bg-text-secondary"></div>
+            </div>
+
             <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
                 <label>
                     <span class="font-medium">

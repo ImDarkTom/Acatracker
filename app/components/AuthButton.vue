@@ -42,13 +42,10 @@ const authStore = useAuthStore();
             </DropdownMenuContent>
         </DropdownMenuPortal>
     </DropdownMenuRoot>
-    <ButtonPrimary 
-        v-else 
-        :disabled="authStore.isLoading" 
-        @click="authStore.signIn">
-        <LoadingIcon v-if="authStore.isLoading" />
-        <Icon v-else name="mdi:github" />
-        
-        <span>Sign in with Github</span>
-    </ButtonPrimary>
+    <RouterLink v-else to="/login">
+        <ButtonPrimary>
+            <Icon name="lucide:log-in" />
+            <span>Login</span>
+        </ButtonPrimary>
+    </RouterLink>
 </template>
