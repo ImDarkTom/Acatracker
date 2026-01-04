@@ -2,16 +2,14 @@
 import z from 'zod';
 
 useHead({
-    title: 'Login | Acatracker',
+    title: 'Sign In | Acatracker',
     meta: [
         {
             name: 'description',
-            content: 'Login to your Acatracker account.'
+            content: 'Sign in to your Acatracker account.'
         }
     ]
 });
-
-const authStore = useAuthStore();
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(z.object({
@@ -21,8 +19,14 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     initialValues: {}
 });
 
-const { isLoading, submitHandler } = useEditDialogForm({ meta, handleSubmit }, { confirmBeforeExiting: false });
+const authStore = useAuthStore();
+
+const { isLoading: isFormLoading, submitHandler } = useEditDialogForm({ meta, handleSubmit }, { confirmBeforeExiting: false });
 const errorText = ref<string>('');
+
+const isSigningIn = computed(() => {
+    return isFormLoading.value || authStore.isLoading;
+});
 
 const onSubmit = submitHandler(async (values: { email: string, password: string }) => {
     errorText.value = '';
@@ -53,24 +57,17 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
 <template>
     <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
         <div class="card w-full md:w-md p-4 flex flex-col gap-2">
-            <h1 class="text-xl font-bold">Login</h1>
+            <h1 class="text-xl font-bold text-center mb-4">Sign in to Acatracker</h1>
             <div v-if="errorText" class="bg-errorbg p-2 rounded-sm">
                 {{ errorText }}
             </div>
 
-            <ButtonSecondary
-                class="w-full justify-center"
-                @click="authStore.signIn">
-                <LoadingIcon v-if="authStore.isLoading" />
-                <Icon v-else name="mdi:github" />
-                
-                <span>Sign in with Github</span>
-            </ButtonSecondary>
-
+            <AuthExternalAuthButtons />
+            
             <div class="flex flex-row gap-2 items-center">
-                <div class="w-full h-px bg-text-secondary"></div>
+                <div class="w-full h-px bg-text-secondary/50"></div>
                 <span class="text-sm">or</span>
-                <div class="w-full h-px bg-text-secondary"></div>
+                <div class="w-full h-px bg-text-secondary/50"></div>
             </div>
 
             <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
@@ -84,12 +81,12 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
                             type="email"
                             placeholder="Enter your email"
                             required
-                            :disabled="isLoading"
+                            :disabled="isSigningIn"
                             :error="errors.email"
                             class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
                             :class="{
                                 'ring-errortxt!': errors.email,
-                                'opacity-50': isLoading,
+                                'opacity-50': isSigningIn,
                             }">
                         </Field>
                     </div>
@@ -104,27 +101,30 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
                             name="password"
                             type="password"
                             placeholder="Enter your password"
-                            :disabled="isLoading"
+                            :disabled="isSigningIn"
                             :error="errors.password"
                             class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
                             :class="{
                                 'ring-errortxt!': errors.password,
-                                'opacity-50': isLoading,
+                                'opacity-50': isSigningIn,
                             }">
                         </Field>
                     </div>
                     <ErrorMessage name="password" class="text-sm text-errortxt" />
                 </label>
-                <div class="flex justify-end mt-2">
-                    <ButtonPrimary 
-                        type="submit" 
-                        :disabled="isLoading">
-                        <Icon v-if="!isLoading" name="lucide:log-in" />
-                        <LoadingIcon v-else />
-                        Login
-                    </ButtonPrimary>
-                </div>
+                <ButtonPrimary 
+                    class="justify-center mt-2"
+                    type="submit"
+                    :disabled="isSigningIn">
+                    <Icon v-if="!isSigningIn" name="lucide:log-in" />
+                    <LoadingIcon v-else />
+                    Sign in
+                </ButtonPrimary>
             </form>
+
+            <span class="text-center">
+                New? <RouterLink to="/sign-up" class="link-text">Create an account</RouterLink>
+            </span>
         </div>
     </div>
 </template>

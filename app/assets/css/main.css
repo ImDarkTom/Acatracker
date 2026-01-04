@@ -123,6 +123,10 @@ body {
         @apply w-52 bg-bg-active rounded-md p-1 shadow-sm shadow-shadow-base ring-1 ring-inset ring-highlight mt-1 overflow-hidden;
     }
 
+    .link-text {
+        @apply text-brand-active hover:underline hover:text-brand-focus;
+    }
+
     .animate-dynamic-slide {
         @apply data-[side=top]:animate-slide-up
             data-[side=top]:data-[state=closed]:animate-fade-out

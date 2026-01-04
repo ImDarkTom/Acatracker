@@ -11,6 +11,8 @@ useHead({
     ]
 });
 
+const authStore = useAuthStore();
+
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(z.object({
         email: z.email('Invalid email address.'),
@@ -20,15 +22,22 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     initialValues: {}
 });
 
-const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit }, { confirmBeforeExiting: false });
+const { isLoading: isFormLoading, submitHandler } = useEditDialogForm({ meta, handleSubmit }, { confirmBeforeExiting: false });
+const errorText = ref<string>('');
+
+const isSigningUp = computed(() => {
+    return isFormLoading.value || authStore.isLoading;
+});
 
 const onSubmit = submitHandler(async (values: { email: string, password: string, name: string }) => {
+    errorText.value = '';
+    
     const { csrf } = useCsrf();
 
     const headers = new Headers();
     headers.append('csrf-token', csrf);
 
-    await authClient.signUp.email({
+    const { data, error } = await authClient.signUp.email({
         email: values.email,
         password: values.password,
         name: values.name,
@@ -38,16 +47,31 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
         }
     });
 
+    if (error) {
+        errorText.value = error.message ?? 'An unknown error occurred.';
+        return;
+    }
+
     navigateTo('/dashboard');
 }, setErrors);
-
-const authStore = useAuthStore();
 </script>
 
 <template>
     <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
-        <div class="card w-full md:w-md p-4">
-            <h1 class="text-xl font-bold">Sign Up</h1>
+        <div class="card w-full md:w-md p-4 flex flex-col gap-2">
+            <h1 class="text-xl font-bold text-center mb-4">Create an Acatracker account</h1>
+            <div v-if="errorText" class="bg-errorbg p-2 rounded-sm">
+                {{ errorText }}
+            </div>
+
+            <AuthExternalAuthButtons />
+
+            <div class="flex flex-row gap-2 items-center">
+                <div class="w-full h-px bg-text-secondary/50"></div>
+                <span class="text-sm">or</span>
+                <div class="w-full h-px bg-text-secondary/50"></div>
+            </div>
+
             <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
                 <label>
                     <span class="font-medium">
@@ -59,12 +83,12 @@ const authStore = useAuthStore();
                             type="email"
                             placeholder="Enter your email"
                             required
-                            :disabled="isLoading"
+                            :disabled="isSigningUp"
                             :error="errors.email"
                             class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
                             :class="{
                                 'ring-errortxt!': errors.email,
-                                'opacity-50': isLoading,
+                                'opacity-50': isSigningUp,
                             }">
                         </Field>
                     </div>
@@ -80,12 +104,12 @@ const authStore = useAuthStore();
                             type="text"
                             placeholder="Enter a username"
                             required
-                            :disabled="isLoading"
+                            :disabled="isSigningUp"
                             :error="errors.name"
                             class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
                             :class="{
                                 'ring-errortxt!': errors.name,
-                                'opacity-50': isLoading,
+                                'opacity-50': isSigningUp,
                             }">
                         </Field>
                     </div>
@@ -100,27 +124,30 @@ const authStore = useAuthStore();
                             name="password"
                             type="password"
                             placeholder="Enter a password"
-                            :disabled="isLoading"
+                            :disabled="isSigningUp"
                             :error="errors.password"
                             class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
                             :class="{
                                 'ring-errortxt!': errors.password,
-                                'opacity-50': isLoading,
+                                'opacity-50': isSigningUp,
                             }">
                         </Field>
                     </div>
                     <ErrorMessage name="password" class="text-sm text-errortxt" />
                 </label>
-                <div class="flex justify-end mt-2">
-                    <ButtonPrimary 
-                        type="submit" 
-                        :disabled="isLoading">
-                        <Icon v-if="!isLoading" name="lucide:plus" />
-                        <LoadingIcon v-else />
-                        Sign Up
-                    </ButtonPrimary>
-                </div>
+                <ButtonPrimary
+                    class="justify-center"
+                    type="submit" 
+                    :disabled="isSigningUp">
+                    <Icon v-if="!isSigningUp" name="lucide:user-plus" />
+                    <LoadingIcon v-else />
+                    Sign Up
+                </ButtonPrimary>
             </form>
+
+            <span class="text-center">
+                Already have an account? <RouterLink to="/sign-in" class="link-text">Sign in</RouterLink>
+            </span>
         </div>
     </div>
 </template>

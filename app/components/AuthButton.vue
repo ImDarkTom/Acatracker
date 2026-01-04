@@ -42,10 +42,5 @@ const authStore = useAuthStore();
             </DropdownMenuContent>
         </DropdownMenuPortal>
     </DropdownMenuRoot>
-    <RouterLink v-else to="/login">
-        <ButtonPrimary>
-            <Icon name="lucide:log-in" />
-            <span>Login</span>
-        </ButtonPrimary>
-    </RouterLink>
+    <AuthSignUpSignInButtons v-else />
 </template>

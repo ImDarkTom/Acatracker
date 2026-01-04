@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     event.context.user = session?.user as unknown as UserWithId;
 
     if (session?.user) {
-        if (event.path === '/') {
+        if (['/', '/sign-in', '/sign-up'].includes(event.path)) {
             await sendRedirect(event, '/dashboard', 302);
         }
     } else {
