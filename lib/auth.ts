@@ -4,6 +4,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware } from "better-auth/plugins";
 import env from './env';
 import { calendarToken } from './db/schema';
+import { resend } from './email/resend';
 
 export type UserWithId = Omit<User, 'id'> & {
     id: number;
@@ -50,6 +51,25 @@ export const auth = betterAuth({
     },
     emailAndPassword: {
         enabled: true,
+        minPasswordLength: 8,
+        requireEmailVerification: true,
+    },
+    emailVerification: {
+        sendOnSignUp: true,
+        autoSignInAfterVerification: true,
+        sendVerificationEmail: async({ user, url }) => {
+            await resend.emails.send({
+                from: 'Acatracker <verify@acatracker.app>',
+                to: user.email,
+                subject: 'Verify your Acatracker account',
+                template: {
+                    id: 'email-verification',
+                    variables: {
+                        URL: url,
+                    }
+                }
+            });
+        },
     },
     user: {
         deleteUser: {

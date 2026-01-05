@@ -37,7 +37,7 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
     const headers = new Headers();
     headers.append('csrf-token', csrf);
 
-    const { data, error } = await authClient.signUp.email({
+    const { error } = await authClient.signUp.email({
         email: values.email,
         password: values.password,
         name: values.name,
@@ -52,11 +52,18 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
         return;
     }
 
-    navigateTo('/dashboard');
+    emailVerificationEmail.value = values.email;
+    emailVerificationRequired.value = true;
 }, setErrors);
+
+const emailVerificationRequired = ref(false);
+const emailVerificationEmail = ref('');
 </script>
 
 <template>
+    <AuthVerifyEmail 
+        v-if="emailVerificationRequired" 
+        :email="emailVerificationEmail" />
     <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
         <div class="card w-full md:w-md p-4 flex flex-col gap-2">
             <h1 class="text-xl font-bold text-center mb-4">Create an Acatracker account</h1>
