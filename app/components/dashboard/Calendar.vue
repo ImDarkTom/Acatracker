@@ -19,7 +19,7 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
             :weekday-format="'short'"
             fixed-weeks
             class="h-full flex flex-col gap-2">
-            <CalendarHeader class="flex items-center gap-2">
+            <CalendarHeader class="flex items-center gap-2 p-2 pb-0">
                 <AppTooltip content="Previous month">
                     <CalendarPrev :as-child="true">
                         <ButtonGhost>
@@ -60,13 +60,7 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                                 v-for="weekDate in weekDates" 
                                 :key="weekDate.toString()" 
                                 :date="weekDate"
-                                class="border-r border-b border-highlight 
-                                first:border-l
-                                group-first:border-t
-                                group-first:first:rounded-tl-md
-                                group-first:last:rounded-tr-md
-                                group-last:first:rounded-bl-md
-                                group-last:last:rounded-br-md">
+                                class="border-highlight border-t not-last:border-r">
                                 <CalendarCellTrigger 
                                     :day="weekDate" 
                                     :month="month.value"
