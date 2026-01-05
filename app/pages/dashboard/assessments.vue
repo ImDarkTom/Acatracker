@@ -9,7 +9,7 @@ useHead({
         <div class="w-full md:w-1/3">
             <DashboardAssessmentList />
         </div>
-        <div class="w-full md:w-2/3 hidden md:block card">
+        <div class="w-full md:w-2/3 hidden md:block card p-0">
             <NuxtPage />
         </div>
     </div>

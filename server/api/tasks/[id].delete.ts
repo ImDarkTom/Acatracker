@@ -1,19 +1,18 @@
-import { deleteModuleById } from "~~/lib/db/queries/modules";
 import { deleteTaskById } from "~~/lib/db/queries/tasks";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
+import { parseIdParam } from "~~/server/utils/validation";
 
 export default defineAuthenticatedEventHander(async (event) => {
-    const idString = getRouterParam(event, "id") as string;
-    const id = parseInt(idString);
+    const id = parseIdParam(event);
 
     const deleted = deleteTaskById(id, event.context.user.id);
 
     if (!deleted) {
-        return sendError(event, createError({
+        throw createError({
             statusCode: 404,
             statusMessage: "Task not found."
-        }));
+        });
     }
 
     setResponseStatus(event, 204);
-})
+});

@@ -1,8 +1,16 @@
+<script setup lang="ts">
+const authStore = useAuthStore();
+
+const homePage = computed(() => !!authStore.user ? '/dashboard' : '/');
+</script>
+
 <template>
-    <nav class="bg-bg-base ring-1 ring-highlight flex flex-row items-center justify-between p-4 sticky top-0 left-0 z-90">
+    <nav class="bg-bg-base ring-1 ring-highlight flex flex-row items-center justify-between p-4 min-h-18 sticky top-0 left-0 z-90">
         <ul class="flex flex-row gap-4">
-            <li class="mr-2 text-brand-active font-bold select-none hidden md:block">
-                Acatracker
+            <li class="mr-2 hidden md:block">
+                <RouterLink class="text-brand-active font-bold select-none" :to="homePage">
+                    Acatracker
+                </RouterLink>
             </li>
             <NavbarItem
                 class="md:hidden"

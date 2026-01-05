@@ -5,7 +5,7 @@ import { user } from "./auth";
 import z from "zod";
 
 export const calendarToken = sqliteTable("calendarToken", {
-    userId: int().notNull().unique().references(() => user.id),
+    userId: int().notNull().unique().references(() => user.id, { onDelete: 'cascade' }),
     calendarToken: text().notNull().$defaultFn(() => crypto.randomUUID()),
 }, (table) => [
     primaryKey({ columns: [table.userId, table.calendarToken] })

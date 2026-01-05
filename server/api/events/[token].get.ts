@@ -3,15 +3,21 @@ import { getUserFromCalendarToken } from "../../../lib/db/queries/calendarTokens
 import { getUserEvents } from "~~/server/utils/events";
 
 export default defineEventHandler(async (event) => {
-    const token = getRouterParam(event, "token") as string;
+    const token = getRouterParam(event, "token");
+    if (!token) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: 'Token is required.'
+        });
+    }
 
     const user = await getUserFromCalendarToken(token);
 
     if (!user || !user.userId) {
-        return sendError(event, createError({
+        throw createError({
             status: 404,
             statusMessage: "Calendar token not found",
-        }));
+        });
     }
 
     const events = await getUserEvents(user.userId, `${getRequestProtocol(event)}://${getRequestHost(event)}`);

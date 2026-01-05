@@ -20,7 +20,7 @@ const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventPro
     <PopoverRoot v-model:open="infoOpened">
         <PopoverTrigger :as-child="true">
             <div 
-                class="p-1 text-text text-xs font-semibold overflow-hidden text-clip line-clamp-1 rounded-sm cursor-pointer"
+                class="p-1 text-text-primary text-xs overflow-hidden text-clip line-clamp-1 rounded-sm cursor-pointer"
                 :class="{
                     'bg-event-due/40 hover:bg-event-due/50': eventProp.type === 'due',
                     'bg-event-due/60!': eventProp.type === 'due' && infoOpened,
@@ -47,7 +47,7 @@ const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventPro
                     'text-event-released': eventProp.type === 'released',
                     'text-event-task': eventProp.type === 'task',
                 }">{{ eventTypeMap[eventProp.type] }}</span>
-                <span class="font-medium text-text text-lg">{{ eventProp.label }}</span>
+                <span class="font-medium text-text-primary text-lg">{{ eventProp.label }}</span>
                 <label class="flex flex-row gap-2">
                     <span>Completed?</span>
                     <input 

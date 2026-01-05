@@ -28,11 +28,11 @@ export const assessment = sqliteTable("assessment", {
     name: text().notNull(),
     slug: text().notNull().unique(),
     description: text(),
-    module: int().notNull().references(() => module.id),
+    module: int().notNull().references(() => module.id, { onDelete: 'cascade' }),
     releasedAt: int(),
     dueAt: int().notNull(),
     completed: int({ mode: 'boolean' }),
-    userId: int().notNull().references(() => user.id),
+    userId: int().notNull().references(() => user.id, { onDelete: 'cascade' }),
     createdAt: int().notNull().$default(() => Date.now()),
     updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });

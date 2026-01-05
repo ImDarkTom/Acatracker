@@ -44,7 +44,7 @@ function handleExitClick(e: Event, exitFn: () => void) {
                     @escape-key-down="handleExitClick($event, dialogClose)"
                     @pointer-down-outside="handleExitClick($event, dialogClose)"
                     class="card p-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-md max-w-full shadow-md shadow-shadow-base z-110">
-                    <DialogTitle class="text-lg font-semibold text-text">
+                    <DialogTitle class="text-lg font-semibold text-text-primary">
                         <slot name="title" />
                     </DialogTitle>
                     <DialogDescription class="mt-2 mb-1">
