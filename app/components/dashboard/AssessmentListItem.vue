@@ -21,7 +21,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                 <div 
                     class="flex flex-row gap-2 items-center"
                     :class="{
-                        'line-through text-text-secondary/60 ring-text-secondary/60': remainingAssessmentCount == 0
+                        'line-through text-text-muted ring-text-muted': remainingAssessmentCount == 0
                     }">
                     <code class="ring-1 ring-inset text-sm p-1 rounded-sm h-min">{{ module.code }}</code>
                     <span class="text-lg">{{ module.name }}</span>
@@ -78,7 +78,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                     >
                     <div class="flex flex-col group">
                         <span 
-                            class="text-lg text-text group-hover:text-brand-focus transition-colors duration-75"
+                            class="text-lg text-text-primary group-hover:text-brand-focus transition-colors duration-75"
                             :class="{ 'line-through': assessment.completed }">{{ assessment.name }}</span>
                         <div class="flex flex-row gap-1 text-sm">
                             <span v-if="assessment.releasedAt">

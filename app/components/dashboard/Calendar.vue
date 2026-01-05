@@ -66,7 +66,8 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                                     :month="month.value"
                                     class="size-6 text-center mx-auto rounded-full mt-0.5
                                     data-today:bg-text-secondary data-today:text-bg-muted 
-                                    data-outside-view:text-text-secondary/35 data-outside-view:hover:bg-bg-active data-outside-view:cursor-pointer" />
+                                    data-outside-view:text-text-muted/80 data-outside-view:hover:bg-bg-active data-outside-view:cursor-pointer
+                                    not-data-outside-view:font-medium" />
                                 <div class="mt-0.5">
                                     <DashboardCalendarEntry 
                                         v-for="(event, index) in getEventsForDate(weekDate)"

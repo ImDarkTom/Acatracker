@@ -67,9 +67,9 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
             <AuthExternalAuthButtons />
 
             <div class="flex flex-row gap-2 items-center">
-                <div class="w-full h-px bg-text-secondary/50"></div>
+                <div class="w-full h-px bg-text-muted"></div>
                 <span class="text-sm">or</span>
-                <div class="w-full h-px bg-text-secondary/50"></div>
+                <div class="w-full h-px bg-text-muted"></div>
             </div>
 
             <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
