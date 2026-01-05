@@ -51,13 +51,18 @@ const stopRefreshAnim = () => {
             <div v-if="!assessments || assessmentsCount.total === 0" class="flex h-full grow items-center justify-center">
                 Add an assessment to get started
             </div>
-            <div v-else class="flex grow flex-col gap-2 overflow-y-auto">
+            <AccordionRoot 
+                v-else
+                class="flex grow flex-col gap-2 overflow-y-auto"
+                type="multiple"
+                :collapsible="true"
+                :default-value="modules?.map(m => m.id.toString())">
                 <DashboardAssessmentListItem 
                     v-for="module in modules" 
                     :key="module.id" 
                     :module 
                     :assessments="assessments.filter(a => a.module === module.id)" />
-            </div>
+            </AccordionRoot>
             <div class="flex flex-row gap-2">
                 <PopupAddAssessment>
                     <ButtonSecondary class="p-4 w-full px-auto">
