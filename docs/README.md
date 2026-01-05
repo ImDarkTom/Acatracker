@@ -7,5 +7,5 @@ Acatracker is built with **Nuxt**, and uses:
 - **Zod** for DB schema and request format validation.
 
 For more info, see:
-- [Backend](backend)
-- [Frontend](frontend)
+- [Backend](backend.md)
+- [Frontend](frontend.md)
