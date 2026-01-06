@@ -35,7 +35,7 @@ formSettings: {
             if (error.data?.data) {
                 setErrors(error.data.data);
             }
-            submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occured.';
+            submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occurred.';
         } finally {
             isLoading.value = false;
         }
