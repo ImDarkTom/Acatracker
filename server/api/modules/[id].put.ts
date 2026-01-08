@@ -12,7 +12,7 @@ export default defineAuthenticatedEventHander(async (event) => {
     if (!updated) {
         throw createError({
             statusCode: 404,
-            statusMessage: "Assessment not found."
+            statusMessage: "Module not found."
         });
     }
 

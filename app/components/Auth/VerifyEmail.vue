@@ -26,7 +26,7 @@ async function resendEmail() {
             }
         });
     } catch (error: unknown) {
-        errorText.value = (error as { statusMessage: string }).statusMessage ? (error as { statusMessage: string }).statusMessage : 'An unknown error occured.';
+        errorText.value = (error as { statusMessage: string }).statusMessage ? (error as { statusMessage: string }).statusMessage : 'An unknown error occurred.';
         return;
     } finally {
         isLoading.value = false;
@@ -61,7 +61,7 @@ async function resendEmail() {
                 :disabled="!canResendEmail || isLoading"
                 @click="resendEmail">
                 <LoadingIcon v-if="isLoading" />
-                <span v-if="resendCooldown == 0">Resend email</span>
+                <span v-if="resendCooldown === 0">Resend email</span>
                 <span v-else>Resend email ({{ resendCooldown }}s)</span>
             </ButtonPrimary>
         </div>

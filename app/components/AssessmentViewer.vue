@@ -84,7 +84,7 @@ async function toggleAssessmentCompleted() {
 
         <div class="ml-8 mr-4 flex flex-col gap-2">
             <div 
-                v-for="task in (tasks ?? []).filter((t) => t.assessment == (assessmentId as unknown as number | string))"
+                v-for="task in (tasks ?? []).filter((t) => t.assessment === (assessmentId as unknown as number | string))"
                 class="card bg-bg-active rounded-sm flex flex-col gap-2">
                 <div class="flex flex-row items-center justify-between">
                     <label class="flex flex-row gap-2">
