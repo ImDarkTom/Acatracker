@@ -5,7 +5,7 @@ import { parseIdParam } from "~~/server/utils/validation";
 export default defineAuthenticatedEventHander(async (event) => {
     const id = parseIdParam(event);
 
-    const deleted = deleteAssessmentById(id, event.context.user.id);
+    const deleted = await deleteAssessmentById(id, event.context.user.id);
 
     if (!deleted) {
         return sendError(event, createError({

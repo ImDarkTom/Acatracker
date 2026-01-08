@@ -7,7 +7,7 @@ export default defineAuthenticatedEventHander(async (event) => {
     const id = parseIdParam(event);
     const bodyData = await validateBody(event, InsertTask);
 
-    const updated = updateTaskById(id, bodyData, event.context.user.id);
+    const updated = await updateTaskById(id, bodyData, event.context.user.id);
 
     if (!updated) {
         throw createError({

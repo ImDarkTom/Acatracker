@@ -7,7 +7,7 @@ export default defineAuthenticatedEventHander(async (event) => {
     const id = parseIdParam(event);
     const bodyData = await validateBody(event, InsertAssessment)
 
-    const updated = updateAssessmentById(id, bodyData, event.context.user.id);
+    const updated = await updateAssessmentById(id, bodyData, event.context.user.id);
 
     if (!updated) {
         return sendError(event, createError({
