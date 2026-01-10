@@ -1,7 +1,7 @@
 import { auth, UserWithId } from "~~/lib/auth";
 
 const UNAUTHED_ONLY_ROUTES = ['/', '/sign-in', '/sign-up'];
-const UNVERIFIED_EMAIL_ONLY_ROUTES = ['/verify-email']
+const UNVERIFIED_EMAIL_ONLY_ROUTES = ['/verify-email'];
 
 export default defineEventHandler(async (event) => {
     const session = await auth.api.getSession({
@@ -14,16 +14,22 @@ export default defineEventHandler(async (event) => {
         return;
     }
 
-    if (session?.user) {
-        if (!session.user.emailVerified && !UNVERIFIED_EMAIL_ONLY_ROUTES.includes(event.path)) {
-            await sendRedirect(event, '/verify-email', 302);
-        } else if (UNAUTHED_ONLY_ROUTES.includes(event.path)) {
-            await sendRedirect(event, '/dashboard', 302);
+    const user = session?.user;
+
+    if (user) {
+        // Redirect unverified users to email verification page
+        if (!user.emailVerified && !UNVERIFIED_EMAIL_ONLY_ROUTES.includes(event.path)) {
+            return sendRedirect(event, '/verify-email', 302);
+        } 
+        
+        // Redirect authorized users away from auth pages
+        if (UNAUTHED_ONLY_ROUTES.includes(event.path)) {
+            return sendRedirect(event, '/dashboard', 302);
         }
     } else {
-        // If we are attempting to access a user-exclusive page while unauthed, go back to home
-        if (event.path.startsWith('/dashboard')) {
-            await sendRedirect(event, '/', 302);
+        // Redirect unauthed users away from protected pages
+        if (event.path.startsWith('/dashboard') || UNVERIFIED_EMAIL_ONLY_ROUTES.includes(event.path)) {
+            return sendRedirect(event, '/', 302);
         }
     }
 });
