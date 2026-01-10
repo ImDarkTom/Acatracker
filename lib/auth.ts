@@ -52,7 +52,7 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
         minPasswordLength: 8,
-        requireEmailVerification: true,
+        requireEmailVerification: false,
     },
     emailVerification: {
         sendOnSignUp: true,

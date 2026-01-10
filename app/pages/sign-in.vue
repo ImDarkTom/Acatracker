@@ -46,28 +46,22 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
     });
 
     if (error) {
-        if (error.status === 403) {
-            emailVerificationEmail.value = values.email;
-            emailVerificationRequired.value = true;
-            return;
-        }
-
         errorText.value = error.message ?? 'An unknown error occurred.';
+        return;
+    }
+
+    if (!data.user.emailVerified) {
+        navigateTo('/verify-email');
         return;
     }
 
     navigateTo('/dashboard');
 }, setErrors);
 
-const emailVerificationRequired = ref(false);
-const emailVerificationEmail = ref('');
 </script>
 
 <template>
-    <AuthVerifyEmail 
-        v-if="emailVerificationRequired" 
-        :email="emailVerificationEmail" />
-    <div v-else class="w-full flex flex-col items-center justify-center gap-2 mb-10">
+    <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
         <div class="card w-full md:w-md p-4 flex flex-col gap-2">
             <h1 class="text-xl font-bold text-center mb-4">Sign in to Acatracker</h1>
             <div v-if="errorText" class="bg-errorbg p-2 rounded-sm">

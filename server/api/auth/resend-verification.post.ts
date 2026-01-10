@@ -1,28 +1,30 @@
-import z from "zod";
 import { auth } from "~~/lib/auth";
-import { doesUnverifiedUserExist } from "~~/lib/db/queries/auth";
 
 const rateLimitStore = new Map<string, number>();
 
-export default defineEventHandler(async (event) => {
-    const { email } = await validateBody(event, z.object({
-        email: z.string()
-    }));
+export default defineAuthenticatedEventHandler(async (event) => {
+    const user = event.context.user;
 
-    if (!(await doesUnverifiedUserExist(email))) {
+    if (user.emailVerified) {
         return sendError(event, createError({
-            statusCode: 404,
-            statusMessage: "User not found."
+            statusCode: 400,
+            statusMessage: "Email is already verified."
         }));
     }
 
+    const email = user.email;
+
     const now = Date.now();
     const lastSent = rateLimitStore.get(email);
-
+    
     if (lastSent && now - lastSent < 30000) {
+        const timeAfterLastSentMs = now - lastSent;
+        const timeoutLeft = 30 - Math.round(timeAfterLastSentMs/1000);
+
         return sendError(event, createError({
             statusCode: 429,
-            statusMessage: "Please wait 30 seconds before retrying."
+            statusMessage: `Please wait ${timeoutLeft} seconds before retrying.`,
+            data: { timeoutLeft }
         }));
     }
 

@@ -52,18 +52,11 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
         return;
     }
 
-    emailVerificationEmail.value = values.email;
-    emailVerificationRequired.value = true;
+    navigateTo('/verify-email');
 }, setErrors);
-
-const emailVerificationRequired = ref(false);
-const emailVerificationEmail = ref('');
 </script>
 
 <template>
-    <AuthVerifyEmail 
-        v-if="emailVerificationRequired" 
-        :email="emailVerificationEmail" />
     <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
         <div class="card w-full md:w-md p-4 flex flex-col gap-2">
             <h1 class="text-xl font-bold text-center mb-4">Create an Acatracker account</h1>
