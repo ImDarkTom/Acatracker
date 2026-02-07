@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+    layout: 'dashboard',
+});
+
 const route = useRoute();
 const assessmentSlug = route.params.slug;
 
@@ -20,12 +24,5 @@ useHead(() => ({
 </script>
 
 <template>
-    <div class="w-full flex flex-col md:flex-row gap-4 md:max-h-[calc(100vh-6rem)]">
-        <div class="w-full md:w-1/3 hidden md:block">
-            <DashboardAssessmentList />
-        </div>
-        <div class="w-full md:w-2/3 card">
-            <AssessmentViewer />
-        </div>
-    </div>
+    <AssessmentViewer />
 </template>

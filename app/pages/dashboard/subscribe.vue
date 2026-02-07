@@ -1,7 +1,7 @@
 <script setup lang="ts">
 useHead({
     title: 'Subscribe | Acatracker',
-})
+});
 
 const { data, error, pending } = useFetch('/api/token', { lazy: true });
 

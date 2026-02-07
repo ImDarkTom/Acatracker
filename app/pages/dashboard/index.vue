@@ -1,5 +1,13 @@
 <script setup lang="ts">
 definePageMeta({
-    middleware: 'dashboard-redirect',
+    layout: 'dashboard',
+});
+
+useHead({
+    title: 'Dashboard | Acatracker',
 });
 </script>
+
+<template>
+    <DashboardCalendar />
+</template>

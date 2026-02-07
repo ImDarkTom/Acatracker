@@ -5,7 +5,8 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
 </script>
 
 <template>
-    <div v-if="pending" class="h-full flex items-center justify-center">
+    <!-- todo: show calendar even before events load, and load events lazily -->
+    <div v-if="pending" class="grow flex items-center justify-center">
         <LoadingIcon size="32" />
     </div>
     <div v-if="error">
@@ -18,7 +19,7 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
             :week-starts-on="1"
             :weekday-format="'short'"
             fixed-weeks
-            class="h-full flex flex-col gap-2">
+            class="grow flex flex-col gap-2">
             <CalendarHeader class="flex items-center gap-2 p-2 pb-0">
                 <AppTooltip content="Previous month">
                     <CalendarPrev :as-child="true">
