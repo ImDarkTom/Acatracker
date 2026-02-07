@@ -1,14 +1,14 @@
 <script setup lang="ts">
 const route = useRoute();
-const assessmentId = route.params.id;
+const assessmentSlug = route.params.slug;
 
 const { assessments } = useAssessmentsStore();
 
 const assessmentName = computed<string | null>(() => {
     if (!assessments) return null;
-    if (!assessmentId || typeof assessmentId === 'object' || isNaN(parseInt(assessmentId))) return null;
+    if (!assessmentSlug || typeof assessmentSlug === 'object') return null;
 
-    const selectedAssessment = assessments.find((a) => a.id === parseInt(assessmentId));
+    const selectedAssessment = assessments.find((a) => a.slug === assessmentSlug);
     if (!selectedAssessment) return null;
 
     return selectedAssessment.name;

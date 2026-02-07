@@ -3,7 +3,7 @@ import type { AssessmentSchema, TaskSchema } from '~~/lib/db/schema';
 
 const { $csrfFetch } = useNuxtApp();
 const route = useRoute();
-const assessmentId = route.params.id;
+const assessmentSlug = route.params.slug;
 
 const taskStore = useTaskStore();
 const { tasks } = storeToRefs(taskStore);
@@ -17,13 +17,14 @@ const assessment = computed<{
     data: AssessmentSchema,
 }>(() => {
     if (!assessments) return { valid: false };
-    if (!assessmentId || typeof assessmentId === 'object' || isNaN(parseInt(assessmentId))) return { valid: false };
+    if (!assessmentSlug || typeof assessmentSlug === 'object') return { valid: false };
 
-    const selectedAssessment = assessments.find((a) => a.id === parseInt(assessmentId));
+    const selectedAssessment = assessments.find((a) => a.slug === assessmentSlug);
     if (!selectedAssessment) return { valid: false };
 
     return { valid: true, data: selectedAssessment };
 });
+
 
 const taskTogglesLoading = ref<number[]>([]);
 
@@ -84,7 +85,7 @@ async function toggleAssessmentCompleted() {
 
         <div class="ml-8 mr-4 flex flex-col gap-2">
             <div 
-                v-for="task in (tasks ?? []).filter((t) => t.assessment === (assessmentId as unknown as number | string))"
+                v-for="task in (tasks ?? []).filter((t) => t.assessment == (assessment as Extract<typeof assessment, { valid: true }>).data.id)"
                 class="card bg-bg-active rounded-sm flex flex-col gap-2">
                 <div class="flex flex-row items-center justify-between">
                     <label class="flex flex-row gap-2">

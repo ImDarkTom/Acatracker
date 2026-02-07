@@ -73,7 +73,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                 :class="{ 'opacity-65': assessment.completed }">
                 <NuxtLink 
                     class="grow"
-                    :to="`/dashboard/assessment/${assessment.id}`" 
+                    :to="`/dashboard/assessment/${assessment.slug}`" 
                     :exact-active-class="'active'"
                     >
                     <div class="flex flex-col group">
