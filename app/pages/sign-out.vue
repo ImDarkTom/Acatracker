@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-const authStore = useAuthStore();
+definePageMeta({
+    layout: 'auth',
+});
 
 useHead({
     title: 'Signing out...',
@@ -11,6 +13,8 @@ useHead({
     ]
 });
 
+const authStore = useAuthStore();
+
 onMounted(async () => {
     await authStore.signOut();
     await navigateTo('/');
@@ -18,7 +22,8 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="w-full flex justify-center">
+    <div class="w-full flex flex-col items-center justify-center gap-2">
+        <span>Signing out...</span>
         <LoadingIcon size="32" />
     </div>
 </template>

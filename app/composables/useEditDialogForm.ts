@@ -42,13 +42,18 @@ formSettings: {
     });
     
     if (formSettings.confirmBeforeExiting) {
-        onBeforeRouteLeave(() => {
+        const router = useRouter();
+
+        const removeGuard = router.beforeEach((to, from) => {
             if (confirmBeforeExiting.value) {
                 if (!confirm('Are you sure you want to leave? All unsaved changes will be lost.')) {
                     return false;
                 }
             }
-            return true;
+        });
+
+        onUnmounted(() => {
+            removeGuard();
         });
     }
 
