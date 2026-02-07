@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import z from 'zod';
 
+definePageMeta({
+    layout: 'auth',
+});
+
 useHead({
     title: 'Sign Up | Acatracker',
     meta: [
@@ -8,7 +12,7 @@ useHead({
             name: 'description',
             content: 'Create your Acatracker account.'
         }
-    ]
+    ],
 });
 
 const authStore = useAuthStore();
@@ -57,97 +61,93 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
 </script>
 
 <template>
-    <div class="w-full flex flex-col items-center justify-center gap-2 mb-10">
-        <div class="card w-full md:w-md p-4 flex flex-col gap-2">
-            <h1 class="text-xl font-bold text-center mb-4">Create an Acatracker account</h1>
-            <div v-if="errorText" class="bg-errorbg p-2 rounded-sm">
-                {{ errorText }}
-            </div>
-
-            <AuthExternalAuthButtons />
-
-            <div class="flex flex-row gap-2 items-center">
-                <div class="w-full h-px bg-text-muted"></div>
-                <span class="text-sm">or</span>
-                <div class="w-full h-px bg-text-muted"></div>
-            </div>
-
-            <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
-                <label>
-                    <span class="font-medium">
-                        Email
-                    </span>
-                    <div class="flex flex-row gap-2">
-                        <Field
-                            name="email"
-                            type="email"
-                            placeholder="Enter your email"
-                            required
-                            :disabled="isSigningUp"
-                            :error="errors.email"
-                            class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
-                            :class="{
-                                'ring-errortxt!': errors.email,
-                                'opacity-50': isSigningUp,
-                            }">
-                        </Field>
-                    </div>
-                    <ErrorMessage name="email" class="text-sm text-errortxt" />
-                </label>
-                <label>
-                    <span class="font-medium">
-                        Username
-                    </span>
-                    <div class="flex flex-row gap-2">
-                        <Field
-                            name="name"
-                            type="text"
-                            placeholder="Enter a username"
-                            required
-                            :disabled="isSigningUp"
-                            :error="errors.name"
-                            class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
-                            :class="{
-                                'ring-errortxt!': errors.name,
-                                'opacity-50': isSigningUp,
-                            }">
-                        </Field>
-                    </div>
-                    <ErrorMessage name="name" class="text-sm text-errortxt" />
-                </label>
-                <label>
-                    <span class="font-medium">
-                        Password
-                    </span>
-                    <div class="flex flex-row gap-2">
-                        <Field
-                            name="password"
-                            type="password"
-                            placeholder="Enter a password"
-                            :disabled="isSigningUp"
-                            :error="errors.password"
-                            class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
-                            :class="{
-                                'ring-errortxt!': errors.password,
-                                'opacity-50': isSigningUp,
-                            }">
-                        </Field>
-                    </div>
-                    <ErrorMessage name="password" class="text-sm text-errortxt" />
-                </label>
-                <ButtonPrimary
-                    class="justify-center"
-                    type="submit" 
-                    :disabled="isSigningUp">
-                    <Icon v-if="!isSigningUp" name="lucide:user-plus" />
-                    <LoadingIcon v-else />
-                    Sign Up
-                </ButtonPrimary>
-            </form>
-
-            <span class="text-center">
-                Already have an account? <RouterLink to="/sign-in" class="link-text">Sign in</RouterLink>
-            </span>
-        </div>
+    <h1 class="text-xl font-bold text-center mb-4">Create an Acatracker account</h1>
+    <div v-if="errorText" class="bg-errorbg p-2 rounded-sm">
+        {{ errorText }}
     </div>
+
+    <AuthExternalAuthButtons />
+
+    <div class="flex flex-row gap-2 items-center">
+        <div class="w-full h-px bg-text-muted"></div>
+        <span class="text-sm">or</span>
+        <div class="w-full h-px bg-text-muted"></div>
+    </div>
+
+    <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
+        <label>
+            <span class="font-medium">
+                Email
+            </span>
+            <div class="flex flex-row gap-2">
+                <Field
+                    name="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    required
+                    :disabled="isSigningUp"
+                    :error="errors.email"
+                    class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
+                    :class="{
+                        'ring-errortxt!': errors.email,
+                        'opacity-50': isSigningUp,
+                    }">
+                </Field>
+            </div>
+            <ErrorMessage name="email" class="text-sm text-errortxt" />
+        </label>
+        <label>
+            <span class="font-medium">
+                Username
+            </span>
+            <div class="flex flex-row gap-2">
+                <Field
+                    name="name"
+                    type="text"
+                    placeholder="Enter a username"
+                    required
+                    :disabled="isSigningUp"
+                    :error="errors.name"
+                    class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
+                    :class="{
+                        'ring-errortxt!': errors.name,
+                        'opacity-50': isSigningUp,
+                    }">
+                </Field>
+            </div>
+            <ErrorMessage name="name" class="text-sm text-errortxt" />
+        </label>
+        <label>
+            <span class="font-medium">
+                Password
+            </span>
+            <div class="flex flex-row gap-2">
+                <Field
+                    name="password"
+                    type="password"
+                    placeholder="Enter a password"
+                    :disabled="isSigningUp"
+                    :error="errors.password"
+                    class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"
+                    :class="{
+                        'ring-errortxt!': errors.password,
+                        'opacity-50': isSigningUp,
+                    }">
+                </Field>
+            </div>
+            <ErrorMessage name="password" class="text-sm text-errortxt" />
+        </label>
+        <ButtonPrimary
+            class="justify-center"
+            type="submit" 
+            :disabled="isSigningUp">
+            <Icon v-if="!isSigningUp" name="lucide:user-plus" />
+            <LoadingIcon v-else />
+            Sign Up
+        </ButtonPrimary>
+    </form>
+
+    <span class="text-center">
+        Already have an account? <RouterLink to="/sign-in" class="link-text">Sign in</RouterLink>
+    </span>
 </template>
