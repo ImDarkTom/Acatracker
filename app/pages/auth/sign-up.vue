@@ -45,7 +45,7 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
     if (error) {
         errorText.value = error.message ?? 'An unknown error occurred.';
     } else {
-        navigateTo('/verify-email');
+        navigateTo('/auth/verify-email');
     }
 }, setErrors);
 </script>
@@ -138,6 +138,6 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
     </form>
 
     <span class="text-center">
-        Already have an account? <RouterLink to="/sign-in" class="link-text">Sign in</RouterLink>
+        Already have an account? <RouterLink to="/auth/sign-in" class="link-text">Sign in</RouterLink>
     </span>
 </template>

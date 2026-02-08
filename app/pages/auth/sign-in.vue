@@ -42,7 +42,7 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
     if (data.user.emailVerified) {
         navigateTo('/dashboard');
     } else {
-        navigateTo('/verify-email');
+        navigateTo('/auth/verify-email');
     }
 
     
@@ -117,6 +117,6 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
     </form>
 
     <span class="text-center">
-        New? <RouterLink to="/sign-up" class="link-text">Create an account</RouterLink>
+        New? <RouterLink to="/auth/sign-up" class="link-text">Create an account</RouterLink>
     </span>
 </template>

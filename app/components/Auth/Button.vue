@@ -38,7 +38,7 @@ const auth = useAuth();
                 <CustomDropdownItem 
                     value="Sign Out"
                     icon="lucide:log-out" 
-                    link="/sign-out" />
+                    link="/auth/sign-out" />
             </DropdownMenuContent>
         </DropdownMenuPortal>
     </DropdownMenuRoot>
