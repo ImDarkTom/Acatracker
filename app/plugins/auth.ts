@@ -10,7 +10,15 @@ const relativeFetch = (<T>(url: string, opts?: UseFetchOptions<T>) => {
 });
 
 export default defineNuxtPlugin(async () => {
-    const authClient = createAuthClient();
+    const { csrf } = useCsrf();
+
+    const authClient = createAuthClient({
+        fetchOptions: {
+            headers: {
+                'csrf-token': csrf,
+            },
+        },
+    });
 
     const session = await authClient.useSession(relativeFetch);
 
