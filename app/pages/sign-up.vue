@@ -15,7 +15,8 @@ useHead({
     ],
 });
 
-const authStore = useAuthStore();
+const { $authClient } = useNuxtApp();
+const auth = useAuth();
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(z.object({
@@ -30,7 +31,7 @@ const { isLoading: isFormLoading, submitHandler } = useEditDialogForm({ meta, ha
 const errorText = ref<string>('');
 
 const isSigningUp = computed(() => {
-    return isFormLoading.value || authStore.isLoading;
+    return isFormLoading.value || auth.isLoading.value;
 });
 
 const onSubmit = submitHandler(async (values: { email: string, password: string, name: string }) => {
@@ -41,7 +42,7 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
     const headers = new Headers();
     headers.append('csrf-token', csrf);
 
-    const { error } = await authClient.signUp.email({
+    const { error } = await $authClient.signUp.email({
         email: values.email,
         password: values.password,
         name: values.name,

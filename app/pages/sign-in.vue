@@ -23,13 +23,14 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     initialValues: {}
 });
 
-const authStore = useAuthStore();
+const { $authClient } = useNuxtApp();
+const auth = useAuth();
 
 const { isLoading: isFormLoading, submitHandler } = useEditDialogForm({ meta, handleSubmit }, { confirmBeforeExiting: false });
 const errorText = ref<string>('');
 
 const isSigningIn = computed(() => {
-    return isFormLoading.value || authStore.isLoading;
+    return isFormLoading.value || auth.isLoading.value;
 });
 
 const onSubmit = submitHandler(async (values: { email: string, password: string }) => {
@@ -40,7 +41,7 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
     const headers = new Headers();
     headers.append('csrf-token', csrf);
 
-    const { data, error } = await authClient.signIn.email({
+    const { data, error } = await $authClient.signIn.email({
         email: values.email,
         password: values.password,
         callbackURL: '/dashboard',

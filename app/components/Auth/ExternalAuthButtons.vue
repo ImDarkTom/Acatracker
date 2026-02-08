@@ -1,12 +1,12 @@
 <script setup lang="ts">
-const authStore = useAuthStore();
+const auth = useAuth();
 </script>
 
 <template>
     <ButtonSecondary
         class="justify-center"
-        @click="authStore.signIn">
-        <LoadingIcon v-if="authStore.isLoading" />
+        @click="auth.signInWithGitHub">
+        <LoadingIcon v-if="auth.isLoading.value" />
         <Icon v-else name="mdi:github" />
         
         <span>Continue with Github</span>

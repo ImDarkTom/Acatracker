@@ -3,8 +3,8 @@ useHead({
     title: 'Account | Acatracker',
 });
 
-const authStore = useAuthStore();
-const user = authStore.user;
+const { $authClient } = useNuxtApp();
+const auth = useAuth();
 
 async function promptDeleteAccount() {
     if (!confirm("Are you sure you want to delete your account? This action is irreversible.")) return;
@@ -14,7 +14,7 @@ async function promptDeleteAccount() {
     const headers = new Headers();
     headers.append('csrf-token', csrf);
 
-    await authClient.deleteUser({
+    await $authClient.deleteUser({
         callbackURL: '/',
         fetchOptions: { headers }
     });
@@ -36,8 +36,8 @@ async function promptDeleteAccount() {
             <h1 class="text-2xl font-bold">Account Info</h1>
             <div class="flex flex-col gap-4">
                 <h2 class="text-xl font-semibold">Details</h2>
-                <template v-if="!user">
-                    <div v-if="authStore.isLoading">
+                <template v-if="!auth.user.value">
+                    <div v-if="auth.isLoading.value">
                         <LoadingIcon />
                     </div>
                     <div v-else>
@@ -46,20 +46,20 @@ async function promptDeleteAccount() {
                 </template>
                 <div v-else class="flex flex-row gap-4">
                     <img 
-                        v-if="user.image"
-                        :src="user.image"  
-                        :alt="user.name" 
+                        v-if="auth.user.value.image"
+                        :src="auth.user.value.image"  
+                        :alt="auth.user.value.name" 
                         class="rounded-full size-32 cursor-pointer ring-brand-focus">
                     <div v-else class="rounded-full size-32 text-6xl bg-brand-muted flex items-center justify-center font-black cursor-pointer">
-                        {{ user.name[0] ?? '?' }}
+                        {{ auth.user.value.name[0] ?? '?' }}
                     </div>
                     <div class="flex flex-col gap-2">
                         <div>
-                            <span class="text-xl font-medium">{{ user.name }}</span>
+                            <span class="text-xl font-medium">{{ auth.user.value.name }}</span>
                         </div>
                         <div class="flex flex-row gap-2 items-center">
-                            <span>{{ user.email }}</span>
-                            <AppTooltip v-if="user.emailVerified" content="Verified Email">
+                            <span>{{ auth.user.value.email }}</span>
+                            <AppTooltip v-if="auth.user.value.emailVerified" content="Verified Email">
                                 <Icon name="lucide:check" class="text-event-released" />
                             </AppTooltip>
                             <AppTooltip v-else content="Email not verified">
@@ -67,7 +67,7 @@ async function promptDeleteAccount() {
                             </AppTooltip>
                         </div>
                         <div>
-                            <span>Member since {{ new Date(user.createdAt).toLocaleDateString() }}</span>
+                            <span>Member since {{ new Date(auth.user.value.createdAt).toLocaleDateString() }}</span>
                         </div>
                     </div>
                 </div>

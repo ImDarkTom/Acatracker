@@ -9,14 +9,15 @@ useHead({
         {
             name: 'robots',
             content: 'noindex'
-        }
-    ]
+        },
+    ],
 });
 
-const authStore = useAuthStore();
+const auth = useAuth();
 
 onMounted(async () => {
-    await authStore.signOut();
+    await auth.signOut();
+    await nextTick();
     await navigateTo('/');
 });
 </script>

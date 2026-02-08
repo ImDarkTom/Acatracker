@@ -9,7 +9,7 @@ useHead({
     ]
 });
 
-const authStore = useAuthStore();
+const auth = useAuth();
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const authStore = useAuthStore();
         <h1 class="text-5xl font-bold bg-linear-to-br from-brand-base to-brand-focus text-transparent bg-clip-text">Acatracker</h1>
         <p class="mb-2">Open-source academic tracker.</p>
 
-        <NuxtLink v-if="authStore.user" :to="{ name: 'dashboard' }">
+        <NuxtLink v-if="auth.user.value" :to="{ name: 'dashboard' }">
             <ButtonPrimary class="p-4">
                 Open Dashboard
             </ButtonPrimary>

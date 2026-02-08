@@ -30,7 +30,7 @@ In production, use a hosted Turso instance.
 
 Relevant files:
 - `lib/auth`: Contains the Better Auth instance and config. Used on the server.
-- `app/stores/authStore`: Client-side usage.
+- `app/plugins/auth`: Client-side usage.
 
 
 ## Resend

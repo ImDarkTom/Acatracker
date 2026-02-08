@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const authStore = useAuthStore();
-const homePageForAuthState = computed(() => authStore.user ? '/dashboard' : '/');
+const auth = useAuth();
+const homePageForAuthState = computed(() => auth.user.value ? '/dashboard' : '/');
 </script>
 
 <template>

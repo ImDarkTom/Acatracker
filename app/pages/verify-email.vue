@@ -3,8 +3,7 @@ useHead({
     title: 'Verify your email | Acatracker',
 });
 
-const authStore = useAuthStore();
-
+const auth = useAuth();
 const { $csrfFetch } = useNuxtApp();
 
 const errorText = ref('');
@@ -57,8 +56,8 @@ async function resendEmail() {
     startCooldown(30);
 }
 
-watch(() => authStore.user, (user) => {
-    if (user && !user.emailVerified) {
+watch(() => auth.user, (user) => {
+    if (user.value && !user.value.emailVerified) {
         resendEmail()
     }
 }, { immediate: true, once: true });
@@ -73,11 +72,11 @@ onUnmounted(() => {
 <template>
     <div class="w-full flex items-center justify-center">
         <div class="card flex flex-col items-center">
-            <div v-if="authStore.isLoading">
+            <div v-if="auth.isLoading.value">
                 <LoadingIcon /> Loading...
             </div>
             <div 
-                v-else-if="!authStore.user"
+                v-else-if="!auth.user.value"
                 class="flex flex-col gap-2 items-center">
                 <AppErrorBanner text="Couldn't get sign-in info." />
                 <RouterLink to="/">
