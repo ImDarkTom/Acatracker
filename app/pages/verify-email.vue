@@ -3,6 +3,10 @@ useHead({
     title: 'Verify your email | Acatracker',
 });
 
+definePageMeta({
+    layout: 'auth',
+});
+
 const auth = useAuth();
 const { $csrfFetch } = useNuxtApp();
 
@@ -70,42 +74,49 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="w-full flex items-center justify-center">
-        <div class="card flex flex-col items-center">
-            <div v-if="auth.isLoading.value">
-                <LoadingIcon /> Loading...
-            </div>
-            <div 
-                v-else-if="!auth.user.value"
-                class="flex flex-col gap-2 items-center">
-                <AppErrorBanner text="Couldn't get sign-in info." />
-                <RouterLink to="/">
-                    <ButtonPrimary>
-                        <Icon name="lucide:arrow-left" />
-                        Back to home
-                    </ButtonPrimary>
-                </RouterLink>
-            </div>
-            <template v-else>
-                <h1 class="text-xl font-bold text-center">Email Verification</h1>
+    <div v-if="auth.isLoading.value">
+        <LoadingIcon /> Loading...
+    </div>
+    <div 
+        v-else-if="!auth.user.value"
+        class="flex flex-col gap-2 items-center">
+        <AppErrorBanner text="Couldn't get sign-in info." />
+        <RouterLink to="/">
+            <ButtonPrimary>
+                <Icon name="lucide:arrow-left" />
+                Back to home
+            </ButtonPrimary>
+        </RouterLink>
+    </div>
+    <div 
+        v-else-if="auth.user.value.emailVerified" 
+        class="flex flex-col gap-2 items-center">
+        <span>Your email is already verified!</span>
+        <RouterLink to="/dashboard">
+            <ButtonPrimary>
+                <Icon name="lucide:arrow-left" />
+                Back to dashboard
+            </ButtonPrimary>
+        </RouterLink>
+    </div>
+    <div v-else class="flex flex-col gap-2 items-center">
+        <h1 class="text-xl font-bold text-center">Email Verification</h1>
 
-                <AppErrorBanner :text="errorText" />
+        <AppErrorBanner :text="errorText" />
 
-                <p>Check your inbox for a verification link.</p>
+        <p>Check your inbox for a verification link.</p>
 
-                <ButtonPrimary 
-                    class="w-fit mt-4" 
-                    :disabled="!canResendEmail || isLoading"
-                    @click="resendEmail">
-                    <LoadingIcon v-if="isLoading" />
-                    <span>
-                        Resend email
-                        <template v-if="resendTimeout !== 0">
-                            ({{ resendTimeout }}s)
-                        </template>
-                    </span>
-                </ButtonPrimary>
-            </template>
-        </div>
+        <ButtonPrimary 
+            class="w-fit mt-4" 
+            :disabled="!canResendEmail || isLoading"
+            @click="resendEmail">
+            <LoadingIcon v-if="isLoading" />
+            <span>
+                Resend email
+                <template v-if="resendTimeout !== 0">
+                    ({{ resendTimeout }}s)
+                </template>
+            </span>
+        </ButtonPrimary>
     </div>
 </template>
