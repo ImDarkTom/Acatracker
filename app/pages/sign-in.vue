@@ -15,6 +15,7 @@ useHead({
     ]
 });
 
+const auth = useAuth();
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(z.object({
         email: z.email('Invalid email address.'),
@@ -22,45 +23,29 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     })),
     initialValues: {}
 });
-
-const { $authClient } = useNuxtApp();
-const auth = useAuth();
-
 const { isLoading: isFormLoading, submitHandler } = useEditDialogForm({ meta, handleSubmit }, { confirmBeforeExiting: false });
+
 const errorText = ref<string>('');
 
-const isSigningIn = computed(() => {
-    return isFormLoading.value || auth.isLoading.value;
-});
+const isSigningIn = computed(() => isFormLoading.value || auth.isLoading.value);
 
 const onSubmit = submitHandler(async (values: { email: string, password: string }) => {
     errorText.value = '';
 
-    const { csrf } = useCsrf();
-
-    const headers = new Headers();
-    headers.append('csrf-token', csrf);
-
-    const { data, error } = await $authClient.signIn.email({
-        email: values.email,
-        password: values.password,
-        callbackURL: '/dashboard',
-        fetchOptions: {
-            headers,
-        }
-    });
+    const { data, error } = await auth.signInWithEmail(values.email, values.password)
 
     if (error) {
         errorText.value = error.message ?? 'An unknown error occurred.';
         return;
     }
 
-    if (!data.user.emailVerified) {
+    if (data.user.emailVerified) {
+        navigateTo('/dashboard');
+    } else {
         navigateTo('/verify-email');
-        return;
     }
 
-    navigateTo('/dashboard');
+    
 }, setErrors);
 
 </script>

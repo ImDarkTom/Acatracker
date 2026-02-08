@@ -3,21 +3,12 @@ useHead({
     title: 'Account | Acatracker',
 });
 
-const { $authClient } = useNuxtApp();
 const auth = useAuth();
 
 async function promptDeleteAccount() {
     if (!confirm("Are you sure you want to delete your account? This action is irreversible.")) return;
 
-    const { csrf } = useCsrf();
-
-    const headers = new Headers();
-    headers.append('csrf-token', csrf);
-
-    await $authClient.deleteUser({
-        callbackURL: '/',
-        fetchOptions: { headers }
-    });
+    await auth.deleteAccount();
 
     navigateTo('/');
 }

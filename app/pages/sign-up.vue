@@ -15,7 +15,6 @@ useHead({
     ],
 });
 
-const { $authClient } = useNuxtApp();
 const auth = useAuth();
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
@@ -36,28 +35,18 @@ const isSigningUp = computed(() => {
 
 const onSubmit = submitHandler(async (values: { email: string, password: string, name: string }) => {
     errorText.value = '';
-    
-    const { csrf } = useCsrf();
 
-    const headers = new Headers();
-    headers.append('csrf-token', csrf);
-
-    const { error } = await $authClient.signUp.email({
-        email: values.email,
-        password: values.password,
-        name: values.name,
-        callbackURL: '/dashboard',
-        fetchOptions: {
-            headers,
-        }
-    });
+    const { error } = await auth.signUpWithEmail(
+        values.email,
+        values.password,
+        values.name
+    );
 
     if (error) {
         errorText.value = error.message ?? 'An unknown error occurred.';
-        return;
+    } else {
+        navigateTo('/verify-email');
     }
-
-    navigateTo('/verify-email');
 }, setErrors);
 </script>
 
