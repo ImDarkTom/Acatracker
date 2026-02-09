@@ -1,7 +1,7 @@
 import { auth, UserWithId } from "~~/lib/auth";
 
-const UNAUTHED_ONLY_ROUTES = ['/', '/sign-in', '/sign-up'];
-const UNVERIFIED_EMAIL_ONLY_ROUTES = ['/verify-email'];
+const UNAUTHED_ONLY_ROUTES = ['/', '/auth/sign-in', '/auth/sign-up'];
+const UNVERIFIED_EMAIL_ONLY_ROUTES = ['/auth/verify-email'];
 
 export default defineEventHandler(async (event) => {
     const session = await auth.api.getSession({
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     if (user) {
         // Redirect unverified users to email verification page
         if (!user.emailVerified && !UNVERIFIED_EMAIL_ONLY_ROUTES.includes(event.path)) {
-            return sendRedirect(event, '/verify-email', 302);
+            return sendRedirect(event, '/auth/verify-email', 302);
         } 
         
         // Redirect authorized users away from auth pages
