@@ -136,6 +136,11 @@ body {
     @apply bg-bg-app text-text-secondary md:overflow-hidden;
 }
 
+* {
+    scrollbar-width: thin;
+}
+
+
 @layer base {
     html[data-theme='light'] {
         --color-bg-app: hsl(190, 10%, 86%);   /* navbar & landing page */

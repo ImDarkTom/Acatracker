@@ -19,7 +19,7 @@ const stopRefreshAnim = () => {
 </script>
 
 <template>
-    <div class="h-full flex flex-col gap-2 p-2 overflow-auto [scrollbar-width=thin]">
+    <div class="h-full flex flex-col gap-2 p-2 overflow-auto">
         <div class="flex flex-row justify-between items-center">
             <span
                 v-if="pending" 
