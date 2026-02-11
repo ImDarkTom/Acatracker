@@ -19,32 +19,35 @@ const stopRefreshAnim = () => {
 </script>
 
 <template>
-    <div class="h-full flex flex-col gap-2">
-        <div class="flex flex-row justify-between items-center card">
-                <span
-                    v-if="pending" 
-                    class="text-lg">
-                    ... Pending Assessment(s)
-                </span>
-                <span 
-                    v-else
-                    class="text-lg">
-                    {{ assessmentsCount.pending }} Pending Assessment(s)
-                </span>
-                <AppTooltip content="Refresh">
-                    <ButtonGhost 
-                        @click="refresh" 
-                        :disabled="pending">
-                        <Icon 
-                            name="lucide:refresh-cw" 
-                            :class="{
-                                'animate-spin-once': isRefreshing
-                            }"
-                            @animationend="stopRefreshAnim" />
-                    </ButtonGhost>
-                </AppTooltip>
-            </div>
-        <div v-if="pending" class="h-full flex items-center justify-center">
+    <div class="h-full flex flex-col gap-2 p-2 overflow-auto [scrollbar-width=thin]">
+        <div class="flex flex-row justify-between items-center">
+            <span
+                v-if="pending" 
+                class="text-lg">
+                ... Pending Assessment(s)
+            </span>
+            <span 
+                v-else
+                class="text-lg">
+                {{ assessmentsCount.pending }} Pending Assessment(s)
+            </span>
+            <AppTooltip content="Refresh">
+                <ButtonGhost
+                    layer="base"
+                    @click="refresh" 
+                    :disabled="pending">
+                    <Icon 
+                        name="lucide:refresh-cw" 
+                        :class="{
+                            'animate-spin-once': isRefreshing
+                        }"
+                        @animationend="stopRefreshAnim" />
+                </ButtonGhost>
+            </AppTooltip>
+        </div>
+        <div 
+            v-if="pending" 
+            class="h-full flex items-center justify-center">
             <LoadingIcon size="32" />
         </div>
         <template v-else>

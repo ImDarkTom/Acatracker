@@ -30,7 +30,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
 
             <div class="flex flex-row gap-1">
                 <AccordionTrigger :as-child="true" class="group">
-                    <ButtonGhost class="size-8 justify-center">
+                    <ButtonGhost class="size-8 justify-center" layer="base" :highlight-on-open="false">
                         <Icon 
                             name="lucide:chevron-down"
                             class="group-data-[state=open]:rotate-180 transition-discrete duration-150"
@@ -40,7 +40,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
 
                 <DropdownMenuRoot>
                     <DropdownMenuTrigger :as-child="true">
-                        <ButtonGhost class="size-8 justify-center data-[state='open']:bg-bg-active">
+                        <ButtonGhost class="size-8 justify-center" layer="base">
                             <Icon name="lucide:ellipsis-vertical" />
                         </ButtonGhost>
                     </DropdownMenuTrigger>
@@ -69,7 +69,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
             <div 
                 v-for="assessment in assessments" 
                 :key="assessment.id"
-                class="flex flex-row items-center gap-2 card has-[>.active]:bg-bg-active"
+                class="flex flex-row items-center gap-2 p-2 rounded-lg bg-bg-surface has-[>.active]:bg-bg-surface-active"
                 :class="{ 'opacity-65': assessment.completed }">
                 <NuxtLink 
                     class="grow"
@@ -97,7 +97,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                     <DropdownMenuRoot>
                         <DropdownMenuTrigger
                             :as-child="true">
-                            <ButtonGhost class="size-8 justify-center data-[state='open']:bg-bg-active">
+                            <ButtonGhost class="size-8 justify-center" layer="surface">
                                 <Icon name="lucide:ellipsis-vertical" size="24" />
                             </ButtonGhost>
                         </DropdownMenuTrigger>

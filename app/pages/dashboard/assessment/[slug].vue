@@ -105,14 +105,14 @@ async function toggleAssessmentCompleted() {
         </div>
         <span class="text-3xl">{{ assessment.data.name }}</span>
         <p class="text-text-secondary">{{ assessment.data.description }}</p>
-        <div v-if="assessment.data.releasedAt" class="text-lg card bg-bg-active rounded-sm">
+        <div v-if="assessment.data.releasedAt" class="text-lg card bg-bg-surface rounded-sm">
             Release: {{ new Date(assessment.data.releasedAt).toLocaleDateString() }}
         </div>
 
         <div class="ml-8 mr-4 flex flex-col gap-2">
             <div 
                 v-for="task in (tasks ?? []).filter((t) => t.assessment == (assessment as Extract<typeof assessment, { valid: true }>).data.id)"
-                class="card bg-bg-active rounded-sm flex flex-col gap-2">
+                class="card bg-bg-surface rounded-sm flex flex-col gap-2">
                 <div class="flex flex-row items-center justify-between">
                     <label class="flex flex-row gap-2">
                         <input 
@@ -123,7 +123,7 @@ async function toggleAssessmentCompleted() {
                     </label>
                     <DropdownMenuRoot>
                         <DropdownMenuTrigger
-                            class="rounded-sm data-[state='open']:bg-bg-focus cursor-pointer p-2 size-8 flex items-center justify-center">
+                            class="rounded-sm hover:bg-bg-surface-hover data-[state='open']:bg-bg-surface-active cursor-pointer p-2 size-8 flex items-center justify-center">
                             <Icon name="lucide:ellipsis-vertical" size="24" />
                         </DropdownMenuTrigger>
                         <DropdownMenuPortal>
@@ -151,7 +151,7 @@ async function toggleAssessmentCompleted() {
             </PopupAddTask>
         </div>
 
-        <div class="text-lg card bg-bg-active rounded-sm">
+        <div class="text-lg card bg-bg-surface rounded-sm">
             Due: {{ new Date(assessment.data.dueAt).toLocaleDateString() }}
         </div>
 

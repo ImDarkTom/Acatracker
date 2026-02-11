@@ -41,7 +41,7 @@ const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventPro
                 :avoid-collisions="true"
                 :collision-padding="8"
                 :side-offset="8"
-                class="card bg-bg-active flex flex-col gap-2 shadow-md shadow-shadow-base p-4 pr-10 min-w-60 max-w-md animate-dynamic-slide">
+                class="card bg-bg-overlay flex flex-col gap-2 shadow-md shadow-shadow-base p-4 pr-10 min-w-60 max-w-md animate-dynamic-slide">
                 <span :class="{
                     'text-event-due': eventProp.type === 'due',
                     'text-event-released': eventProp.type === 'released',
@@ -60,9 +60,9 @@ const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventPro
                     View Details
                     </ButtonPrimary>
                 </RouterLink>
-                <PopoverArrow class="fill-highlight" />
+                <PopoverArrow class="fill-bg-overlay" />
                 <PopoverClose class="absolute top-2 right-2">
-                    <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-highlight active:bg-bg-focus">
+                    <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-bg-overlay-hover active:bg-bg-overlay-active">
                         <Icon name="lucide:x" size="20" />
                     </div>
                 </PopoverClose>

@@ -1,11 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-    --color-bg-muted: hsl(190, 15%, 5%);
+    --color-bg-app: hsl(190, 15%, 5%);   /* navbar & landing page */
+    
+    /* main background */
     --color-bg-base: hsl(190, 15%, 10%);
-    --color-bg-active: hsl(190, 15%, 20%);
-    --color-bg-focus: hsl(190, 15%, 40%);
+    --color-bg-base-hover: hsl(190, 15%, 13%);
+    --color-bg-base-active: hsl(190, 15%, 16%);
 
+    /* surfaces */
+    --color-bg-surface: hsl(190, 15%, 17%);
+    --color-bg-surface-hover: hsl(190, 15%, 20%);
+    --color-bg-surface-active: hsl(190, 15%, 23%);
+
+    --color-bg-elevated: hsl(190, 15%, 21%);
+    --color-bg-elevated-hover: hsl(190, 15%, 24%);
+    --color-bg-elevated-active: hsl(190, 15%, 27%);
+
+    --color-bg-overlay: hsl(190, 15%, 25%);
+    --color-bg-overlay-hover: hsl(190, 15%, 28%);
+    --color-bg-overlay-active: hsl(190, 15%, 31%);
+
+    
     --color-text-primary: hsl(190, 15%, 90%);
     --color-text-secondary: hsl(190, 15%, 80%);
     --color-text-muted: hsl(190, 15%, 65%);
@@ -117,15 +133,32 @@
 }
 
 body {
-    @apply bg-bg-muted text-text-secondary md:overflow-hidden;
+    @apply bg-bg-app text-text-secondary md:overflow-hidden;
 }
 
 @layer base {
     html[data-theme='light'] {
-        --color-bg-muted: hsl(190, 10%, 86%);
-        --color-bg-base: hsl(190, 10%, 92%);
-        --color-bg-active: hsl(190, 10%, 96%);
-        --color-bg-focus: hsl(190, 15%, 100%);
+        --color-bg-app: hsl(190, 10%, 86%);   /* navbar & landing page */
+    
+        /* main background */
+        --color-bg-base: hsl(190, 10%, 89%);
+        --color-bg-base-hover: hsl(190, 10%, 81%);
+        --color-bg-base-active: hsl(190, 10%, 73%);
+
+        /* surfaces */
+        --color-bg-surface: hsl(190, 10%, 94%);
+        --color-bg-surface-hover: hsl(190, 10%, 86%);
+        --color-bg-surface-active: hsl(190, 10%, 78%);
+
+        --color-bg-elevated: hsl(190, 10%, 97%);
+        --color-bg-elevated-hover: hsl(190, 10%, 89%);
+        --color-bg-elevated-active: hsl(190, 10%, 81%);
+
+        --color-bg-overlay: hsl(190, 10%, 100%);
+        --color-bg-overlay-hover: hsl(190, 10%, 92%);
+        --color-bg-overlay-active: hsl(190, 10%, 84%);
+
+
 
         --color-text-primary: hsl(190, 10%, 10%);
         --color-text-secondary: hsl(190, 10%, 20%);
@@ -155,7 +188,7 @@ body {
     }
 
     .dropdown-content {
-        @apply w-52 bg-bg-active rounded-md p-1 shadow-sm shadow-shadow-base ring-1 ring-inset ring-highlight mt-1 overflow-hidden;
+        @apply w-52 bg-bg-elevated rounded-md p-1 shadow-sm shadow-shadow-base ring-1 ring-inset ring-highlight mt-1 overflow-hidden;
     }
 
     .link-text {

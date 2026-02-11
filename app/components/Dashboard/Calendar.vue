@@ -23,7 +23,7 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
             <CalendarHeader class="flex items-center gap-2 p-2 pb-0">
                 <AppTooltip content="Previous month">
                     <CalendarPrev :as-child="true">
-                        <ButtonGhost>
+                        <ButtonGhost layer="base">
                             <Icon name="lucide:chevron-left" />
                         </ButtonGhost>
                     </CalendarPrev>
@@ -31,7 +31,7 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                 
                 <AppTooltip content="Next month">
                     <CalendarNext :as-child="true">
-                        <ButtonGhost>
+                        <ButtonGhost layer="base">
                             <Icon name="lucide:chevron-right" />
                         </ButtonGhost>
                     </CalendarNext>
@@ -66,8 +66,8 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                                     :day="weekDate" 
                                     :month="month.value"
                                     class="size-6 text-center mx-auto rounded-full mt-0.5
-                                    data-today:bg-text-secondary data-today:text-bg-muted 
-                                    data-outside-view:text-text-muted/80 data-outside-view:hover:bg-bg-active data-outside-view:cursor-pointer
+                                    data-today:bg-text-secondary data-today:text-bg-app 
+                                    data-outside-view:text-text-muted/80 data-outside-view:hover:bg-bg-base-hover data-outside-view:cursor-pointer
                                     not-data-outside-view:font-medium" />
                                 <div class="mt-0.5">
                                     <DashboardCalendarEntry 
