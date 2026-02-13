@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { OptGroupEntry } from '~/types/dynamicForm';
+
 
 type BaseField = {
     label: string,
@@ -9,7 +11,7 @@ type BaseField = {
 type FieldOptions = 
     { as: 'input', type: string }
     | { as: 'textarea' }
-    | { as: 'select', optionsList: [any, string][], hintText: string }
+    | { as: 'select', groups: OptGroupEntry[], hintText: string };
 
 defineProps<{
     onSubmit: () => void,
@@ -45,7 +47,15 @@ defineProps<{
                         }">
                         <template v-if="asType === 'select'">
                             <option value="" disabled selected>{{ attrs.hintText }}</option>
-                            <option v-for="[value, label] in attrs.optionsList" :value>{{ label }}</option>
+                            <optgroup
+                                v-for="item in attrs.groups"
+                                :label="item.label">
+                                <option
+                                    v-for="[value, label] in item.options" 
+                                    :value>
+                                    {{ label }}
+                                </option>
+                            </optgroup>
                         </template>
                     </Field>
                     <component v-if="attrs.sideBtn" :is="attrs.sideBtn" />
