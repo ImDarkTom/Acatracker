@@ -2,9 +2,15 @@
 import { InsertModule } from '~~/lib/db/schema';
 
 const { addModule } = useModuleStore();
+const preferencesStore = useUserPreferencesStore();
+const { preferences } = storeToRefs(preferencesStore);
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
-    validationSchema: toTypedSchema(InsertModule)
+    validationSchema: toTypedSchema(InsertModule),
+    initialValues: {
+        year: preferences.value?.currentYear,
+        semester: preferences.value?.currentSemester,
+    }
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
@@ -13,7 +19,11 @@ const onSubmit = submitHandler(addModule, setErrors);
 </script>
 
 <template>
-    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError :priority="2">
+    <CustomDialog 
+        v-model:isOpen="isOpen" 
+        :confirmBeforeExiting 
+        :submitError 
+        :priority="2">
         <template #button>
             <slot />
         </template>

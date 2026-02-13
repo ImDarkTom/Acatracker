@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { OptGroupEntry } from '~/types/dynamicForm';
 
-
 type BaseField = {
     label: string,
     name: string,
@@ -9,9 +8,22 @@ type BaseField = {
 }
 
 type FieldOptions = 
-    { as: 'input', type: string }
-    | { as: 'textarea' }
-    | { as: 'select', groups: OptGroupEntry[], hintText: string };
+    { 
+        as: 'input', 
+        type: 'text',
+    } | {
+        as: 'input',
+        type: 'number',
+    } | {
+        as: 'input',
+        type: 'date' | 'checkbox',
+    } | { 
+        as: 'textarea'
+    } | { 
+        as: 'select', 
+        groups: OptGroupEntry[], 
+        hintText: string
+    };
 
 defineProps<{
     onSubmit: () => void,

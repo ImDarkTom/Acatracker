@@ -27,8 +27,6 @@ export const useModuleStore = defineStore('useModulesStore', () => {
             options: modules.map(module => [module.id, module.name]) ?? [],
         }));
 
-        console.log(formatted);
-
         return formatted;
     });
 
