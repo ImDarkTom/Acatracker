@@ -1,4 +1,7 @@
 <script setup lang="ts">
+const preferencesStore = useUserPreferencesStore();
+const { preferences } = storeToRefs(preferencesStore);
+
 const assessmentsStore = useAssessmentsStore();
 const { assessments, pending, assessmentsCount } = storeToRefs(assessmentsStore);
 
@@ -6,6 +9,13 @@ const modulesStore = useModuleStore();
 const { modules } = storeToRefs(modulesStore);
 
 const isRefreshing = ref(false);
+
+const activeModules = computed(() => modules.value?.filter((m) => {
+    if (!preferences.value) return true;
+
+    return m.year === preferences.value.currentYear
+        && m.semester === preferences.value.currentSemester;
+}));
 
 function refresh() {
     isRefreshing.value = true;
@@ -20,6 +30,7 @@ const stopRefreshAnim = () => {
 
 <template>
     <div class="h-full flex flex-col gap-2 p-2 overflow-auto">
+        <DashboardAssessmentListSemesterPicker />
         <div class="flex flex-row justify-between items-center">
             <span
                 v-if="pending" 
@@ -54,6 +65,9 @@ const stopRefreshAnim = () => {
             <div v-if="!assessments || assessmentsCount.total === 0" class="flex h-full grow items-center justify-center">
                 Add an assessment to get started
             </div>
+            <div v-else-if="activeModules?.length === 0" class="flex h-full grow items-center justify-center">
+                No modules/assessments added for year {{ preferences?.currentYear }}, semester {{ preferences?.currentSemester }}
+            </div>
             <AccordionRoot 
                 v-else
                 class="flex grow flex-col gap-2 overflow-y-auto"
@@ -61,7 +75,7 @@ const stopRefreshAnim = () => {
                 :collapsible="true"
                 :default-value="modules?.map(m => m.id.toString())">
                 <DashboardAssessmentListItem 
-                    v-for="module in modules" 
+                    v-for="module in activeModules" 
                     :key="module.id" 
                     :module 
                     :assessments="assessments.filter(a => a.module === module.id)" />

@@ -43,6 +43,13 @@
       "when": 1770938343070,
       "tag": "0005_brief_chimera",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1770940570502,
+      "tag": "0006_add-user-prefs",
+      "breakpoints": true
     }
   ]
 }
