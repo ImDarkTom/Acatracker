@@ -13,7 +13,7 @@ const onSubmit = submitHandler(addModule, setErrors);
 </script>
 
 <template>
-    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError>
+    <CustomDialog v-model:isOpen="isOpen" :confirmBeforeExiting :submitError :priority="2">
         <template #button>
             <slot />
         </template>
