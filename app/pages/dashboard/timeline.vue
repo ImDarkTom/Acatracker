@@ -2,12 +2,8 @@
 definePageMeta({
     layout: 'dashboard',
 });
-
-useHead({
-    title: 'Home | Acatracker',
-});
 </script>
 
 <template>
-    <div>home</div>
+    <div>timeline</div>
 </template>

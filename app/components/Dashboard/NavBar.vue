@@ -1,5 +1,5 @@
 <template>
-    <nav class="flex flex-row items-center justify-between p-2 z-90 border-b border-b-highlight">
+    <nav class="flex flex-row items-center justify-between p-2 z-90">
         <ul class="flex flex-row gap-4">
             <li class="mr-2">
                 <AppLogoLink />

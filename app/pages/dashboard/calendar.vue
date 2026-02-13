@@ -4,10 +4,10 @@ definePageMeta({
 });
 
 useHead({
-    title: 'Home | Acatracker',
+    title: 'Calendar | Acatracker',
 });
 </script>
 
 <template>
-    <div>home</div>
+    <DashboardCalendar />
 </template>
