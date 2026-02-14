@@ -29,6 +29,12 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
             </AppTooltip>
 
             <div class="flex flex-row gap-1">
+                <PopupAssessmentAddFromModuleButton :for-module-id="module.id">
+                    <ButtonGhost layer="base">
+                        <Icon name="lucide:plus" />
+                    </ButtonGhost>
+                </PopupAssessmentAddFromModuleButton>
+
                 <AccordionTrigger :as-child="true" class="group">
                     <ButtonGhost class="size-8 justify-center" layer="base" :highlight-on-open="false">
                         <Icon 
