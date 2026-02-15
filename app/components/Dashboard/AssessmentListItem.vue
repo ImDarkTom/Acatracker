@@ -9,6 +9,11 @@ const props = defineProps<{
 const { deleteAssessment } = useAssessmentsStore();
 const { deleteModule } = useModuleStore();
 
+function promptDeleteAssessment(assessment: AssessmentSchema) {
+    if (!confirm(`Are you sure you want to delete the '${assessment.name}' assessment?`)) return;
+    deleteAssessment(assessment.slug);
+}
+
 const remainingAssessmentCount = computed(() => props.assessments.filter(a => !a.completed).length);
 
 const headerTooltipContent = computed(() => `${props.assessments.length} assessments, ${remainingAssessmentCount.value} remaining`);
@@ -119,7 +124,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                                     <CustomDropdownItem 
                                         value="Delete" 
                                         icon="lucide:trash-2"
-                                        @select="deleteAssessment(assessment)" />
+                                        @select="promptDeleteAssessment(assessment)" />
                                 </DropdownMenuContent>
                             </Transition>
                         </DropdownMenuPortal>

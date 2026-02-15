@@ -1,7 +1,8 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 
-import { module } from '.';
+import { module, task } from '.';
 import { user } from "./auth";
 import z from "zod";
 
@@ -28,7 +29,7 @@ export const assessment = sqliteTable("assessment", {
     name: text().notNull(),
     slug: text().notNull().unique(),
     description: text(),
-    module: int().notNull().references(() => module.id, { onDelete: 'cascade' }),
+    moduleId: int().notNull().references(() => module.id, { onDelete: 'cascade' }),
     releasedAt: int(),
     dueAt: int().notNull(),
     completed: int({ mode: 'boolean' }),
@@ -37,10 +38,21 @@ export const assessment = sqliteTable("assessment", {
     updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
 
+// Each assessment can be in one module
+// Each assessment can have many tasks
+export const assessmentRelations = relations(assessment, ({ one, many }) => ({
+    module: one(module, {
+        fields: [assessment.moduleId],
+        references: [module.id],
+    }),
+    tasks: many(task),
+}));
+
+
 export const InsertAssessment = createInsertSchema(assessment, {
     name: (field) => field.min(1).max(100),
     description: (field) => field.max(1000),
-    module: (field) => field,
+    moduleId: (field) => field,
     releasedAt: () => preprocessDate,
     dueAt: () => preprocessDate,
 }).omit({

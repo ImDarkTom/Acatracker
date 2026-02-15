@@ -13,7 +13,7 @@ export async function getUserEvents(userId: number, host: string) {
     const getModule = (moduleId: number) => modules.find((m) => m.id === moduleId);
 
     for (const assessment of assessments) {
-        const moduleInfo = getModule(assessment.module);
+        const moduleInfo = getModule(assessment.moduleId);
 
         // Add release date if exists
         let hasRelease = assessment.releasedAt;

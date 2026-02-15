@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { InsertTask, type AssessmentSchema, type TaskSchema } from '~~/lib/db/schema';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
+import type { AssessmentWithDetails } from '~~/lib/db/queries/assessments';
 
-const { editTask } = useTaskStore();
+const { updateTask } = useTaskStore();
 
 const props = defineProps<{
     assessment: AssessmentSchema,
-    task: TaskSchema,
+    task: AssessmentWithDetails['tasks'][number],
 }>();
 
 const initialValues = {
@@ -30,7 +31,7 @@ watch(isOpen, (justOpened) => {
     };
 });
 
-const onSubmit = submitHandler(async (values) => editTask(values, props.task.id), setErrors);
+const onSubmit = submitHandler(async (values) => updateTask(values, props.task.id), setErrors);
 </script>
 
 <template>

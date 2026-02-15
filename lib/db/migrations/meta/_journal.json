@@ -50,6 +50,13 @@
       "when": 1770940570502,
       "tag": "0006_add-user-prefs",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1771167451546,
+      "tag": "0007_module_to_moduleid",
+      "breakpoints": true
     }
   ]
 }

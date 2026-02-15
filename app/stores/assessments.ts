@@ -1,7 +1,7 @@
-import type { AssessmentSchema } from "~~/lib/db/schema";
+import type { InsertAssessment } from "~~/lib/db/schema";
 
 export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
-    const { data: assessments, pending, refresh } = useFetch('/api/assessments', { lazy: true });
+    const { data: assessments, pending, refresh: fetchRefresh } = useFetch('/api/assessments', { lazy: true });
     const { $csrfFetch } = useNuxtApp();
 
     const assessmentsCount = computed(() => {
@@ -25,60 +25,68 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
     // CRUD
     // ----
 
+    // Create
     async function addAssessment(values: Record<string, any>) {
         await $csrfFetch("/api/assessments", {
             method: 'POST',
             body: values,
         });
 
-        refresh();
+        fetchRefresh();
         useCalendarEvents().refresh();
     }
 
-    async function editAssessment(values: Record<string, any>, assessmentId: number) {
-        await $csrfFetch(`/api/assessments/${assessmentId}`, {
-            method: 'PUT',
+    // Read
+    // Slug is unknown as in `assessment/[slug].vue` the route param slug can be
+    // a `string`, `string[]`, or `undefined.
+    async function getAssessmentBySlug(slug: unknown) {
+        return useFetch(`/api/assessments/${slug}`, { method: 'GET' });
+    }
+
+    // Update
+    async function updateAssessment(slug: string, values: Partial<InsertAssessment>) {
+        await $csrfFetch(`/api/assessments/${slug}`, {
+            method: 'PATCH',
             body: values,
         });
 
-        refresh();
-        // Since we can edit assessments from the sidebar, calendar won't refresh since we don't
-        // remount it like when we edit tasks
+        fetchRefresh();
+        // Since we can edit assessments from the sidebar, calendar won't
+        // refresh since we don't remount it like when we edit tasks
         useCalendarEvents().refresh();
     }
 
-    async function deleteAssessment(assessment: AssessmentSchema) {
-        if (!confirm(`Are you sure you want to delete '${assessment.name}'?`)) return;
+    async function toggleAssessmentCompleted(slug: string, completed: boolean) {
+        await new Promise(resolve => setTimeout(resolve, 500));
 
-        await $fetch(`/api/assessments/${assessment.id}`, {
+        await $csrfFetch(`/api/assessments/${slug}`, {
+            method: 'PATCH',
+            body: { completed },
+        });
+
+        fetchRefresh();
+        useCalendarEvents().refresh();
+    }
+
+    // Delete
+    async function deleteAssessment(slug: string) {
+        await $fetch(`/api/assessments/${slug}`, {
             method: 'DELETE'
         });
 
-        refresh();
-        useCalendarEvents().refresh();
-    }
-
-
-    async function toggleAssessmentCompleted(assessmentId: number, checkedValue: boolean) {
-        await $csrfFetch(`/api/assessments/${assessmentId}`, {
-            method: 'PATCH',
-            body: {
-                completed: checkedValue,
-            }
-        });
-
-        refresh();
+        fetchRefresh();
         useCalendarEvents().refresh();
     }
 
     return {
         assessments,
         pending,
-        refresh,
+        refresh: fetchRefresh,
         assessmentsCount,
         addAssessment,
-        editAssessment,
+        getAssessmentBySlug,
+        updateAssessment,
+        toggleAssessmentCompleted,
         deleteAssessment,
-        toggleAssessmentCompleted
     };
 });

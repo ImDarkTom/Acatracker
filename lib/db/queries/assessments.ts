@@ -49,13 +49,13 @@ export async function insertAssessment(
     return created;
 }
 
-export async function deleteAssessmentById(
-    id: number, 
+export async function deleteAssessmentBySlug(
+    slug: string, 
     userId: number
 ): Promise<AssessmentSchema | undefined> {
     const [ removed ] = await db.delete(assessment).where(
         and(
-            eq(assessment.id, id),
+            eq(assessment.slug, slug),
             eq(assessment.userId, userId),
         ),
     ).returning();
@@ -63,8 +63,8 @@ export async function deleteAssessmentById(
     return removed;
 }
 
-export async function updateAssessmentById(
-    id: number, 
+export async function updateAssessmentBySlug(
+    slug: string, 
     newAssessment: Partial<InsertAssessment>, 
     userId: number
 ): Promise<AssessmentSchema | undefined> {
@@ -72,10 +72,44 @@ export async function updateAssessmentById(
         .set(newAssessment)
         .where(
             and(
-                eq(assessment.id, id),
+                eq(assessment.slug, slug),
                 eq(assessment.userId, userId),
             ),  
         ).returning();
 
     return updated;
 }
+
+export async function getAssessmentWithTasks(
+    slug: string,
+    userId: number,
+) {
+    return db.query.assessment.findFirst({
+        where: and(
+            eq(assessment.slug, slug),
+            eq(assessment.userId, userId),
+        ),
+        with: {
+            module: {
+                columns: {
+                    id: true,
+                    name: true,
+                    code: true,
+                    semester: true,
+                    year: true,
+                },
+            },
+            tasks: {
+                columns: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    dueAt: true,
+                    completed: true,
+                },
+            },
+        }
+    });
+}
+
+export type AssessmentWithDetails = NonNullable<Awaited<ReturnType<typeof getAssessmentWithTasks>>>

@@ -23,7 +23,7 @@
 
     
     --color-text-primary: hsl(190, 15%, 90%);
-    --color-text-secondary: hsl(190, 15%, 80%);
+    --color-text-secondary: hsl(190, 15%, 75%);
     --color-text-muted: hsl(190, 15%, 65%);
 
     --color-highlight: hsl(190, 15%, 30%);
@@ -36,10 +36,27 @@
     --color-errortxt: hsl(0, 40%, 50%);
     --color-errorbg: hsl(0, 50%, 25%);
 
-    --color-danger-muted: hsl(0, 30%, 30%);
-    --color-danger-base: hsl(0, 30%, 40%);
-    --color-danger-active: hsl(0, 50%, 50%);
-    --color-danger-focus: hsl(0, 50%, 70%);
+    /* Danger */
+    --color-danger-bg: hsl(0, 50%, 25%);
+    --color-danger-bg-hover: hsl(0, 50%, 28%);
+    --color-danger-bg-active: hsl(0, 50%, 31%);
+    --color-danger-text: hsl(0, 95%, 85%);
+    --color-danger-border: hsl(0, 35%, 30%);
+
+    /* Warning */
+    --color-warning-bg: hsl(25, 50%, 25%);
+    --color-warning-text: hsl(25, 95%, 85%);
+    --color-warning-border: hsl(25, 35%, 30%);
+
+    /* Success */
+    --color-success-bg: hsl(105, 50%, 25%);
+    --color-success-text: hsl(105, 95%, 85%);
+    --color-success-border: hsl(105, 35%, 30%);
+
+    /* Info */
+    --color-info-bg: hsl(195, 50%, 25%);
+    --color-info-text: hsl(195, 95%, 85%);
+    --color-info-border: hsl(195, 35%, 30%);
 
     --color-event-released: var(--color-green-500);
     --color-event-due: var(--color-red-500);
@@ -163,10 +180,8 @@ body {
         --color-bg-overlay-hover: hsl(190, 10%, 92%);
         --color-bg-overlay-active: hsl(190, 10%, 84%);
 
-
-
         --color-text-primary: hsl(190, 10%, 10%);
-        --color-text-secondary: hsl(190, 10%, 20%);
+        --color-text-secondary: hsl(190, 10%, 25%);
         --color-text-muted: hsl(190, 15%, 35%);
 
         --color-highlight: hsl(190, 15%, 70%);
@@ -178,6 +193,24 @@ body {
 
         --color-errortxt: hsl(0, 40%, 50%);
         --color-errorbg: hsl(0, 50%, 75%);
+
+        --color-danger-bg: hsl(0, 50%, 75%);
+        --color-danger-bg-hover: hsl(0, 50%, 72%);
+        --color-danger-bg-active: hsl(0, 50%, 69%);
+        --color-danger-text: hsl(0, 95%, 15%);
+        --color-danger-border: hsl(0, 35%, 70%);
+
+        --color-warning-bg: hsl(25, 50%, 75%);
+        --color-warning-text: hsl(25, 95%, 15%);
+        --color-warning-border: hsl(25, 35%, 70%);
+
+        --color-success-bg: hsl(105, 50%, 75%);
+        --color-success-text: hsl(105, 95%, 15%);
+        --color-success-border: hsl(105, 35%, 70%);
+
+        --color-info-bg: hsl(195, 50%, 75%);
+        --color-info-text: hsl(195, 95%, 15%);
+        --color-info-border: hsl(195, 35%, 70%);
 
         --color-event-released: var(--color-green-700);
         --color-event-due: var(--color-red-700);

@@ -8,12 +8,12 @@ const props = defineProps<{
 }>();
 
 const modulesStore = useModuleStore();
-const { editAssessment } = useAssessmentsStore();
+const { updateAssessment } = useAssessmentsStore();
 
 const initialValues = {
     name: props.assessment.name,
     description: props.assessment.description,
-    module: props.assessment.module,
+    module: props.assessment.moduleId,
     releasedAt: props.assessment.releasedAt,
     dueAt: props.assessment.dueAt,
 }
@@ -25,7 +25,7 @@ const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(async (values) => editAssessment(values, props.assessment.id), setErrors);
+const onSubmit = submitHandler(async (values) => updateAssessment(props.assessment.slug, values), setErrors);
 
 watch(isOpen, (justOpened) => {
     if (justOpened) {

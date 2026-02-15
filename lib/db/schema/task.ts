@@ -4,6 +4,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { assessment } from '.';
 import { user } from "./auth";
 import z from "zod";
+import { relations } from "drizzle-orm";
 
 const preprocessDate = z.preprocess((arg) => {
     if (typeof arg === 'string') {
@@ -45,6 +46,14 @@ export const InsertTask = createInsertSchema(task, {
     createdAt: true,
     updatedAt: true,
 });
+
+export const taskRelations = relations(task, ({ one }) => ({
+    assessment: one(assessment, {
+        fields: [task.assessment],
+        references: [assessment.id],
+    }),
+}));
+
 
 export type TaskSchema = typeof task.$inferSelect;
 

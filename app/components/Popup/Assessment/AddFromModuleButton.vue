@@ -13,7 +13,7 @@ onMounted(() => modulesStore.refresh());
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertAssessment),
     initialValues: {
-        module: props.forModuleId,
+        moduleId: props.forModuleId,
     },
 });
 
@@ -25,7 +25,7 @@ watch(isOpen, (newValue) => {
     if (newValue) {
         resetForm({
             values: {
-                module: props.forModuleId,
+                moduleId: props.forModuleId,
             }
         });
     }
@@ -83,7 +83,7 @@ watch(isOpen, (newValue) => {
                         name: 'module',
                         label: 'Module',
                         as: 'select',
-                        optionsList: modulesStore.moduleSelectorOptions,
+                        groups: modulesStore.moduleSelectorOptions,
                         hintText: '(Select a Module)',
                     }
                 ]" />

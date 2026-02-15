@@ -2,13 +2,7 @@ import { AssessmentSchema, ModuleSchema, TaskSchema } from "~~/lib/db/schema";
 
 type CalendarEvents = {
     date: string,
-    events: {
-        id: number,
-        type: 'task' | 'released' | 'due',
-        label: string,
-        link: string,
-        completed: boolean
-    }[]
+    events: IterableEvent[],
 }[]
 
 export function transformToCalendarEvents(
@@ -21,7 +15,7 @@ export function transformToCalendarEvents(
     for (const item of [...userAssessments, ...userTasks]) {
         const getDateKey = (time: number) => new Date(time).toISOString().split('T')[0]!;
         const getLabel = (assessment: AssessmentSchema) => 
-            `${userModules.find(m => m.id == assessment.module)?.code ?? '?'} • ${assessment.name}`;
+            `${userModules.find(m => m.id == assessment.moduleId)?.code ?? '?'} • ${assessment.name}`;
 
         if (!map.has(getDateKey(item.dueAt))) {
             map.set(getDateKey(item.dueAt), []);
@@ -29,11 +23,11 @@ export function transformToCalendarEvents(
 
         if ('assessment' in item) {
             const assessment = userAssessments.find(a => a.id === item.assessment);
-            const code = userModules.find(m => m.id == assessment?.module)?.code ?? '?';
+            const code = userModules.find(m => m.id == assessment?.moduleId)?.code ?? '?';
 
             // If it's a task
             map.get(getDateKey(item.dueAt))?.push({
-                id: item.assessment,
+                id: item.assessment.toString(),
                 type: 'task',
                 label: `${code} • ${item.name}`,
                 link: `/dashboard/assessment/${item.assessment}`,
@@ -48,16 +42,16 @@ export function transformToCalendarEvents(
             }
 
             map.get(getDateKey(item.releasedAt))?.push({
-                id: item.id,
+                id: item.slug,
                 type: 'released',
                 label: getLabel(item),
-                link: `/dashboard/assessment/${item.id}`,
+                link: `/dashboard/assessment/${item.slug}`,
                 completed: Boolean(item.completed),
             });
         }
 
         map.get(getDateKey(item.dueAt))?.push({
-            id: item.id,
+            id: item.id.toString(),
             type: 'due',
             label: getLabel(item),
             link: `/dashboard/assessment/${item.id}`,

@@ -1,5 +1,5 @@
 type IterableEvent = {
-    id: number,
+    id: string,
     type: 'released' | 'due' | 'task',
     label: string,
     link: string,

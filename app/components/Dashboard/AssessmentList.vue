@@ -78,7 +78,7 @@ const stopRefreshAnim = () => {
                     v-for="module in activeModules" 
                     :key="module.id" 
                     :module 
-                    :assessments="assessments.filter(a => a.module === module.id)" />
+                    :assessments="assessments.filter(a => a.moduleId === module.id)" />
             </AccordionRoot>
             <div class="flex flex-row gap-2">
                 <PopupAddAssessment>

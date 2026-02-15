@@ -1,73 +1,70 @@
 <script setup lang="ts">
-import type { AssessmentSchema, TaskSchema } from '~~/lib/db/schema';
+import type { AssessmentWithDetails } from '~~/lib/db/queries/assessments';
+import { formatRelativeTime, timeIsPast } from '~~/shared/utils/time';
 
 definePageMeta({
     layout: 'dashboard',
 });
 
-const { $csrfFetch } = useNuxtApp();
 const route = useRoute();
-const assessmentSlug = route.params.slug;
+const slugFromParams = route.params.slug;
 
+const assessmentsStore = useAssessmentsStore();
 const taskStore = useTaskStore();
-const { tasks } = storeToRefs(taskStore);
 
-const { assessments, pending } = storeToRefs(useAssessmentsStore());
+const { data: assessment, pending, error } = await assessmentsStore.getAssessmentBySlug(slugFromParams);
 
-const assessment = computed<{
-    valid: false,
-} | {
-    valid: true,
-    data: AssessmentSchema,
-}>(() => {
-    if (!assessments.value) return { valid: false };
-    if (!assessmentSlug || typeof assessmentSlug === 'object') return { valid: false };
-
-    const selectedAssessment = assessments.value.find((a) => a.slug === assessmentSlug);
-    if (!selectedAssessment) return { valid: false };
-
-    return { valid: true, data: selectedAssessment };
-});
+const assessmentBeingUpdated = ref(false);
+const tasksBeingUpdated = ref<number[]>([]);
 
 const assessmentName = computed<string>(() => {
-    if (!assessment.value.valid) return "Invalid Assessment";
-    return assessment.value.data.name;
+    if (!assessment.value) return "Invalid Assessment";
+    return assessment.value.name;
 });
+
+const assessmentState = computed<'unreleased' | 'due' | 'completed' | 'overdue'>(() => {
+    if (assessment.value?.completed) {
+        return 'completed';
+    }
+
+    if (assessment.value?.releasedAt) {
+        if (!timeIsPast(assessment.value.releasedAt)) {
+            return 'unreleased';
+        }
+
+        if (timeIsPast(assessment.value.dueAt)) {
+            return 'overdue'
+        }
+    }
+
+    return 'due';
+});
+
+async function toggleAssessmentCompleted() {
+    if (!assessment.value) return;
+    assessment.value.completed = !assessment.value.completed;
+
+    assessmentBeingUpdated.value = true;
+
+    await assessmentsStore.toggleAssessmentCompleted(
+        assessment.value.slug,
+        assessment.value.completed
+    );
+
+    assessmentBeingUpdated.value = false;
+}
+
+async function toggleTask(task: AssessmentWithDetails['tasks'][number]) {
+    task.completed = !task.completed;
+
+    tasksBeingUpdated.value.push(task.id);
+    await taskStore.toggleTaskCompleted(task.id, task.completed);
+    tasksBeingUpdated.value = tasksBeingUpdated.value.filter(t => t !== task.id);
+}
 
 useHead(() => ({
     title: `${assessmentName.value} | Assessment | Acatracker`
 }));
-
-const taskTogglesLoading = ref<number[]>([]);
-
-async function toggleTask(task: TaskSchema) {
-    task.completed = !task.completed;
-
-    taskTogglesLoading.value.push(task.id);
-    await $csrfFetch(`/api/tasks/${task.id}`, {
-        method: 'PUT',
-        body: {
-            ...task,
-        }
-    });
-    taskTogglesLoading.value = taskTogglesLoading.value.filter(t => t !== task.id);
-}
-
-const assessmentCompletedLoading = ref(false);
-
-async function toggleAssessmentCompleted() {
-    if (!assessment.value.valid) return;
-    assessment.value.data.completed = !assessment.value.data.completed;
-
-    assessmentCompletedLoading.value = true;
-    await $csrfFetch(`/api/assessments/${assessment.value.data.id}`, {
-        method: 'PUT',
-        body: {
-            ...assessment.value.data,
-        }
-    });
-    assessmentCompletedLoading.value = false;
-}
 </script>
 
 <template>
@@ -77,9 +74,9 @@ async function toggleAssessmentCompleted() {
         <LoadingIcon />
     </div>
     <div 
-        v-else-if="!assessment.valid"
+        v-else-if="error || !assessment"
         class="grow flex flex-col gap-2 items-center justify-center">
-        Invalid assessment.
+        Oh no!: {{ error?.statusMessage ?? 'An unknown error occurred.' }}
         <RouterLink to="/dashboard">
             <ButtonPrimary>
                 Back to dashboard
@@ -96,30 +93,74 @@ async function toggleAssessmentCompleted() {
                     Back to calendar
                 </ButtonPrimary>
             </NuxtLink>
-            <PopupEditAssessment :assessment="assessment.data">
-                <ButtonSecondary>
+            <PopupEditAssessment :assessment>
+                <ButtonSecondary :disabled="assessmentBeingUpdated">
                     <Icon name="lucide:pencil" />
                     Edit
                 </ButtonSecondary>
             </PopupEditAssessment>
         </div>
-        <span class="text-3xl">{{ assessment.data.name }}</span>
-        <p class="text-text-secondary">{{ assessment.data.description }}</p>
-        <div v-if="assessment.data.releasedAt" class="text-lg card bg-bg-surface rounded-sm">
-            Release: {{ new Date(assessment.data.releasedAt).toLocaleDateString() }}
+        
+        <span class="text-3xl">{{ assessment.name }}</span>
+        <p class="text-text-secondary">{{ assessment.description ?? '(No description)' }}</p>
+
+        <div class="flex flex-row gap-2">
+            <div 
+                class="p-2 rounded-md ring-1 ring-inset flex flex-row gap-2 items-center select-none"
+                :class="{
+                    'ring-info-border bg-info-bg text-info-text': assessmentState === 'unreleased',
+                    'ring-warning-border bg-warning-bg text-warning-text': assessmentState === 'due',
+                    'ring-danger-border bg-danger-bg text-danger-text': assessmentState === 'overdue',
+                    'ring-success-border bg-success-bg text-success-text': assessmentState === 'completed',
+                }">
+                <Icon v-if="assessmentState === 'unreleased'" name="lucide:book-lock" />
+                <Icon v-else-if="assessmentState === 'due'" name="lucide:calendar-clock" />
+                <Icon v-else-if="assessmentState === 'overdue'" name="lucide:clock-alert" />
+                <Icon v-else name="lucide:circle-check" />
+                <span class="capitalize">
+                    {{ assessmentState }}
+                </span>
+            </div>
+            <!-- <ButtonSecondary>
+                Mark as complete
+            </ButtonSecondary> -->
+        </div>
+
+        <div v-if="assessment.releasedAt" class="text-lg card bg-bg-surface rounded-sm">
+            Release: {{ new Date(assessment.releasedAt).toLocaleDateString() }}
         </div>
 
         <div class="ml-8 mr-4 flex flex-col gap-2">
             <div 
-                v-for="task in (tasks ?? []).filter((t) => t.assessment == (assessment as Extract<typeof assessment, { valid: true }>).data.id)"
+                v-for="task in assessment.tasks"
                 class="card bg-bg-surface rounded-sm flex flex-col gap-2">
                 <div class="flex flex-row items-center justify-between">
-                    <label class="flex flex-row gap-2">
+                    <label class="w-full flex flex-row gap-2">
                         <input 
                             type="checkbox"
                             :checked="!!task.completed"
-                            @change="toggleTask(task)" :disabled="taskTogglesLoading.includes(task.id)">
-                        <span class="select-none" :class="{ 'line-through': !!task.completed }">{{ task.name }}: {{ new Date(task.dueAt).toLocaleDateString() }}</span>
+                            :disabled="tasksBeingUpdated.includes(task.id)"
+                            @change="toggleTask(task)">
+                        <div 
+                            class="w-full flex flex-row select-none">
+                            <span 
+                                class="text-text-primary"
+                                :class="{ 'line-through': !!task.completed }">
+                                {{ task.name }}
+                            </span>
+                            <div class="ml-2">
+                                <span>
+                                    | {{ new Date(task.dueAt).toLocaleDateString() }} - 
+                                </span>
+                                <span 
+                                    class="text-text-secondary"
+                                    :class="{
+                                        'text-warning-base': timeIsPast(task.dueAt)
+                                    }">
+                                    {{ formatRelativeTime(task.dueAt) }}
+                                </span>
+                            </div>
+                        </div>
                     </label>
                     <DropdownMenuRoot>
                         <DropdownMenuTrigger
@@ -130,20 +171,22 @@ async function toggleAssessmentCompleted() {
                             <DropdownMenuContent
                                 class="dropdown-content">
                                 <PopupEditTask 
-                                    :task 
-                                    :assessment="assessment.data">
+                                    :assessment
+                                    :task>
                                     <CustomDropdownItem value="Edit" icon="lucide:pencil"
                                         :on-select="(e) => e.preventDefault()" />
                                 </PopupEditTask>
                                 <CustomDropdownItem value="Delete" icon="lucide:trash-2"
-                                    :on-select="() => taskStore.deleteTask(task)" />
+                                    :on-select="() => taskStore.deleteTask(task.id, task.name)" />
                             </DropdownMenuContent>
                         </DropdownMenuPortal>
                     </DropdownMenuRoot>
                 </div>
-                <p v-if="task.description" class="text-sm text-text-secondary">{{ task.description }}</p>
+                <p 
+                    v-if="task.description"
+                    class="text-sm text-text-secondary">{{ task.description }}</p>
             </div>
-            <PopupAddTask :assessment="assessment.data" >
+            <PopupAddTask :assessment >
                 <ButtonPrimary class="w-full">
                     <Icon name="lucide:circle-check-big" />
                     Add Task
@@ -152,11 +195,14 @@ async function toggleAssessmentCompleted() {
         </div>
 
         <div class="text-lg card bg-bg-surface rounded-sm">
-            Due: {{ new Date(assessment.data.dueAt).toLocaleDateString() }}
+            Due: {{ new Date(assessment.dueAt).toLocaleDateString() }}
         </div>
 
         <label class="flex flex-row gap-2">
-            <input type="checkbox" :checked="!!assessment.data.completed"  @change="toggleAssessmentCompleted">
+            <input 
+                type="checkbox" 
+                :checked="!!assessment.completed"
+                @change="toggleAssessmentCompleted">
             <span class="text-lg">Completed</span>
         </label>
     </div>

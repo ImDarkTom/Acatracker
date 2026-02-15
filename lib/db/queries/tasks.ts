@@ -37,7 +37,7 @@ export async function deleteTaskById(
 
 export async function updateTaskById(
     id: number, 
-    newTask: InsertTask, 
+    newTask: Partial<InsertTask>, 
     userId: number
 ): Promise<TaskSchema | undefined> {
     const [ updated ] = await db.update(task)
