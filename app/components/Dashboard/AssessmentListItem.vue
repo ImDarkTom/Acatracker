@@ -75,8 +75,8 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
             <div 
                 v-for="assessment in assessments" 
                 :key="assessment.id"
-                class="flex flex-row items-center gap-2 p-2 rounded-lg bg-bg-surface has-[>.active]:bg-bg-surface-active"
-                :class="{ 'opacity-65': assessment.completed }">
+                class="flex flex-row items-center gap-2 p-2 rounded-lg bg-bg-surface hover:bg-bg-surface-hover has-[>.active]:bg-bg-surface-active ring-inset ring-[0.5px] ring-highlight"
+                :class="{ 'opacity-75': assessment.completed }">
                 <NuxtLink 
                     class="grow"
                     :to="`/dashboard/assessment/${assessment.slug}`" 
@@ -112,9 +112,9 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                                 <DropdownMenuContent class="dropdown-content">
                                     <PopupEditAssessment :assessment>
                                         <CustomDropdownItem 
-                                        value="Edit" 
-                                        icon="lucide:pencil"
-                                        @select="e => e.preventDefault()" />
+                                            value="Edit" 
+                                            icon="lucide:pencil"
+                                            @select="e => e.preventDefault()" />
                                     </PopupEditAssessment>
                                     <CustomDropdownItem 
                                         value="Delete" 

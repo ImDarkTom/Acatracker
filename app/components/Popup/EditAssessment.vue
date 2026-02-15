@@ -88,7 +88,7 @@ watch(isOpen, (justOpened) => {
                         name: 'module',
                         label: 'Module',
                         as: 'select',
-                        optionsList: modulesStore.moduleSelectorOptions,
+                        groups: modulesStore.moduleSelectorOptions,
                         hintText: '(Select a Module)',
                         sideBtn: AddModuleSideButton,
                     }

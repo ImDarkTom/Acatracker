@@ -1,9 +1,12 @@
 <script setup lang="ts">
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     isOpen: boolean,
     confirmBeforeExiting: boolean;
     submitError?: string;
-}>();
+    priority?: number;
+}>(), {
+    priority: 1,
+});
 
 const emit = defineEmits<{
     (e: 'update:isOpen', value: boolean): void,
@@ -37,13 +40,16 @@ function handleExitClick(e: Event, exitFn: () => void) {
         </DialogTrigger>
         <DialogPortal>
             <Transition name="fade">
-                <DialogOverlay class="bg-black/65 backdrop-blur-xs fixed inset-0 z-105" />
+                <DialogOverlay 
+                    class="bg-black/65 backdrop-blur-xs fixed inset-0" 
+                    :style="{ zIndex: 105 + ((priority - 1) * 10) }" />
             </Transition>
             <Transition name="scale">
                 <DialogContent
                     @escape-key-down="handleExitClick($event, dialogClose)"
                     @pointer-down-outside="handleExitClick($event, dialogClose)"
-                    class="card p-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-md max-w-full shadow-md shadow-shadow-base z-110">
+                    class="card p-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] w-md max-w-full shadow-md shadow-shadow-base"
+                    :style="{ zIndex: 106 + ((priority - 1) * 10) }">
                     <DialogTitle class="text-lg font-semibold text-text-primary">
                         <slot name="title" />
                     </DialogTitle>
