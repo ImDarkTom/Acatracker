@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { getLocalTimeZone, today } from '@internationalized/date';
 
-const { getEventsForDate, pending, error } = useCalendarEvents();
+const scheduleStore = useScheduleStore();
+const { pending, error } = storeToRefs(scheduleStore);
+// TODO: update in local schedule when we mark item on calendar as done.
 </script>
 
 <template>
@@ -71,7 +73,7 @@ const { getEventsForDate, pending, error } = useCalendarEvents();
                                     not-data-outside-view:font-medium" />
                                 <div class="mt-0.5">
                                     <DashboardCalendarEntry 
-                                        v-for="(event, index) in getEventsForDate(weekDate)"
+                                        v-for="(event, index) in scheduleStore.calendar.eventsForDate(weekDate)"
                                         :key="index"
                                         :eventProp="event" />
                                 </div>

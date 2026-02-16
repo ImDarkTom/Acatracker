@@ -1,3 +1,5 @@
+import { fromDate, getLocalTimeZone, isSameDay } from "@internationalized/date";
+import type { DateValue } from "reka-ui";
 import type { OptGroupEntry } from "~/types/dynamicForm";
 import type { InsertAssessment, InsertTask } from "~~/lib/db/schema";
 
@@ -55,7 +57,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             });
     
             refresh();
-            useCalendarEvents().refresh();
         },
     
         async edit(values: Record<string, any>, moduleId: number) {
@@ -65,7 +66,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             });
     
             refresh();
-            useCalendarEvents().refresh();
         },
     
         async delete(moduleId: number) {
@@ -74,7 +74,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             });
     
             refresh();
-            useCalendarEvents().refresh();
         },
     }
 
@@ -86,7 +85,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             });
 
             refresh();
-            useCalendarEvents().refresh();
         },
 
         async update(slug: string, values: Partial<InsertAssessment>) {
@@ -96,9 +94,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             });
 
             refresh();
-            // Since we can edit assessments from the sidebar, calendar won't
-            // refresh since we don't remount it like when we edit tasks
-            useCalendarEvents().refresh();
         },
 
         async toggleCompleted(slug: string, completed: boolean) {
@@ -108,7 +103,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             });
 
             refresh();
-            useCalendarEvents().refresh();
         },
 
         // Delete
@@ -118,7 +112,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             });
 
             refresh();
-            useCalendarEvents().refresh();
         },
     }
 
@@ -151,6 +144,58 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             });
         },
     };
+
+    const calendarOperations = {
+        eventsForDate(dateValue: DateValue): IterableEvent[] {
+            if (!schedule.value) return [];
+
+            const timezone = getLocalTimeZone();
+            const events: IterableEvent[] = [];
+
+            const isOnDate = (timestamp: number) => 
+                isSameDay(dateValue, fromDate(new Date(timestamp), timezone));
+
+            for (const module of schedule.value) {
+                for (const assessment of module.assessments) {
+                    const assessmentLabel = `${module.code} • ${assessment.name}`;
+
+                    if (assessment.releasedAt && isOnDate(assessment.releasedAt)) {
+                        events.push({
+                            id: assessment.id.toString(),
+                            type: 'released',
+                            label: assessmentLabel,
+                            link: `/dashboard/assessment/${assessment.slug}#release`,
+                            completed: assessment.completed ?? false,
+                        });
+                    }
+
+                    if (isOnDate(assessment.dueAt)) {
+                        events.push({
+                            id: assessment.id.toString(),
+                            type: 'due',
+                            label: assessmentLabel,
+                            link: `/dashboard/assessment/${assessment.slug}#due`,
+                            completed: assessment.completed ?? false,
+                        });
+                    }
+
+                    for (const task of assessment.tasks) {
+                        if (isOnDate(task.dueAt)) {
+                            events.push({
+                                type: 'task',
+                                id: task.id.toString(),
+                                label: `${module.code} • ${task.name}`,
+                                completed: task.completed ?? false,
+                                link: `/dashboard/assessment/${assessment.slug}#task-${task.id}`,
+                            });
+                        }
+                    }
+                }
+            }
+
+            return events;
+        },
+    };
         
     return {
         schedule,
@@ -163,5 +208,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         module: moduleOperations,
         assessment: assessmentOperations,
         task: taskOperations,
+        calendar: calendarOperations,
     }
 });

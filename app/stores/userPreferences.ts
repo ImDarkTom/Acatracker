@@ -16,6 +16,11 @@ export const useUserPreferencesStore = defineStore('useUserPreferencesStore', ()
             });
 
             preferences.value = newValues;
+
+            // If we updated either of these, refresh schedule
+            if (values.currentSemester || values.currentYear) {
+                useScheduleStore().refresh();
+            }
         } catch (error) {
             console.error("Error setting user preferences.", error);
         }
