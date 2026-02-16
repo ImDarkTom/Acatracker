@@ -1,6 +1,7 @@
 import db from "..";
 import { and, eq } from "drizzle-orm";
 import { module, InsertModule, type ModuleSchema } from "../schema";
+import { getUserPreferences } from "./userPreferences";
 
 export async function findModules(userId: number): Promise<ModuleSchema[]> {
     return db.query.module.findMany({
@@ -54,14 +55,15 @@ export async function updateModuleById(
 
 export async function getModuleWithDetailedAssessments(
     userId: number,
-    year: number,
-    semester: number,
 ) {
+    const userPreferences = await getUserPreferences(userId);
+    if (!userPreferences) return null;
+
     return db.query.module.findMany({
         where: and(
             eq(module.userId, userId),
-            eq(module.year, year),
-            eq(module.semester, semester),
+            eq(module.year, userPreferences.currentYear),
+            eq(module.semester, userPreferences.currentSemester),
         ),
         columns: {
             id: true,

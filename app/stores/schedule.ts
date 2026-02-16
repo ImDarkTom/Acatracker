@@ -2,14 +2,9 @@ import type { OptGroupEntry } from "~/types/dynamicForm";
 import type { InsertAssessment, InsertTask } from "~~/lib/db/schema";
 
 export const useScheduleStore = defineStore('useScheduleStore', () => {
-    const userPreferences = useUserPreferencesStore();
     const { $csrfFetch } = useNuxtApp();
 
     const { data: schedule, pending, error, refresh } = useFetch('/api/schedule', {
-        query: {
-            year: userPreferences.preferences?.currentYear,
-            semester: userPreferences.preferences?.currentSemester,
-        },
         lazy: true,
     });
 

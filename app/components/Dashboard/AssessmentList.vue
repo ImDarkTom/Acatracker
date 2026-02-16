@@ -5,15 +5,15 @@ const { preferences } = storeToRefs(preferencesStore);
 const scheduleStore = useScheduleStore();
 const { schedule: modules } = storeToRefs(scheduleStore);
 
-const isRefreshing = ref(false);
+const spinRefreshIcon = ref(false);
 
 function refresh() {
-    isRefreshing.value = true;
+    spinRefreshIcon.value = true;
     scheduleStore.refresh();
 }
 
-const stopRefreshAnim = () => {
-    isRefreshing.value = false;
+function stopRefreshAnim() {
+    spinRefreshIcon.value = false;
 }
 </script>
 
@@ -39,7 +39,7 @@ const stopRefreshAnim = () => {
                     <Icon 
                         name="lucide:refresh-cw" 
                         :class="{
-                            'animate-spin-once': isRefreshing
+                            'animate-spin-once': spinRefreshIcon
                         }"
                         @animationend="stopRefreshAnim" />
                 </ButtonGhost>
