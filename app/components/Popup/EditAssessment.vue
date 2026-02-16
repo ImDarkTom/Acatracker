@@ -8,7 +8,6 @@ const props = defineProps<{
     assessment: AssessmentWithoutId,
 }>();
 
-const modulesStore = useModuleStore();
 const scheduleStore = useScheduleStore();
 
 const initialValues = {
@@ -33,7 +32,6 @@ const onSubmit = submitHandler(
 
 watch(isOpen, (justOpened) => {
     if (justOpened) {
-        modulesStore.refresh();
         resetForm();
     };
 });
@@ -92,7 +90,7 @@ watch(isOpen, (justOpened) => {
                         name: 'module',
                         label: 'Module',
                         as: 'select',
-                        groups: modulesStore.moduleSelectorOptions,
+                        groups: scheduleStore.moduleSelectorOptions,
                         hintText: '(Select a Module)',
                         sideBtn: AddModuleSideButton,
                     }

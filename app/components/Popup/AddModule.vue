@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { InsertModule } from '~~/lib/db/schema';
 
-const { addModule } = useModuleStore();
+const scheduleStore = useScheduleStore();
 const preferencesStore = useUserPreferencesStore();
 const { preferences } = storeToRefs(preferencesStore);
 
@@ -15,7 +15,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(addModule, setErrors);
+const onSubmit = submitHandler(scheduleStore.module.add, setErrors);
 </script>
 
 <template>

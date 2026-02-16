@@ -1,3 +1,4 @@
+import type { OptGroupEntry } from "~/types/dynamicForm";
 import type { InsertAssessment, InsertTask } from "~~/lib/db/schema";
 
 export const useScheduleStore = defineStore('useScheduleStore', () => {
@@ -36,6 +37,19 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             pending,
             total
         };
+    });
+
+    const moduleSelectorOptions = computed<OptGroupEntry[]>(() => {
+        if (!schedule.value) return [];
+
+        const options = schedule.value.map(module => [module.id, module.name] as [number, string]);
+
+        return [
+            {
+                label: 'Current Modules',
+                options,
+            }
+        ]
     });
 
     const moduleOperations = {
@@ -150,6 +164,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         refresh,
         getAssessmentBySlug,
         assessmentsCount,
+        moduleSelectorOptions,
         module: moduleOperations,
         assessment: assessmentOperations,
         task: taskOperations,

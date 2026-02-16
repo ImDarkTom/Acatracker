@@ -3,9 +3,6 @@ import { InsertAssessment } from '~~/lib/db/schema';
 import AddModuleSideButton from './AddModuleSideButton.vue';
 
 const scheduleStore = useScheduleStore();
-const modulesStore = useModuleStore();
-
-onMounted(() => modulesStore.refresh());
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertAssessment)
@@ -67,7 +64,7 @@ const onSubmit = submitHandler(scheduleStore.assessment.add, setErrors);
                         name: 'module',
                         label: 'Module',
                         as: 'select',
-                        groups: modulesStore.moduleSelectorOptions,
+                        groups: scheduleStore.moduleSelectorOptions,
                         hintText: '(Select a Module)',
                         sideBtn: AddModuleSideButton,
                     }

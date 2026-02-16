@@ -6,9 +6,6 @@ const props = defineProps<{
 }>();
 
 const scheduleStore = useScheduleStore();
-const modulesStore = useModuleStore();
-
-onMounted(() => modulesStore.refresh());
 
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertAssessment),
@@ -83,7 +80,7 @@ watch(isOpen, (newValue) => {
                         name: 'module',
                         label: 'Module',
                         as: 'select',
-                        groups: modulesStore.moduleSelectorOptions,
+                        groups: scheduleStore.moduleSelectorOptions,
                         hintText: '(Select a Module)',
                     }
                 ]" />
