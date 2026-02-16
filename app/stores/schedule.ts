@@ -22,6 +22,53 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         });
     }
 
+    const assessmentsCount = computed(() => {
+        if (!schedule.value) return { total: 0, pending: 0 };
+
+        let total = 0;
+        let pending = 0;
+        for (const module of schedule.value) {
+            total += module.assessments.length;
+            pending += module.assessments.filter(a => !a.completed).length
+        }
+
+        return {
+            pending,
+            total
+        };
+    });
+
+    const moduleOperations = {
+        async add(values: Record<string, any>) {
+            await $csrfFetch("/api/modules", {
+                method: 'POST',
+                body: values,
+            });
+    
+            refresh();
+            useCalendarEvents().refresh();
+        },
+    
+        async edit(values: Record<string, any>, moduleId: number) {
+            await $csrfFetch(`/api/modules/${moduleId}`, {
+                method: 'PUT',
+                body: values,
+            });
+    
+            refresh();
+            useCalendarEvents().refresh();
+        },
+    
+        async delete(moduleId: number) {
+            await $fetch(`/api/modules/${moduleId}`, {
+                method: 'DELETE'
+            });
+    
+            refresh();
+            useCalendarEvents().refresh();
+        },
+    }
+
     // Tasks
     const taskOperations = {
         async add(values: Record<string, any>) {
@@ -58,6 +105,8 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         error,
         refresh,
         getAssessmentBySlug,
-        task: taskOperations
+        assessmentsCount,
+        module: moduleOperations,
+        task: taskOperations,
     }
 });

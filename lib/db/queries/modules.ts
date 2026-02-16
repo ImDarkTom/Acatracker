@@ -67,6 +67,8 @@ export async function getModuleWithDetailedAssessments(
             id: true,
             code: true,
             name: true,
+            semester: true,
+            year: true,
             createdAt: true,
             updatedAt: true,
         },
@@ -102,5 +104,6 @@ export async function getModuleWithDetailedAssessments(
     });
 }
 
+export type ModuleWithAssessments = NonNullable<Awaited<ReturnType<typeof getModuleWithDetailedAssessments>>>[number];
 export type AssessmentWithTasks = NonNullable<Awaited<ReturnType<typeof getModuleWithDetailedAssessments>>>[number]['assessments'][number];
 export type AssessmentWithoutId = Omit<AssessmentWithTasks, 'tasks'>;

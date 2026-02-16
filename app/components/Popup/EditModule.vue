@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { InsertModule, type ModuleSchema } from '~~/lib/db/schema';
+import type { ModuleWithAssessments } from '~~/lib/db/queries/modules';
+import { InsertModule } from '~~/lib/db/schema';
 
 const { editModule } = useModuleStore();
 
 const props = defineProps<{
-    module: ModuleSchema,
+    module: ModuleWithAssessments,
 }>();
 
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({

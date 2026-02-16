@@ -1,22 +1,28 @@
 <script setup lang="ts">
-import type { AssessmentSchema, ModuleSchema } from '~~/lib/db/schema';
+import type { ModuleWithAssessments } from '~~/lib/db/queries/modules';
 
 const props = defineProps<{
-    module: ModuleSchema,
-    assessments: AssessmentSchema[],
+    module: ModuleWithAssessments,
 }>();
 
 const { deleteAssessment } = useAssessmentsStore();
-const { deleteModule } = useModuleStore();
 
-function promptDeleteAssessment(assessment: AssessmentSchema) {
-    if (!confirm(`Are you sure you want to delete the '${assessment.name}' assessment?`)) return;
-    deleteAssessment(assessment.slug);
+const scheduleStore = useScheduleStore();
+
+function promptDeleteModule() {
+    if (!confirm(`Are you sure you want to delete the '${props.module.name}' module?`)) return;
+
+    scheduleStore.module.delete(props.module.id);
 }
 
-const remainingAssessmentCount = computed(() => props.assessments.filter(a => !a.completed).length);
+function promptDeleteAssessment(slug: string, name: string) {
+    if (!confirm(`Are you sure you want to delete the '${name}' assessment?`)) return;
+    deleteAssessment(slug);
+}
 
-const headerTooltipContent = computed(() => `${props.assessments.length} assessments, ${remainingAssessmentCount.value} remaining`);
+const remainingAssessmentCount = computed(() => props.module.assessments.filter(a => !a.completed).length);
+
+const headerTooltipContent = computed(() => `${props.module.assessments.length} assessments, ${remainingAssessmentCount.value} remaining`);
 </script>
 
 <template>
@@ -66,7 +72,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                             <CustomDropdownItem 
                                 value="Delete" 
                                 icon="lucide:trash-2"
-                                @select="deleteModule(module)" />
+                                @select="promptDeleteModule()" />
                         </DropdownMenuContent>
                     </DropdownMenuPortal>
                 </DropdownMenuRoot>
@@ -78,7 +84,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                 data-[state=open]:animate-accordion-content-slide-down
                 data-[state=closed]:animate-accordion-content-slide-up">
             <div 
-                v-for="assessment in assessments" 
+                v-for="assessment in module.assessments" 
                 :key="assessment.id"
                 class="flex flex-row items-center gap-2 p-2 rounded-lg bg-bg-surface hover:bg-bg-surface-hover has-[>.active]:bg-bg-surface-active ring-inset ring-[0.5px] ring-highlight"
                 :class="{ 'opacity-75': assessment.completed }">
@@ -124,7 +130,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                                     <CustomDropdownItem 
                                         value="Delete" 
                                         icon="lucide:trash-2"
-                                        @select="promptDeleteAssessment(assessment)" />
+                                        @select="promptDeleteAssessment(assessment.slug, assessment.name)" />
                                 </DropdownMenuContent>
                             </Transition>
                         </DropdownMenuPortal>

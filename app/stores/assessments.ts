@@ -4,23 +4,6 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
     const { data: assessments, pending, refresh: fetchRefresh } = useFetch('/api/assessments', { lazy: true });
     const { $csrfFetch } = useNuxtApp();
 
-    const assessmentsCount = computed(() => {
-        const allAssessments = assessments.value;
-        if (!allAssessments) return {
-            pending: 0,
-            total: 0
-        }
-
-        const pending = allAssessments.filter(a => !a.completed).length;
-        const total = allAssessments.length;
-
-        return {
-            pending,
-            total
-        };
-    });
-
-
     // ----
     // CRUD
     // ----
@@ -74,7 +57,6 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
         assessments,
         pending,
         refresh: fetchRefresh,
-        assessmentsCount,
         addAssessment,
         updateAssessment,
         toggleAssessmentCompleted,
