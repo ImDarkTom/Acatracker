@@ -6,6 +6,10 @@ definePageMeta({
 useHead({
     title: 'Calendar | Acatracker',
 });
+
+onMounted(() => {
+    useUiStore().setLastOpenedView('/dashboard/calendar');
+});
 </script>
 
 <template>

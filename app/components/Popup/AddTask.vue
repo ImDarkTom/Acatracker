@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { InsertTask, type AssessmentSchema } from '~~/lib/db/schema';
+import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
+import { InsertTask } from '~~/lib/db/schema';
 
-const { addTask } = useTaskStore();
+const scheduleStore = useScheduleStore();
 
 const props = defineProps<{
-    assessment: AssessmentSchema,
+    assessment: AssessmentWithTasks,
 }>();
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
@@ -17,7 +18,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(addTask, setErrors);
+const onSubmit = submitHandler(scheduleStore.task.add, setErrors);
 </script>
 
 <template>

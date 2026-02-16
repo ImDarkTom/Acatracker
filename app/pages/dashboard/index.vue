@@ -6,6 +6,10 @@ definePageMeta({
 useHead({
     title: 'Home | Acatracker',
 });
+
+onMounted(() => {
+    useUiStore().setLastOpenedView('/dashboard');
+});
 </script>
 
 <template>

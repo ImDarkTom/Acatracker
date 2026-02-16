@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { InsertTask, type AssessmentSchema, type TaskSchema } from '~~/lib/db/schema';
+import { InsertTask } from '~~/lib/db/schema';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
 import type { AssessmentWithDetails } from '~~/lib/db/queries/assessments';
+import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
 
-const { updateTask } = useTaskStore();
+const scheduleStore = useScheduleStore();
 
+// TODO: replace task with just an id since we cal select from the assessment prop
 const props = defineProps<{
-    assessment: AssessmentSchema,
+    assessment: AssessmentWithTasks,
     task: AssessmentWithDetails['tasks'][number],
 }>();
 
@@ -31,7 +33,7 @@ watch(isOpen, (justOpened) => {
     };
 });
 
-const onSubmit = submitHandler(async (values) => updateTask(values, props.task.id), setErrors);
+const onSubmit = submitHandler(async (values) => scheduleStore.task.update(values, props.task.id), setErrors);
 </script>
 
 <template>

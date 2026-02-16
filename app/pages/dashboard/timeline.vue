@@ -2,6 +2,14 @@
 definePageMeta({
     layout: 'dashboard',
 });
+
+useHead({
+    title: 'Timeline | Acatracker',
+});
+
+onMounted(() => {
+    useUiStore().setLastOpenedView('/dashboard/timeline');
+});
 </script>
 
 <template>

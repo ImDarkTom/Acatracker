@@ -36,13 +36,6 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
         useCalendarEvents().refresh();
     }
 
-    // Read
-    // Slug is unknown as in `assessment/[slug].vue` the route param slug can be
-    // a `string`, `string[]`, or `undefined.
-    async function getAssessmentBySlug(slug: unknown) {
-        return useFetch(`/api/assessments/${slug}`, { method: 'GET' });
-    }
-
     // Update
     async function updateAssessment(slug: string, values: Partial<InsertAssessment>) {
         await $csrfFetch(`/api/assessments/${slug}`, {
@@ -57,8 +50,6 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
     }
 
     async function toggleAssessmentCompleted(slug: string, completed: boolean) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-
         await $csrfFetch(`/api/assessments/${slug}`, {
             method: 'PATCH',
             body: { completed },
@@ -66,6 +57,7 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
 
         fetchRefresh();
         useCalendarEvents().refresh();
+        useScheduleStore().refresh();
     }
 
     // Delete
@@ -84,7 +76,6 @@ export const useAssessmentsStore = defineStore('useAssessmentsStore', () => {
         refresh: fetchRefresh,
         assessmentsCount,
         addAssessment,
-        getAssessmentBySlug,
         updateAssessment,
         toggleAssessmentCompleted,
         deleteAssessment,

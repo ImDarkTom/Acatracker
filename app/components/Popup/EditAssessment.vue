@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { InsertAssessment, type AssessmentSchema } from '~~/lib/db/schema';
+import { InsertAssessment } from '~~/lib/db/schema';
 import AddModuleSideButton from './AddModuleSideButton.vue';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
+import type { AssessmentWithoutId } from '~~/lib/db/queries/modules';
 
 const props = defineProps<{
-    assessment: AssessmentSchema,
+    assessment: AssessmentWithoutId,
 }>();
 
 const modulesStore = useModuleStore();
 const { updateAssessment } = useAssessmentsStore();
 
 const initialValues = {
-    name: props.assessment.name,
+    name: props.assessment.name,    
     description: props.assessment.description,
     module: props.assessment.moduleId,
     releasedAt: props.assessment.releasedAt,
@@ -25,7 +26,10 @@ const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(async (values) => updateAssessment(props.assessment.slug, values), setErrors);
+const onSubmit = submitHandler(
+    async (values) => updateAssessment(props.assessment.slug, values), 
+    setErrors
+);
 
 watch(isOpen, (justOpened) => {
     if (justOpened) {

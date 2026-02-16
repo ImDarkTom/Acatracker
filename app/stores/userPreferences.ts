@@ -1,7 +1,7 @@
 import type { InsertUserPreferences, UserPreferencesSchema } from "~~/lib/db/schema";
 
 export const useUserPreferencesStore = defineStore('useUserPreferencesStore', () => {
-    const { data: preferences, pending, refresh, error } = useFetch('/api/user/preferences', { lazy: true });
+    const { data: preferences, pending, refresh, error } = useFetch('/api/user/preferences');
     const { $csrfFetch } = useNuxtApp();
 
     // ----

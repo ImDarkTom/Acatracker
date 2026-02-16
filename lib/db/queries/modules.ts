@@ -51,3 +51,56 @@ export async function updateModuleById(
 
     return updated;
 }
+
+export async function getModuleWithDetailedAssessments(
+    userId: number,
+    year: number,
+    semester: number,
+) {
+    return db.query.module.findMany({
+        where: and(
+            eq(module.userId, userId),
+            eq(module.year, year),
+            eq(module.semester, semester),
+        ),
+        columns: {
+            id: true,
+            code: true,
+            name: true,
+            createdAt: true,
+            updatedAt: true,
+        },
+        with: {
+            assessments: {
+                columns: {
+                    id: true,
+                    slug: true,
+                    name: true,
+                    description: true,
+                    releasedAt: true,
+                    dueAt: true,
+                    completed: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    moduleId: true,
+                },
+                with: {
+                    tasks: {
+                        columns: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            dueAt: true,
+                            completed: true,
+                            createdAt: true,
+                            updatedAt: true,
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+export type AssessmentWithTasks = NonNullable<Awaited<ReturnType<typeof getModuleWithDetailedAssessments>>>[number]['assessments'][number];
+export type AssessmentWithoutId = Omit<AssessmentWithTasks, 'tasks'>;
