@@ -3,7 +3,7 @@ const props = defineProps<{
     eventProp: IterableEvent,
 }>();
 
-const { toggleAssessmentCompleted } = useAssessmentsStore();
+const scheduleStore = useScheduleStore();
 
 const eventTypeMap = {
     due: 'Due Date',
@@ -13,7 +13,7 @@ const eventTypeMap = {
 
 const infoOpened = ref(false);
 
-const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventProp.id, (e.target as HTMLInputElement).checked);
+const onToggleCompleted = (e: Event) => scheduleStore.assessment.toggleCompleted(props.eventProp.id, (e.target as HTMLInputElement).checked);
 </script>
 
 <template>

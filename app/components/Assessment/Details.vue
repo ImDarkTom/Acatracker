@@ -7,7 +7,6 @@ const props = defineProps<{
     assessment: AssessmentWithTasks,
 }>();
 
-const assessmentsStore = useAssessmentsStore();
 const scheduleStore = useScheduleStore();
 
 const assessmentBeingUpdated = ref(false);
@@ -22,12 +21,12 @@ async function toggleTask(task: AssessmentWithDetails['tasks'][number]) {
     tasksBeingUpdated.value = tasksBeingUpdated.value.filter(t => t !== task.id);
 }
 
-async function toggleAssessmentCompleted() {
+async function toggleCompleted() {
     props.assessment.completed = !props.assessment.completed;
 
     assessmentBeingUpdated.value = true;
 
-    await assessmentsStore.toggleAssessmentCompleted(
+    await scheduleStore.assessment.toggleCompleted(
         props.assessment.slug,
         props.assessment.completed
     );
@@ -94,7 +93,7 @@ function promptDeleteTask(task: AssessmentWithTasks['tasks'][number]) {
                 </span>
             </div>
             <ButtonSecondary
-                @click="toggleAssessmentCompleted"
+                @click="toggleCompleted"
                 :disabled="assessmentBeingUpdated">
                 Mark as complete
             </ButtonSecondary>

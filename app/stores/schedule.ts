@@ -1,4 +1,4 @@
-import type { InsertTask } from "~~/lib/db/schema";
+import type { InsertAssessment, InsertTask } from "~~/lib/db/schema";
 
 export const useScheduleStore = defineStore('useScheduleStore', () => {
     const userPreferences = useUserPreferencesStore();
@@ -69,6 +69,50 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         },
     }
 
+    const assessmentOperations = {
+        async add(values: Record<string, any>) {
+            await $csrfFetch("/api/assessments", {
+                method: 'POST',
+                body: values,
+            });
+
+            refresh();
+            useCalendarEvents().refresh();
+        },
+
+        async update(slug: string, values: Partial<InsertAssessment>) {
+            await $csrfFetch(`/api/assessments/${slug}`, {
+                method: 'PATCH',
+                body: values,
+            });
+
+            refresh();
+            // Since we can edit assessments from the sidebar, calendar won't
+            // refresh since we don't remount it like when we edit tasks
+            useCalendarEvents().refresh();
+        },
+
+        async toggleCompleted(slug: string, completed: boolean) {
+            await $csrfFetch(`/api/assessments/${slug}`, {
+                method: 'PATCH',
+                body: { completed },
+            });
+
+            refresh();
+            useCalendarEvents().refresh();
+        },
+
+        // Delete
+        async delete(slug: string) {
+            await $fetch(`/api/assessments/${slug}`, {
+                method: 'DELETE'
+            });
+
+            refresh();
+            useCalendarEvents().refresh();
+        },
+    }
+
     // Tasks
     const taskOperations = {
         async add(values: Record<string, any>) {
@@ -107,6 +151,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         getAssessmentBySlug,
         assessmentsCount,
         module: moduleOperations,
+        assessment: assessmentOperations,
         task: taskOperations,
     }
 });

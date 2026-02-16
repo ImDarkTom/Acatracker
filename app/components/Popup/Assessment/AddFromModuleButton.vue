@@ -5,7 +5,7 @@ const props = defineProps<{
     forModuleId: number,
 }>();
 
-const { addAssessment } = useAssessmentsStore();
+const scheduleStore = useScheduleStore();
 const modulesStore = useModuleStore();
 
 onMounted(() => modulesStore.refresh());
@@ -19,7 +19,7 @@ const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(addAssessment, setErrors);
+const onSubmit = submitHandler(scheduleStore.assessment.add, setErrors);
 
 watch(isOpen, (newValue) => {
     if (newValue) {

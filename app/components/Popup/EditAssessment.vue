@@ -9,7 +9,7 @@ const props = defineProps<{
 }>();
 
 const modulesStore = useModuleStore();
-const { updateAssessment } = useAssessmentsStore();
+const scheduleStore = useScheduleStore();
 
 const initialValues = {
     name: props.assessment.name,    
@@ -27,7 +27,7 @@ const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
 const onSubmit = submitHandler(
-    async (values) => updateAssessment(props.assessment.slug, values), 
+    async (values) => scheduleStore.assessment.update(props.assessment.slug, values), 
     setErrors
 );
 

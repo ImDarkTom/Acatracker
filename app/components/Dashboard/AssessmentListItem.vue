@@ -5,8 +5,6 @@ const props = defineProps<{
     module: ModuleWithAssessments,
 }>();
 
-const { deleteAssessment } = useAssessmentsStore();
-
 const scheduleStore = useScheduleStore();
 
 function promptDeleteModule() {
@@ -17,7 +15,8 @@ function promptDeleteModule() {
 
 function promptDeleteAssessment(slug: string, name: string) {
     if (!confirm(`Are you sure you want to delete the '${name}' assessment?`)) return;
-    deleteAssessment(slug);
+    
+    scheduleStore.assessment.delete(slug);
 }
 
 const remainingAssessmentCount = computed(() => props.module.assessments.filter(a => !a.completed).length);

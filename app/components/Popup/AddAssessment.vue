@@ -2,7 +2,7 @@
 import { InsertAssessment } from '~~/lib/db/schema';
 import AddModuleSideButton from './AddModuleSideButton.vue';
 
-const { addAssessment } = useAssessmentsStore();
+const scheduleStore = useScheduleStore();
 const modulesStore = useModuleStore();
 
 onMounted(() => modulesStore.refresh());
@@ -13,7 +13,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(addAssessment, setErrors);
+const onSubmit = submitHandler(scheduleStore.assessment.add, setErrors);
 </script>
 
 <template>
