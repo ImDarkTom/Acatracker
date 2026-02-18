@@ -22,15 +22,6 @@ export const useAuth = () => {
         });
     }
 
-    // GitHub
-    const signInWithGitHub = async () => {
-        await $authClient.signIn.social({
-            provider: "github",
-            callbackURL: "/dashboard",
-            errorCallbackURL: "/error",
-        });
-    }
-
     // Google
     const signInWithGoogle = async () => {
         await $authClient.signIn.social({
@@ -57,7 +48,6 @@ export const useAuth = () => {
         signUpWithEmail,
 
         signInWithEmail,
-        signInWithGitHub,
         signInWithGoogle,
 
         signOut,
