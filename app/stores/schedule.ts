@@ -3,6 +3,52 @@ import type { DateValue } from "reka-ui";
 import type { OptGroupEntry } from "~/types/dynamicForm";
 import type { InsertAssessment, InsertTask } from "~~/lib/db/schema";
 
+export type EventsForDate = {
+    date: DateValue;
+    events: {
+        releasedAssessments?: { // This won't be included in the upcoming events list
+            assessment: {
+                slug: string;
+                name: string;
+                isCompleted: boolean;
+            };
+            module: {
+                id: string; // TODO: use for filtering later on
+                code: string;
+                name: string;
+            };
+        }[];
+        dueAssessments?: {
+            assessment: {
+                slug: string;
+                name: string;
+                isCompleted: boolean;
+            };
+            module: {
+                id: string; // TODO: use for filtering later on
+                code: string;
+                name: string;
+            };
+        }[];
+        dueTasks?: {
+            task: {
+                id: number;
+                name: string;
+                isCompleted: boolean;
+            };
+            assessment: {
+                slug: string;
+                name: string;
+            };
+            module: {
+                id: string; // TODO: use for filtering later on
+                code: string;
+                name: string;
+            };
+        }[];
+    };
+};
+
 export const useScheduleStore = defineStore('useScheduleStore', () => {
     const { $csrfFetch } = useNuxtApp();
 
@@ -48,6 +94,101 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             }
         ]
     });
+
+    const upcomingEvents = computed<EventsForDate[]>(() => {
+        if (!schedule.value) return [];
+
+        const timezone = getLocalTimeZone();
+        const eventsByDate: EventsForDate[] = [];
+
+        const addEvent = <T extends keyof EventsForDate['events']>(
+            date: DateValue, 
+            event: NonNullable<EventsForDate['events'][T]>[number], 
+            type: T
+        ) => {
+            let dateEntry: EventsForDate | undefined = eventsByDate.find(e => isSameDay(e.date, date));
+            if (!dateEntry) {
+                dateEntry = { date, events: {} };
+
+                eventsByDate.push(dateEntry);
+            }
+
+            if (!dateEntry.events[type]) {
+                dateEntry.events[type] = [];
+            }
+
+            (dateEntry.events[type] as NonNullable<EventsForDate['events'][T]>).push(event as never);
+        };
+
+        for (const module of schedule.value) {
+            for (const assessment of module.assessments) {
+                if (assessment.releasedAt) {
+                    addEvent<'releasedAssessments'>(
+                        fromDate(new Date(assessment.releasedAt), timezone),
+                        {
+                            assessment: {
+                                slug: assessment.slug,
+                                name: assessment.name,
+                                isCompleted: assessment.isCompleted ?? false,
+                            },
+                            module: {
+                                id: module.id.toString(),
+                                code: module.code,
+                                name: module.name,
+                            }
+                        },
+                        'releasedAssessments',
+                    );
+                }
+
+                addEvent<'dueAssessments'>(
+                    fromDate(new Date(assessment.dueAt), timezone),
+                    {
+                        assessment: {
+                            slug: assessment.slug,
+                            name: assessment.name,
+                            isCompleted: assessment.isCompleted ?? false,
+                        },
+                        module: {
+                            id: module.id.toString(),
+                            code: module.code,
+                            name: module.name,
+                        },
+                    },
+                    'dueAssessments',
+                );
+
+                for (const task of assessment.tasks) {
+                    addEvent<'dueTasks'>(
+                        fromDate(new Date(task.dueAt), timezone),
+                        {
+                            task: {
+                                id: task.id,
+                                name: task.name,
+                                isCompleted: task.isCompleted ?? false,
+                            },
+                            assessment: {
+                                slug: assessment.slug,
+                                name: assessment.name,
+                            },
+                            module: {
+                                id: module.id.toString(),
+                                code: module.code,
+                                name: module.name,
+                            }
+                        },
+                        'dueTasks',
+                    );
+                }
+            }
+        }
+
+        // Sort events by date
+        eventsByDate.sort((a, b) => a.date.compare(b.date));
+
+        return eventsByDate;
+    });
+
 
     const moduleOperations = {
         async add(values: Record<string, any>) {
@@ -205,6 +346,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         getAssessmentBySlug,
         assessmentsCount,
         moduleSelectorOptions,
+        upcomingEvents,
         module: moduleOperations,
         assessment: assessmentOperations,
         task: taskOperations,
