@@ -49,6 +49,9 @@ export type EventsForDate = {
     };
 };
 
+export type EventTypeKey = keyof EventsForDate['events'];
+export type EventType<T extends EventTypeKey> = NonNullable<EventsForDate['events'][T]>[number];
+
 export const useScheduleStore = defineStore('useScheduleStore', () => {
     const { $csrfFetch } = useNuxtApp();
 
@@ -101,9 +104,9 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         const timezone = getLocalTimeZone();
         const eventsByDate: EventsForDate[] = [];
 
-        const addEvent = <T extends keyof EventsForDate['events']>(
+        const addEvent = <T extends EventTypeKey>(
             date: DateValue, 
-            event: NonNullable<EventsForDate['events'][T]>[number], 
+            event: EventType<T>, 
             type: T
         ) => {
             let dateEntry: EventsForDate | undefined = eventsByDate.find(e => isSameDay(e.date, date));
@@ -117,7 +120,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
                 dateEntry.events[type] = [];
             }
 
-            (dateEntry.events[type] as NonNullable<EventsForDate['events'][T]>).push(event as never);
+            (dateEntry.events[type] as EventType<T>[]).push(event as never);
         };
 
         for (const module of schedule.value) {
@@ -277,6 +280,8 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
                 method: 'PATCH',
                 body: { isCompleted },
             });
+
+            refresh();
         },
         
         async delete(id: number) {

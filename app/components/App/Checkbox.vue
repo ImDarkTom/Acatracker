@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const checked = defineModel<boolean>({
+const checked = defineModel<boolean>('checked', {
     default: false,
 });
 </script>

@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends keyof EventsForDate['events']">
+<script setup lang="ts" generic="T extends EventTypeKey">
 
 defineProps<{
     text: string,
@@ -7,12 +7,12 @@ defineProps<{
 }>();
 
 defineSlots<{
-    default(props: { event: NonNullable<EventsForDate['events'][T]>[number] }): any,
+    default(props: { event: EventType<T> }): any
 }>();
 </script>
 
 <template>
-    <h3 class="text-lg">
+    <h3 class="text-lg text-text-muted">
         {{ text }}
     </h3>
     <ul
