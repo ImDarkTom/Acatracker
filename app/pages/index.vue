@@ -1,12 +1,12 @@
 <script setup lang="ts">
 useHead({
     title: 'Acatracker | Personal Academic Tracker',
-    meta: [
-        {
-            name: 'description',
-            content: 'Easily track your upcoming assessments and exams with Acatracker.'
-        }
-    ]
+});
+
+useSeoMeta({
+    title: 'Acatracker | Personal Academic Tracker',
+    description: 'Easily track your upcoming assessments and exams with Acatracker.',
+    ogDescription: 'Easily track your upcoming assessments and exams with Acatracker.',
 });
 
 const auth = useAuth();
