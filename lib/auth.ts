@@ -3,7 +3,7 @@ import { betterAuth, type User } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware } from "better-auth/plugins";
 import env from './env';
-import { calendarToken } from './db/schema';
+import { calendarToken, userPreferences } from './db/schema';
 import { resend } from './email/resend';
 
 export type UserWithId = Omit<User, 'id'> & {
@@ -31,9 +31,13 @@ export const auth = betterAuth({
         user: {
             create: {
                 after: async (createdUser) => {
-                    await db.insert(calendarToken).values({
-                        userId: (createdUser as unknown as UserWithId).id,
-                    });
+                    const userId = (createdUser as unknown as UserWithId).id;
+
+                    // Create users' calendar token
+                    await db.insert(calendarToken).values({ userId });
+                    
+                    // Create their default settings
+                    await db.insert(userPreferences).values({ userId });
                 }
             }
         }
@@ -44,10 +48,10 @@ export const auth = betterAuth({
         },
     },
     socialProviders: {
-        github: {
-            clientId: env.GITHUB_CLIENT_ID,
-            clientSecret: env.GITHUB_CLIENT_SECRET,
-        }
+        google: {
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
+        },
     },
     emailAndPassword: {
         enabled: true,

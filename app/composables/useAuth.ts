@@ -4,6 +4,7 @@ export const useAuth = () => {
     const user = computed(() => $authSession.data?.value?.user);
     const isLoading = computed(() => $authSession.isPending);
 
+    // Email
     const signUpWithEmail = async (email: string, password: string, name: string) => {
         return await $authClient.signUp.email({
             email,
@@ -21,9 +22,10 @@ export const useAuth = () => {
         });
     }
 
-    const signInWithGitHub = async () => {
+    // Google
+    const signInWithGoogle = async () => {
         await $authClient.signIn.social({
-            provider: "github",
+            provider: "google",
             callbackURL: "/dashboard",
             errorCallbackURL: "/error",
         });
@@ -46,7 +48,7 @@ export const useAuth = () => {
         signUpWithEmail,
 
         signInWithEmail,
-        signInWithGitHub,
+        signInWithGoogle,
 
         signOut,
 

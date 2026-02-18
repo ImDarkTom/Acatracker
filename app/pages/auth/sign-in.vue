@@ -16,6 +16,7 @@ useHead({
 });
 
 const auth = useAuth();
+
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(z.object({
         email: z.email('Invalid email address.'),
@@ -23,6 +24,7 @@ const { handleSubmit, errors, meta, setErrors } = useForm({
     })),
     initialValues: {}
 });
+
 const { isLoading: isFormLoading, submitHandler } = useEditDialogForm({ meta, handleSubmit }, { confirmBeforeExiting: false });
 
 const errorText = ref<string>('');
