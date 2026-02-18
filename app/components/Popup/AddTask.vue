@@ -11,8 +11,8 @@ const props = defineProps<{
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertTask),
     initialValues: {
-        assessment: props.assessment.id,
-        completed: false,
+        assessmentId: props.assessment.id,
+        isCompleted: false,
     }
 });
 
@@ -63,7 +63,7 @@ const onSubmit = submitHandler(scheduleStore.task.add, setErrors);
                         type: 'date'
                     },
                     {
-                        name: 'completed',
+                        name: 'isCompleted',
                         label: 'Completed',
                         as: 'input',
                         type: 'checkbox'

@@ -28,9 +28,9 @@ export const task = sqliteTable("task", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text().notNull(),
     description: text(),
-    assessment: int().notNull().references(() => assessment.id, { onDelete: 'cascade' }),
     dueAt: int().notNull(),
-    completed: int({ mode: 'boolean' }),
+    isCompleted: int({ mode: 'boolean' }),
+    assessmentId: int().notNull().references(() => assessment.id, { onDelete: 'cascade' }),
     userId: int().notNull().references(() => user.id, { onDelete: 'cascade' }),
     createdAt: int().notNull().$default(() => Date.now()),
     updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
@@ -49,7 +49,7 @@ export const InsertTask = createInsertSchema(task, {
 
 export const taskRelations = relations(task, ({ one }) => ({
     assessment: one(assessment, {
-        fields: [task.assessment],
+        fields: [task.assessmentId],
         references: [assessment.id],
     }),
 }));

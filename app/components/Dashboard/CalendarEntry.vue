@@ -31,7 +31,7 @@ const onToggleCompleted = (e: Event) => scheduleStore.assessment.toggleCompleted
                     'bg-event-task/40 hover:bg-event-task/50': eventProp.type === 'task',
                     'bg-event-task/60!': eventProp.type === 'task' && infoOpened,
 
-                    'line-through opacity-60': eventProp.completed,
+                    'line-through opacity-60': eventProp.isCompleted,
                 }">
                 {{ eventProp.label }}
             </div>
@@ -52,7 +52,7 @@ const onToggleCompleted = (e: Event) => scheduleStore.assessment.toggleCompleted
                     <span>Completed?</span>
                     <input 
                         type="checkbox" 
-                        :checked="eventProp.completed" 
+                        :checked="eventProp.isCompleted" 
                         @change="onToggleCompleted">
                 </label>
                 <RouterLink :to="eventProp.link">

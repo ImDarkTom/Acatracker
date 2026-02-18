@@ -105,7 +105,7 @@ export async function getAssessmentWithTasks(
                     name: true,
                     description: true,
                     dueAt: true,
-                    completed: true,
+                    isCompleted: true,
                 },
             },
         }

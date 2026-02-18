@@ -19,7 +19,7 @@ function promptDeleteAssessment(slug: string, name: string) {
     scheduleStore.assessment.delete(slug);
 }
 
-const remainingAssessmentCount = computed(() => props.module.assessments.filter(a => !a.completed).length);
+const remainingAssessmentCount = computed(() => props.module.assessments.filter(a => !a.isCompleted).length);
 
 const headerTooltipContent = computed(() => `${props.module.assessments.length} assessments, ${remainingAssessmentCount.value} remaining`);
 </script>
@@ -86,7 +86,7 @@ const headerTooltipContent = computed(() => `${props.module.assessments.length} 
                 v-for="assessment in module.assessments" 
                 :key="assessment.id"
                 class="flex flex-row items-center gap-2 p-2 rounded-lg bg-bg-surface hover:bg-bg-surface-hover has-[>.active]:bg-bg-surface-active ring-inset ring-[0.5px] ring-highlight"
-                :class="{ 'opacity-75': assessment.completed }">
+                :class="{ 'opacity-75': assessment.isCompleted }">
                 <NuxtLink 
                     class="grow"
                     :to="`/dashboard/assessment/${assessment.slug}`" 
@@ -95,7 +95,9 @@ const headerTooltipContent = computed(() => `${props.module.assessments.length} 
                     <div class="flex flex-col group">
                         <span 
                             class="text-lg text-text-primary group-hover:text-brand-focus transition-colors duration-75"
-                            :class="{ 'line-through': assessment.completed }">{{ assessment.name }}</span>
+                            :class="{ 'line-through': assessment.isCompleted }">
+                            {{ assessment.name }}
+                        </span>
                         <div class="flex flex-row gap-1 text-sm">
                             <span v-if="assessment.releasedAt">
                                 {{ new Date(assessment.releasedAt).toLocaleDateString() }}

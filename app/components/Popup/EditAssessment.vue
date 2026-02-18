@@ -10,10 +10,10 @@ const props = defineProps<{
 
 const scheduleStore = useScheduleStore();
 
-const initialValues = {
+const initialValues: InsertAssessment = {
     name: props.assessment.name,    
     description: props.assessment.description,
-    module: props.assessment.moduleId,
+    moduleId: props.assessment.moduleId,
     releasedAt: props.assessment.releasedAt,
     dueAt: props.assessment.dueAt,
 }
@@ -87,7 +87,7 @@ watch(isOpen, (justOpened) => {
                         value: unixTimestampToISO(initialValues.dueAt),
                     },
                     {
-                        name: 'module',
+                        name: 'moduleId',
                         label: 'Module',
                         as: 'select',
                         groups: scheduleStore.moduleSelectorOptions,

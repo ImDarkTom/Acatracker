@@ -24,7 +24,7 @@ export async function getUserEvents(userId: number, host: string) {
                 start: new Date(assessment.releasedAt),
                 allDay: true,
                 url: `${host}/dashboard/assessment/${assessment.id}#release`,
-                status: assessment.completed ? ICalEventStatus.CANCELLED : ICalEventStatus.CONFIRMED,
+                status: assessment.isCompleted ? ICalEventStatus.CANCELLED : ICalEventStatus.CONFIRMED,
             });
         }
 
@@ -35,11 +35,11 @@ export async function getUserEvents(userId: number, host: string) {
             start: new Date(assessment.dueAt),
             allDay: true,
             url: `${host}/dashboard/assessment/${assessment.id}#due`,
-            status: assessment.completed ? ICalEventStatus.CANCELLED : ICalEventStatus.CONFIRMED,
+            status: assessment.isCompleted ? ICalEventStatus.CANCELLED : ICalEventStatus.CONFIRMED,
         });
 
         // Check if tasks exist, if so, add them
-        const assessmentTasks = tasks.filter(t => t.assessment === assessment.id);
+        const assessmentTasks = tasks.filter(t => t.assessmentId === assessment.id);
 
         for (const task of assessmentTasks) {
             events.push({
@@ -48,7 +48,7 @@ export async function getUserEvents(userId: number, host: string) {
                 start: new Date(task.dueAt),
                 allDay: true,
                 url: `${host}/dashboard/assessment/${assessment.id}#task-${task.id}`,
-                status: task.completed ? ICalEventStatus.CANCELLED : ICalEventStatus.CONFIRMED,
+                status: task.isCompleted ? ICalEventStatus.CANCELLED : ICalEventStatus.CONFIRMED,
             });
         }
     }

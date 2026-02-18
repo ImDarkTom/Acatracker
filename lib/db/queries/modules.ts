@@ -83,7 +83,7 @@ export async function getModuleWithDetailedAssessments(
                     description: true,
                     releasedAt: true,
                     dueAt: true,
-                    completed: true,
+                    isCompleted: true,
                     createdAt: true,
                     updatedAt: true,
                     moduleId: true,
@@ -95,7 +95,7 @@ export async function getModuleWithDetailedAssessments(
                             name: true,
                             description: true,
                             dueAt: true,
-                            completed: true,
+                            isCompleted: true,
                             createdAt: true,
                             updatedAt: true,
                         }

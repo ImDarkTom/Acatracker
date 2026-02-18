@@ -27,7 +27,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         let pending = 0;
         for (const module of schedule.value) {
             total += module.assessments.length;
-            pending += module.assessments.filter(a => !a.completed).length
+            pending += module.assessments.filter(a => !a.isCompleted).length
         }
 
         return {
@@ -96,10 +96,10 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             refresh();
         },
 
-        async toggleCompleted(slug: string, completed: boolean) {
+        async toggleCompleted(slug: string, isCompleted: boolean) {
             await $csrfFetch(`/api/assessments/${slug}`, {
                 method: 'PATCH',
-                body: { completed },
+                body: { isCompleted },
             });
 
             refresh();
@@ -131,10 +131,10 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             });
         },
         
-        async toggleCompleted(id: number, completed: boolean) {
+        async toggleCompleted(id: number, isCompleted: boolean) {
             await $csrfFetch(`/api/tasks/${id}`, {
                 method: 'PATCH',
-                body: { completed },
+                body: { isCompleted },
             });
         },
         
@@ -164,8 +164,8 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
                             id: assessment.id.toString(),
                             type: 'released',
                             label: assessmentLabel,
+                            isCompleted: assessment.isCompleted ?? false,
                             link: `/dashboard/assessment/${assessment.slug}#release`,
-                            completed: assessment.completed ?? false,
                         });
                     }
 
@@ -174,8 +174,8 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
                             id: assessment.id.toString(),
                             type: 'due',
                             label: assessmentLabel,
+                            isCompleted: assessment.isCompleted ?? false,
                             link: `/dashboard/assessment/${assessment.slug}#due`,
-                            completed: assessment.completed ?? false,
                         });
                     }
 
@@ -185,7 +185,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
                                 type: 'task',
                                 id: task.id.toString(),
                                 label: `${module.code} • ${task.name}`,
-                                completed: task.completed ?? false,
+                                isCompleted: task.isCompleted ?? false,
                                 link: `/dashboard/assessment/${assessment.slug}#task-${task.id}`,
                             });
                         }

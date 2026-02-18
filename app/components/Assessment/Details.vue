@@ -14,28 +14,28 @@ const tasksBeingUpdated = ref<number[]>([]);
 
 
 async function toggleTask(task: AssessmentWithDetails['tasks'][number]) {
-    task.completed = !task.completed;
+    task.isCompleted = !task.isCompleted;
 
     tasksBeingUpdated.value.push(task.id);
-    await scheduleStore.task.toggleCompleted(task.id, task.completed);
+    await scheduleStore.task.toggleCompleted(task.id, task.isCompleted);
     tasksBeingUpdated.value = tasksBeingUpdated.value.filter(t => t !== task.id);
 }
 
 async function toggleCompleted() {
-    props.assessment.completed = !props.assessment.completed;
+    props.assessment.isCompleted = !props.assessment.isCompleted;
 
     assessmentBeingUpdated.value = true;
 
     await scheduleStore.assessment.toggleCompleted(
         props.assessment.slug,
-        props.assessment.completed
+        props.assessment.isCompleted
     );
 
     assessmentBeingUpdated.value = false;
 }
 
 const assessmentState = computed<'unreleased' | 'due' | 'completed' | 'overdue'>(() => {
-    if (props.assessment.completed) {
+    if (props.assessment.isCompleted) {
         return 'completed';
     }
 
@@ -111,14 +111,14 @@ function promptDeleteTask(task: AssessmentWithTasks['tasks'][number]) {
                     <label class="w-full flex flex-row gap-2">
                         <input 
                             type="checkbox"
-                            :checked="!!task.completed"
+                            :checked="!!task.isCompleted"
                             :disabled="tasksBeingUpdated.includes(task.id)"
                             @change="toggleTask(task)">
                         <div 
                             class="w-full flex flex-row select-none">
                             <span 
                                 class="text-text-primary"
-                                :class="{ 'line-through': !!task.completed }">
+                                :class="{ 'line-through': !!task.isCompleted }">
                                 {{ task.name }}
                             </span>
                             <div class="ml-2">

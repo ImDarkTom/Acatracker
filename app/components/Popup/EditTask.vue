@@ -12,9 +12,9 @@ const props = defineProps<{
     task: AssessmentWithDetails['tasks'][number],
 }>();
 
-const initialValues = {
-    assessment: props.assessment.id,
-    completed: props.task.completed,
+const initialValues: InsertTask = {
+    assessmentId: props.assessment.id,
+    isCompleted: props.task.isCompleted,
     name: props.task.name,
     description: props.task.description,
     dueAt: props.task.dueAt,
@@ -79,7 +79,7 @@ const onSubmit = submitHandler(async (values) => scheduleStore.task.update(value
                         value: unixTimestampToISO(initialValues.dueAt)
                     },
                     {
-                        name: 'completed',
+                        name: 'isCompleted',
                         label: 'Completed',
                         as: 'input',
                         type: 'checkbox'
