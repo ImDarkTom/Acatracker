@@ -1,6 +1,7 @@
 import { fromDate, getLocalTimeZone, isSameDay } from "@internationalized/date";
 import type { DateValue } from "reka-ui";
 import type { OptGroupEntry } from "~/types/dynamicForm";
+import type { ScheduleResponse } from "~~/lib/db/queries/modules";
 import type { InsertAssessment, InsertTask } from "~~/lib/db/schema";
 
 export type EventsForDate = {
@@ -54,10 +55,26 @@ export type EventType<T extends EventTypeKey> = NonNullable<EventsForDate['event
 
 export const useScheduleStore = defineStore('useScheduleStore', () => {
     const { $csrfFetch } = useNuxtApp();
+    const fetchWithCookies = useRequestFetch();
 
-    const { data: schedule, pending, error, refresh } = useFetch('/api/schedule', {
-        lazy: true,
-    });
+    const schedule = ref<Awaited<ScheduleResponse>>(null);
+    const pending = ref(false);
+    const error = ref<string | null>(null);
+
+    async function fetchSchedule() {
+        pending.value = true;
+        error.value = null;
+        
+        try {
+            schedule.value = await fetchWithCookies("/api/schedule");
+        } catch (err) {
+            error.value = (err as Error).message || "An error occurred while fetching the schedule.";
+        } finally {
+            pending.value = false;
+        }
+    }
+
+    const refresh = fetchSchedule;
 
     function getAssessmentBySlug(slug: unknown) {
         return computed(() => {
@@ -79,10 +96,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
             pending += module.assessments.filter(a => !a.isCompleted).length
         }
 
-        return {
-            pending,
-            total
-        };
+        return { pending, total };
     });
 
     const moduleSelectorOptions = computed<OptGroupEntry[]>(() => {
@@ -213,7 +227,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         },
     
         async delete(moduleId: number) {
-            await $fetch(`/api/modules/${moduleId}`, {
+            await $csrfFetch(`/api/modules/${moduleId}`, {
                 method: 'DELETE'
             });
     
@@ -251,7 +265,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
 
         // Delete
         async delete(slug: string) {
-            await $fetch(`/api/assessments/${slug}`, {
+            await $csrfFetch(`/api/assessments/${slug}`, {
                 method: 'DELETE'
             });
 
@@ -266,6 +280,8 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
                 method: 'POST',
                 body: values,
             });
+
+            refresh();
         },
         
         async update(values: Partial<InsertTask>, taskId: number) {
@@ -273,6 +289,8 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
                 method: 'PATCH',
                 body: values,
             });
+
+            refresh();
         },
         
         async toggleCompleted(id: number, isCompleted: boolean) {
@@ -285,9 +303,11 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         },
         
         async delete(id: number) {
-            await $fetch(`/api/tasks/${id}`, {
+            await $csrfFetch(`/api/tasks/${id}`, {
                 method: 'DELETE'
             });
+
+            refresh();
         },
     };
 
@@ -348,6 +368,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         pending,
         error,
         refresh,
+        fetchSchedule,
         getAssessmentBySlug,
         assessmentsCount,
         moduleSelectorOptions,

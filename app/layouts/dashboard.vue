@@ -1,3 +1,10 @@
+<script setup lang="ts">
+await callOnce('schedule', async () => {
+    const scheduleStore = useScheduleStore();
+    await scheduleStore.fetchSchedule();
+});
+</script>
+
 <template>
     <div class="h-screen flex flex-col">
         <DashboardNavBar />

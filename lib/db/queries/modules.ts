@@ -106,6 +106,7 @@ export async function getModuleWithDetailedAssessments(
     });
 }
 
+export type ScheduleResponse = ReturnType<typeof getModuleWithDetailedAssessments>;
 export type ModuleWithAssessments = NonNullable<Awaited<ReturnType<typeof getModuleWithDetailedAssessments>>>[number];
 export type AssessmentWithTasks = NonNullable<Awaited<ReturnType<typeof getModuleWithDetailedAssessments>>>[number]['assessments'][number];
 export type AssessmentWithoutId = Omit<AssessmentWithTasks, 'tasks'>;
