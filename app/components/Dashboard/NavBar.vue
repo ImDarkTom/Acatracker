@@ -4,6 +4,9 @@
             <li class="mr-2">
                 <AppLogoLink />
             </li>
+            <li>
+                <DashboardSemesterPicker />
+            </li>
         </ul>
         <ul class="flex flex-row gap-2">
             <li class="flex items-center mr-2">

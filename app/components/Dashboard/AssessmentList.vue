@@ -19,7 +19,6 @@ function stopRefreshAnim() {
 
 <template>
     <div class="h-full flex flex-col gap-2 p-2 overflow-auto">
-        <DashboardAssessmentListSemesterPicker />
         <div class="flex flex-row justify-between items-center">
             <span
                 v-if="scheduleStore.pending" 

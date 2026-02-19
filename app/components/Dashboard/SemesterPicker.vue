@@ -23,11 +23,11 @@ async function setActiveYearOrSemester(newValues: { currentYear?: number, curren
         class="card flex items-center justify-center">
         There was an error loading preferences.
     </div>
-    <div v-else class="flex flex-row gap-2">
+    <div v-else class="grid grid-cols-2 gap-2">
         <DropdownMenuRoot>
             <DropdownMenuTrigger :as-child="true">
-                <ButtonSecondary class="w-1/2 flex justify-between">
-                    <span>Year {{ preferences.currentYear }}</span>
+                <ButtonSecondary layer="app" class="flex justify-between">
+                    <span class="line-clamp-1">Year {{ preferences.currentYear }}</span>
                     <Icon name="lucide:chevrons-up-down" />
                 </ButtonSecondary>
             </DropdownMenuTrigger>
@@ -46,8 +46,8 @@ async function setActiveYearOrSemester(newValues: { currentYear?: number, curren
 
         <DropdownMenuRoot>
             <DropdownMenuTrigger :as-child="true">
-                <ButtonSecondary class="w-1/2 flex justify-between">
-                    <span>Semester {{ preferences.currentSemester }}</span>
+                <ButtonSecondary layer="app" class="flex justify-between">
+                    <span class="line-clamp-1">Semester {{ preferences.currentSemester }}</span>
                     <Icon name="lucide:chevrons-up-down" />
                 </ButtonSecondary>
             </DropdownMenuTrigger>
