@@ -1,8 +1,28 @@
+import type { UserPreferencesResponse } from "~~/lib/db/queries/userPreferences";
 import type { InsertUserPreferences, UserPreferencesSchema } from "~~/lib/db/schema";
 
 export const useUserPreferencesStore = defineStore('useUserPreferencesStore', () => {
-    const { data: preferences, pending, refresh, error } = useFetch('/api/user/preferences');
     const { $csrfFetch } = useNuxtApp();
+
+    const preferences = ref<UserPreferencesResponse | null>(null);
+    const pending = ref(false);
+    const error = ref<Error | null>(null);
+
+    const requestWithCookies = useRequestFetch();
+
+    async function fetchPreferences() {
+        pending.value = true;
+        error.value = null;
+
+        try {
+            const data = await requestWithCookies('/api/user/preferences');
+            preferences.value = data;
+        } catch (err) {
+            error.value = err instanceof Error ? err : new Error(String(err));
+        } finally {
+            pending.value = false;
+        }
+    }
 
     // ----
     // CRUD
@@ -29,8 +49,8 @@ export const useUserPreferencesStore = defineStore('useUserPreferencesStore', ()
     return {
         preferences,
         pending,
-        refresh,
         error,
+        fetchPreferences,
         updateUserPreferences,
     };
 });

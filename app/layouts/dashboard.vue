@@ -3,6 +3,11 @@ await callOnce('schedule', async () => {
     const scheduleStore = useScheduleStore();
     await scheduleStore.fetchSchedule();
 });
+
+await callOnce('userPreferences', async () => {
+    const preferences = useUserPreferencesStore();
+    await preferences.fetchPreferences();
+});
 </script>
 
 <template>

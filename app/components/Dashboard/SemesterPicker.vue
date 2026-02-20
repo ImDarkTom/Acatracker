@@ -3,6 +3,12 @@ const preferencesStore = useUserPreferencesStore();
 const { preferences } = storeToRefs(preferencesStore);
 
 async function setActiveYearOrSemester(newValues: { currentYear?: number, currentSemester?: number }) {
+    // If we are trying to set the same semester or year as the current one, do nothing
+    if (
+        (newValues.currentSemester && newValues.currentSemester === preferences.value?.currentSemester)
+        || (newValues.currentYear && newValues.currentYear === preferences.value?.currentYear)
+    ) return;
+
     try {
         await preferencesStore.updateUserPreferences(newValues);
     } catch (error) {
@@ -13,7 +19,7 @@ async function setActiveYearOrSemester(newValues: { currentYear?: number, curren
 </script>
 
 <template>
-    <div 
+    <div
         v-if="preferencesStore.pending" 
         class="card flex items-center justify-center">
         <LoadingIcon />
