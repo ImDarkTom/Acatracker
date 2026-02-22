@@ -33,6 +33,7 @@
         "vite": "^7.3.1",
         "vue": "^3.5.26",
         "vue-router": "^4.6.4",
+        "vue-timeline-chart": "^4.1.2",
         "zod": "^4.3.6",
       },
       "devDependencies": {
@@ -1547,6 +1548,8 @@
     "vue-devtools-stub": ["vue-devtools-stub@0.1.0", "", {}, "sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ=="],
 
     "vue-router": ["vue-router@4.6.4", "", { "dependencies": { "@vue/devtools-api": "^6.6.4" }, "peerDependencies": { "vue": "^3.5.0" } }, "sha512-Hz9q5sa33Yhduglwz6g9skT8OBPii+4bFn88w6J+J4MfEo4KRRpmiNG/hHHkdbRFlLBOqxN8y8gf2Fb0MTUgVg=="],
+
+    "vue-timeline-chart": ["vue-timeline-chart@4.1.2", "", { "dependencies": { "vue": "^3.4.38" } }, "sha512-uR2Yq+eMqbYc1aFiUhXtwq1t6aSXV3Jd5IzhjJvxM9Vg8vruQI9PUBsy/mQGkPtQ2eCbO5Ixxr2iOH6E2733Hw=="],
 
     "web-streams-polyfill": ["web-streams-polyfill@3.3.3", "", {}, "sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw=="],
 
