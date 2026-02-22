@@ -1,10 +1,10 @@
 <script setup lang="ts">
-useHead({
-    title: 'Account | Acatracker',
-});
-
 definePageMeta({
     layout: 'dashboard',
+});
+
+useHead({
+    title: 'Account | Acatracker',
 });
 
 const auth = useAuth();

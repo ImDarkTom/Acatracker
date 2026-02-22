@@ -1,4 +1,9 @@
 <script setup lang="ts">
+definePageMeta({
+    layout: 'error',
+});
+
+const auth = useAuth();
 const route = useRoute();
 
 useHead({
@@ -13,7 +18,8 @@ const error = route.query.error || "An unknown error occurred.";
         <div class="bg-errorbg p-2 mb-2 rounded-md">
             Oh no! {{ error }}
         </div>
-        <NuxtLink to="/">
+        <AppBackBtn v-if="auth.user.value" />
+        <NuxtLink v-else to="/">
             <ButtonPrimary>
                 <Icon name="lucide:arrow-left" />
                 Home
