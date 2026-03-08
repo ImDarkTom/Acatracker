@@ -30,7 +30,7 @@ useHead(() => ({
     <div 
         v-else-if="error || !assessment"
         class="grow flex flex-col gap-2 items-center justify-center">
-        Oh no!: {{ error?.message ?? 'An unknown error occurred.' }}
+        Oh no!: {{ error ?? 'An unknown error occurred.' }}
         <AppBackBtn />
     </div>
     <AssessmentDetails v-else :assessment />
