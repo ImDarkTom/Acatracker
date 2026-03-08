@@ -42,5 +42,12 @@ const auth = useAuth();
             </DropdownMenuContent>
         </DropdownMenuPortal>
     </DropdownMenuRoot>
-    <AuthSignUpSignInButtons v-else />
+    <AppTooltip 
+        v-else    
+        content="Loading...">
+        <div 
+            class="rounded-full size-8 bg-brand-muted flex items-center justify-center">
+            <LoadingIcon />
+        </div>
+    </AppTooltip>
 </template>

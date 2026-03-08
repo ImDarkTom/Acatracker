@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { InsertTask, type AssessmentSchema } from '~~/lib/db/schema';
+import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
+import { InsertTask } from '~~/lib/db/schema';
 
-const { addTask } = useTaskStore();
+const scheduleStore = useScheduleStore();
 
 const props = defineProps<{
-    assessment: AssessmentSchema,
+    assessment: AssessmentWithTasks,
 }>();
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
     validationSchema: toTypedSchema(InsertTask),
     initialValues: {
-        assessment: props.assessment.id,
-        completed: false,
+        assessmentId: props.assessment.id,
+        isCompleted: false,
     }
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(addTask, setErrors);
+const onSubmit = submitHandler(scheduleStore.task.add, setErrors);
 </script>
 
 <template>
@@ -62,8 +63,8 @@ const onSubmit = submitHandler(addTask, setErrors);
                         type: 'date'
                     },
                     {
-                        name: 'completed',
-                        label: 'Completed',
+                        name: 'isCompleted',
+                        label: 'Completed?',
                         as: 'input',
                         type: 'checkbox'
                     },

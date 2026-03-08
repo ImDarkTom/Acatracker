@@ -2,6 +2,9 @@ import { int, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { user } from "./auth";
 import z from "zod";
 import { createInsertSchema } from "drizzle-zod";
+import { relations } from "drizzle-orm";
+
+import { assessment } from ".";
 
 // TODO: make sure we handle errors for if we try to insert duplicate names
 export const module = sqliteTable("module", {
@@ -17,13 +20,16 @@ export const module = sqliteTable("module", {
     unique().on(t.code, t.userId),
 ]);
 
+export const moduleRelations = relations(module, ({ many }) => ({ assessments: many(assessment) }));
+
+
 export type ModuleSchema = typeof module.$inferSelect;
 
 export const InsertModule = createInsertSchema(module, {
-    name: (field) => field.min(1).max(100),
-    code: (field) => field.min(1).max(20),
-    year: (field) => field.min(1).max(10),
-    semester: (field) => field.min(1).max(5),
+    name: z.string('A name is required.').min(1).max(100, 'Too long! (max 100 chars)'),
+    code: z.string('A code is required.').min(1).max(20, 'Too long! (max 20 chars)'),
+    year: z.int().min(1).max(10),
+    semester: z.int().min(1).max(5),
 }).omit({
     id: true,
     userId: true,

@@ -1,0 +1,2 @@
+ALTER TABLE `assessment` RENAME COLUMN "module" TO "module_id";--> statement-breakpoint
+ALTER TABLE `assessment` ALTER COLUMN "module_id" TO "module_id" integer NOT NULL REFERENCES module(id) ON DELETE cascade ON UPDATE no action;

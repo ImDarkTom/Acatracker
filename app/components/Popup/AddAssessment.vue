@@ -1,19 +1,33 @@
 <script setup lang="ts">
+import type { ModuleWithAssessments } from '~~/lib/db/queries/modules';
 import { InsertAssessment } from '~~/lib/db/schema';
-import AddModuleSideButton from './AddModuleSideButton.vue';
 
-const { addAssessment } = useAssessmentsStore();
-const modulesStore = useModuleStore();
+const props = defineProps<{
+    module: ModuleWithAssessments,
+}>();
 
-onMounted(() => modulesStore.refresh());
+const scheduleStore = useScheduleStore();
 
-const { handleSubmit, errors, meta, setErrors } = useForm({
-    validationSchema: toTypedSchema(InsertAssessment)
+const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
+    validationSchema: toTypedSchema(InsertAssessment),
+    initialValues: {
+        moduleId: props.module.id,
+    },
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(addAssessment, setErrors);
+const onSubmit = submitHandler(scheduleStore.assessment.add, setErrors);
+
+watch(isOpen, (newValue) => {
+    if (newValue) {
+        resetForm({
+            values: {
+                moduleId: props.module.id,
+            }
+        });
+    }
+});
 </script>
 
 <template>
@@ -25,7 +39,7 @@ const onSubmit = submitHandler(addAssessment, setErrors);
             Add a new assessment
         </template>
         <template #description>
-            This can be an assignment, exam date, project due date, etc.
+            Adding an assessment for: "{{ module.name }}"
         </template>
         <template #form>
             <DynamicForm 
@@ -63,14 +77,6 @@ const onSubmit = submitHandler(addAssessment, setErrors);
                         as: 'input',
                         type: 'date'
                     },
-                    {
-                        name: 'module',
-                        label: 'Module',
-                        as: 'select',
-                        groups: modulesStore.moduleSelectorOptions,
-                        hintText: '(Select a Module)',
-                        sideBtn: AddModuleSideButton,
-                    }
                 ]" />
         </template>
     </CustomDialog>

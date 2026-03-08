@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { InsertAssessment, type AssessmentSchema } from '~~/lib/db/schema';
-import AddModuleSideButton from './AddModuleSideButton.vue';
+import { InsertAssessment } from '~~/lib/db/schema';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
+import type { AssessmentWithoutId } from '~~/lib/db/queries/modules';
 
 const props = defineProps<{
-    assessment: AssessmentSchema,
+    assessment: AssessmentWithoutId,
 }>();
 
-const modulesStore = useModuleStore();
-const { editAssessment } = useAssessmentsStore();
+const scheduleStore = useScheduleStore();
 
-const initialValues = {
-    name: props.assessment.name,
-    description: props.assessment.description,
-    module: props.assessment.module,
-    releasedAt: props.assessment.releasedAt,
+const initialValues: InsertAssessment = {
+    name: props.assessment.name,    
+    description: props.assessment.description ?? undefined,
+    moduleId: props.assessment.moduleId,
+    releasedAt: props.assessment.releasedAt ?? undefined,
     dueAt: props.assessment.dueAt,
 }
 
@@ -25,11 +24,13 @@ const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
-const onSubmit = submitHandler(async (values) => editAssessment(values, props.assessment.id), setErrors);
+const onSubmit = submitHandler(
+    async (values) => scheduleStore.assessment.update(props.assessment.slug, values), 
+    setErrors
+);
 
 watch(isOpen, (justOpened) => {
     if (justOpened) {
-        modulesStore.refresh();
         resetForm();
     };
 });
@@ -84,14 +85,6 @@ watch(isOpen, (justOpened) => {
                         type: 'date',
                         value: unixTimestampToISO(initialValues.dueAt),
                     },
-                    {
-                        name: 'module',
-                        label: 'Module',
-                        as: 'select',
-                        groups: modulesStore.moduleSelectorOptions,
-                        hintText: '(Select a Module)',
-                        sideBtn: AddModuleSideButton,
-                    }
                 ]" />
         </template>
     </CustomDialog>

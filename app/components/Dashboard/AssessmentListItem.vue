@@ -1,35 +1,56 @@
 <script setup lang="ts">
-import type { AssessmentSchema, ModuleSchema } from '~~/lib/db/schema';
+import type { ModuleWithAssessments } from '~~/lib/db/queries/modules';
 
 const props = defineProps<{
-    module: ModuleSchema,
-    assessments: AssessmentSchema[],
+    module: ModuleWithAssessments,
 }>();
 
-const { deleteAssessment } = useAssessmentsStore();
-const { deleteModule } = useModuleStore();
+const scheduleStore = useScheduleStore();
 
-const remainingAssessmentCount = computed(() => props.assessments.filter(a => !a.completed).length);
+function promptDeleteModule() {
+    if (!confirm(`Are you sure you want to delete the '${props.module.name}' module?`)) return;
 
-const headerTooltipContent = computed(() => `${props.assessments.length} assessments, ${remainingAssessmentCount.value} remaining`);
+    scheduleStore.module.delete(props.module.id);
+}
+
+function promptDeleteAssessment(slug: string, name: string) {
+    if (!confirm(`Are you sure you want to delete the '${name}' assessment?`)) return;
+    
+    scheduleStore.assessment.delete(slug);
+}
+
+const remainingAssessmentCount = computed(() => props.module.assessments.filter(a => !a.isCompleted).length);
+
+const headerTooltipContent = computed(() => `${props.module.assessments.length} assessments, ${remainingAssessmentCount.value} remaining`);
 </script>
 
 <template>
     <AccordionItem :value="module.id.toString()">
         <AccordionHeader class="flex flex-row justify-between items-center pb-1">
-            <AppTooltip :content="headerTooltipContent">
-                <div 
-                    class="flex flex-row gap-2 items-center"
-                    :class="{
-                        'line-through text-text-muted ring-text-muted': remainingAssessmentCount == 0
-                    }">
-                    <code class="ring-1 ring-inset text-sm p-1 rounded-sm h-min">{{ module.code }}</code>
-                    <span class="text-lg">{{ module.name }}</span>
-                </div>
-            </AppTooltip>
+            <div 
+                class="flex flex-row gap-2 items-center select-none hover:text-text-primary"
+                :class="{
+                    'line-through text-text-muted ring-text-muted': module.assessments.length > 0 && remainingAssessmentCount == 0
+                }">
+                <code class="ring-1 ring-inset text-sm p-1 rounded-sm h-min">{{ module.code }}</code>
+                <span class="text-lg">{{ module.name }}</span>
+            </div>
 
-            <div class="flex flex-row gap-1">
-                <AccordionTrigger :as-child="true" class="group">
+            <div class="inline-flex gap-1 items-center">
+                <AppTooltip :content="headerTooltipContent">
+                    <span class="text-sm select-none min-w-max tracking-tighter leading-none mr-1">{{ module.assessments.length - remainingAssessmentCount }} / {{ module.assessments.length }}</span>
+                </AppTooltip>
+
+                <PopupAddAssessment :module>
+                    <ButtonGhost layer="base">
+                        <Icon name="lucide:plus" />
+                    </ButtonGhost>
+                </PopupAddAssessment>
+
+                <AccordionTrigger 
+                    class="group"
+                    :disabled="module.assessments.length === 0"
+                    :as-child="true">
                     <ButtonGhost class="size-8 justify-center" layer="base" :highlight-on-open="false">
                         <Icon 
                             name="lucide:chevron-down"
@@ -55,7 +76,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                             <CustomDropdownItem 
                                 value="Delete" 
                                 icon="lucide:trash-2"
-                                @select="deleteModule(module)" />
+                                @select="promptDeleteModule()" />
                         </DropdownMenuContent>
                     </DropdownMenuPortal>
                 </DropdownMenuRoot>
@@ -67,10 +88,10 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                 data-[state=open]:animate-accordion-content-slide-down
                 data-[state=closed]:animate-accordion-content-slide-up">
             <div 
-                v-for="assessment in assessments" 
+                v-for="assessment in module.assessments" 
                 :key="assessment.id"
                 class="flex flex-row items-center gap-2 p-2 rounded-lg bg-bg-surface hover:bg-bg-surface-hover has-[>.active]:bg-bg-surface-active ring-inset ring-[0.5px] ring-highlight"
-                :class="{ 'opacity-75': assessment.completed }">
+                :class="{ 'opacity-75': assessment.isCompleted }">
                 <NuxtLink 
                     class="grow"
                     :to="`/dashboard/assessment/${assessment.slug}`" 
@@ -79,7 +100,9 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                     <div class="flex flex-col group">
                         <span 
                             class="text-lg text-text-primary group-hover:text-brand-focus transition-colors duration-75"
-                            :class="{ 'line-through': assessment.completed }">{{ assessment.name }}</span>
+                            :class="{ 'line-through': assessment.isCompleted }">
+                            {{ assessment.name }}
+                        </span>
                         <div class="flex flex-row gap-1 text-sm">
                             <span v-if="assessment.releasedAt">
                                 {{ new Date(assessment.releasedAt).toLocaleDateString() }}
@@ -113,7 +136,7 @@ const headerTooltipContent = computed(() => `${props.assessments.length} assessm
                                     <CustomDropdownItem 
                                         value="Delete" 
                                         icon="lucide:trash-2"
-                                        @select="deleteAssessment(assessment)" />
+                                        @select="promptDeleteAssessment(assessment.slug, assessment.name)" />
                                 </DropdownMenuContent>
                             </Transition>
                         </DropdownMenuPortal>

@@ -12,11 +12,19 @@ const isDark = computed({
 </script>
 
 <template>
-    <ClientOnly>
-        <label class="flex items-center cursor-pointer">
-            <input v-model="isDark" type="checkbox" class="hidden">
-            
-            <Icon :name="isDark ? 'lucide:sun' : 'lucide:moon'" size="20" />
-        </label>
-    </ClientOnly>
+    <label class="flex items-center cursor-pointer">
+        <input 
+            v-model="isDark"
+            type="checkbox"
+            class="hidden">
+        
+        <Icon
+            v-if="$colorMode.preference === 'dark'" 
+            name="lucide:sun"
+            size="20" />
+        <Icon 
+            v-else
+            name="lucide:moon"
+            size="20" />
+    </label>
 </template>

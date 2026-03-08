@@ -5,7 +5,7 @@ import { parseIdParam, validateBody } from "~~/server/utils/validation";
 
 export default defineAuthenticatedEventHander(async (event) => {
     const id = parseIdParam(event);
-    const bodyData = await validateBody(event, InsertTask);
+    const bodyData = await validateBody(event, InsertTask.partial());
 
     const updated = await updateTaskById(id, bodyData, event.context.user.id);
 

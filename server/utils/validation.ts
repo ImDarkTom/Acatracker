@@ -31,7 +31,7 @@ export function parseIdParam(event: H3Event): number {
     if (isNaN(id) || id <= 0) {
         throw createError({
             status: 400,
-            statusMessage: 'Invalid ID parameter.'
+            statusMessage: 'Invalid ID.'
         })
     }
 

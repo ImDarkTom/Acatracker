@@ -1,11 +1,16 @@
-import { deleteAssessmentById } from "~~/lib/db/queries/assessments";
+import { deleteAssessmentBySlug } from "~~/lib/db/queries/assessments";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
-import { parseIdParam } from "~~/server/utils/validation";
 
 export default defineAuthenticatedEventHander(async (event) => {
-    const id = parseIdParam(event);
+   const slug = getRouterParam(event, "slug");
+    if (!slug) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Assessment slug is required."
+        });
+    }
 
-    const deleted = await deleteAssessmentById(id, event.context.user.id);
+    const deleted = await deleteAssessmentBySlug(slug, event.context.user.id);
 
     if (!deleted) {
         return sendError(event, createError({

@@ -92,12 +92,7 @@ onUnmounted(() => {
         v-else-if="auth.user.value.emailVerified" 
         class="flex flex-col gap-2 items-center">
         <span>Your email is already verified!</span>
-        <RouterLink to="/dashboard">
-            <ButtonPrimary>
-                <Icon name="lucide:arrow-left" />
-                Back to dashboard
-            </ButtonPrimary>
-        </RouterLink>
+        <AppBackBtn />
     </div>
     <div v-else class="flex flex-col gap-2 items-center">
         <h1 class="text-xl font-bold text-center">Email Verification</h1>

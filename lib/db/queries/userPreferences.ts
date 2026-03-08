@@ -18,6 +18,8 @@ export async function getUserPreferences(userId: number) {
     }
 }
 
+export type UserPreferencesResponse = Awaited<ReturnType<typeof getUserPreferences>>;
+
 export async function updateUserPreferences(userId: number, newPreferences: Partial<UserPreferencesSchema>) {
     const [ updated ] = await db.update(userPreferences)
         .set(newPreferences)

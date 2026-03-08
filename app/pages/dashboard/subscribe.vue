@@ -1,10 +1,10 @@
 <script setup lang="ts">
-useHead({
-    title: 'Subscribe | Acatracker',
-});
-
 definePageMeta({
     layout: 'dashboard',
+});
+
+useHead({
+    title: 'Subscribe | Acatracker',
 });
 
 const { data, error, pending } = useFetch('/api/token', { lazy: true });
@@ -44,11 +44,7 @@ const selectAll = (event: FocusEvent) => {
     <div 
         v-else
         class="grow flex flex-col gap-2 items-center justify-center">
-        <RouterLink to="/dashboard">
-            <ButtonPrimary>
-                Back to dashboard
-            </ButtonPrimary>
-        </RouterLink>
+        <AppBackBtn />
         <span class="mt-4">Subscribe to your calendar inside other apps:</span>
         <div class="w-full flex flex-row gap-2 justify-center">
             <a

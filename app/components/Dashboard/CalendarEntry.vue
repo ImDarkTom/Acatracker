@@ -3,7 +3,7 @@ const props = defineProps<{
     eventProp: IterableEvent,
 }>();
 
-const { toggleAssessmentCompleted } = useAssessmentsStore();
+const scheduleStore = useScheduleStore();
 
 const eventTypeMap = {
     due: 'Due Date',
@@ -13,7 +13,7 @@ const eventTypeMap = {
 
 const infoOpened = ref(false);
 
-const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventProp.id, (e.target as HTMLInputElement).checked);
+const onToggleCompleted = (e: Event) => scheduleStore.assessment.toggleCompleted(props.eventProp.id, (e.target as HTMLInputElement).checked);
 </script>
 
 <template>
@@ -31,7 +31,7 @@ const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventPro
                     'bg-event-task/40 hover:bg-event-task/50': eventProp.type === 'task',
                     'bg-event-task/60!': eventProp.type === 'task' && infoOpened,
 
-                    'line-through opacity-60': eventProp.completed,
+                    'line-through opacity-60': eventProp.isCompleted,
                 }">
                 {{ eventProp.label }}
             </div>
@@ -52,7 +52,7 @@ const onToggleCompleted = (e: Event) => toggleAssessmentCompleted(props.eventPro
                     <span>Completed?</span>
                     <input 
                         type="checkbox" 
-                        :checked="eventProp.completed" 
+                        :checked="eventProp.isCompleted" 
                         @change="onToggleCompleted">
                 </label>
                 <RouterLink :to="eventProp.link">

@@ -1,8 +1,11 @@
 <template>
-    <nav class="flex flex-row items-center justify-between p-2 z-90 border-b border-b-highlight">
-        <ul class="flex flex-row gap-4">
+    <nav class="flex flex-row items-center justify-between p-2 z-90">
+        <ul class="flex flex-row gap-4 items-center">
             <li class="mr-2">
                 <AppLogoLink />
+            </li>
+            <li>
+                <DashboardSemesterPicker />
             </li>
         </ul>
         <ul class="flex flex-row gap-2">

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { InsertModule, type ModuleSchema } from '~~/lib/db/schema';
-
-const { editModule } = useModuleStore();
+import type { ModuleWithAssessments } from '~~/lib/db/queries/modules';
+import { InsertModule } from '~~/lib/db/schema';
 
 const props = defineProps<{
-    module: ModuleSchema,
+    module: ModuleWithAssessments,
 }>();
+
+const scheduleStore = useScheduleStore();
 
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertModule),
@@ -25,7 +26,7 @@ watch(isOpen, (justOpened) => {
     };
 });
 
-const onSubmit = submitHandler(async (values) => editModule(values, props.module.id), setErrors)
+const onSubmit = submitHandler(async (values) => scheduleStore.module.edit(values, props.module.id), setErrors)
 </script>
 
 <template>

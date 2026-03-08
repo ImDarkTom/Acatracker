@@ -53,9 +53,10 @@ function handleExitClick(e: Event, exitFn: () => void) {
                     <DialogTitle class="text-lg font-semibold text-text-primary">
                         <slot name="title" />
                     </DialogTitle>
-                    <DialogDescription class="mt-2 mb-1">
+                    <DialogDescription class="mt-2 mb-4 text-text-muted">
                         <slot name="description" />
                     </DialogDescription>
+                    
                     <div v-if="submitError" class="bg-errorbg p-2 rounded-sm">
                         {{ submitError }}
                     </div>

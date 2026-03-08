@@ -4,6 +4,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { assessment } from '.';
 import { user } from "./auth";
 import z from "zod";
+import { relations } from "drizzle-orm";
 
 const preprocessDate = z.preprocess((arg) => {
     if (typeof arg === 'string') {
@@ -21,30 +22,38 @@ const preprocessDate = z.preprocess((arg) => {
     if (arg instanceof Date) return arg.getTime();
 
     return arg;
-}, z.number().int())
+}, z.number('Pick a valid date.').int())
 
 export const task = sqliteTable("task", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text().notNull(),
     description: text(),
-    assessment: int().notNull().references(() => assessment.id, { onDelete: 'cascade' }),
     dueAt: int().notNull(),
-    completed: int({ mode: 'boolean' }),
+    isCompleted: int({ mode: 'boolean' }),
+    assessmentId: int().notNull().references(() => assessment.id, { onDelete: 'cascade' }),
     userId: int().notNull().references(() => user.id, { onDelete: 'cascade' }),
     createdAt: int().notNull().$default(() => Date.now()),
     updatedAt: int().notNull().$default(() => Date.now()).$onUpdate(() => Date.now()),
 });
 
 export const InsertTask = createInsertSchema(task, {
-    name: (field) => field.min(1).max(100),
-    description: (field) => field.max(1000),
-    dueAt: () => preprocessDate,
+    name: z.string('A name is required').min(1).max(100),
+    description: z.string().max(1000, 'Too long! (max 1000 chars)').optional(),
+    dueAt: preprocessDate,
 }).omit({
     id: true,
     userId: true,
     createdAt: true,
     updatedAt: true,
 });
+
+export const taskRelations = relations(task, ({ one }) => ({
+    assessment: one(assessment, {
+        fields: [task.assessmentId],
+        references: [assessment.id],
+    }),
+}));
+
 
 export type TaskSchema = typeof task.$inferSelect;
 

@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import { InsertTask, type AssessmentSchema, type TaskSchema } from '~~/lib/db/schema';
+import { InsertTask } from '~~/lib/db/schema';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
+import type { AssessmentWithDetails } from '~~/lib/db/queries/assessments';
+import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
 
-const { editTask } = useTaskStore();
+const scheduleStore = useScheduleStore();
 
+// TODO: replace task with just an id since we cal select from the assessment prop
 const props = defineProps<{
-    assessment: AssessmentSchema,
-    task: TaskSchema,
+    assessment: AssessmentWithTasks,
+    task: AssessmentWithDetails['tasks'][number],
 }>();
 
-const initialValues = {
-    assessment: props.assessment.id,
-    completed: props.task.completed,
+const initialValues: InsertTask = {
+    assessmentId: props.assessment.id,
+    isCompleted: props.task.isCompleted,
     name: props.task.name,
-    description: props.task.description,
+    description: props.task.description ?? undefined,
     dueAt: props.task.dueAt,
 }
 
@@ -30,7 +33,7 @@ watch(isOpen, (justOpened) => {
     };
 });
 
-const onSubmit = submitHandler(async (values) => editTask(values, props.task.id), setErrors);
+const onSubmit = submitHandler(async (values) => scheduleStore.task.update(values, props.task.id), setErrors);
 </script>
 
 <template>
@@ -76,8 +79,8 @@ const onSubmit = submitHandler(async (values) => editTask(values, props.task.id)
                         value: unixTimestampToISO(initialValues.dueAt)
                     },
                     {
-                        name: 'completed',
-                        label: 'Completed',
+                        name: 'isCompleted',
+                        label: 'Completed?',
                         as: 'input',
                         type: 'checkbox'
                     },
