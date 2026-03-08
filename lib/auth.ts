@@ -1,7 +1,7 @@
 import db from './db/index';
 import { betterAuth, type User } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { createAuthMiddleware } from "better-auth/plugins";
+import { createAuthMiddleware } from "better-auth/api";
 import env from './env';
 import { calendarToken, userPreferences } from './db/schema';
 import { resend } from './email/resend';
@@ -11,6 +11,7 @@ export type UserWithId = Omit<User, 'id'> & {
 };
 
 export const auth = betterAuth({
+    appName: 'Acatracker',
     hooks: {
         after: createAuthMiddleware(async (ctx) => {
             if (ctx.path === "/get-session") {
