@@ -1,14 +1,14 @@
 <template>
     <div class="flex flex-row gap-2">
-        <RouterLink to="/auth/sign-in">
+        <NuxtLink to="/auth/sign-in">
             <ButtonSecondary>
                 Sign in
             </ButtonSecondary>
-        </RouterLink>
-        <RouterLink to="/auth/sign-up">
+        </NuxtLink>
+        <NuxtLink to="/auth/sign-up">
             <ButtonPrimary>
                 Sign up
             </ButtonPrimary>
-        </RouterLink>
+        </NuxtLink>
     </div>
 </template>

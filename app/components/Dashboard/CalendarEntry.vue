@@ -55,11 +55,11 @@ const onToggleCompleted = (e: Event) => scheduleStore.assessment.toggleCompleted
                         :checked="eventProp.isCompleted" 
                         @change="onToggleCompleted">
                 </label>
-                <RouterLink :to="eventProp.link">
+                <NuxtLink :to="eventProp.link">
                     <ButtonPrimary>
                     View Details
                     </ButtonPrimary>
-                </RouterLink>
+                </NuxtLink>
                 <PopoverArrow class="fill-bg-overlay" />
                 <PopoverClose class="absolute top-2 right-2">
                     <div class="inline-flex cursor-pointer rounded-full p-2 hover:bg-bg-overlay-hover active:bg-bg-overlay-active">

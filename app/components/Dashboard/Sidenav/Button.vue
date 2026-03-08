@@ -9,7 +9,7 @@ const uiStore = useUiStore();
 </script>
 
 <template>
-    <RouterLink 
+    <NuxtLink 
         class="group/link" 
         :to 
         :exact-active-class="`active`"
@@ -22,5 +22,5 @@ const uiStore = useUiStore();
             </div>
             <span class="text-xs font-medium">{{ label }}</span>
         </div>
-    </RouterLink>
+    </NuxtLink>
 </template>

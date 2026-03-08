@@ -45,11 +45,11 @@ useSeoMeta({
                     <li>And more...</li>
                 </ul>
 
-                <RouterLink :to="{ name: 'auth-sign-up' }">
+                <NuxtLink :to="{ name: 'auth-sign-up' }">
                     <ButtonPrimary class="p-3 px-6">
                         Get started
                     </ButtonPrimary>
-                </RouterLink>
+                </NuxtLink>
             </div>
         </div>
     </div>

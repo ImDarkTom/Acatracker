@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { DropdownMenuItemProps } from 'reka-ui';
-import { RouterLink } from 'vue-router';
 
 interface CustomDropdownItemProps extends DropdownMenuItemProps {
     value: string;
@@ -21,6 +20,7 @@ const {
     ...itemProps
 } = props;
 
+const NuxtLink = resolveComponent('NuxtLink');
 </script>
 
 <template>
@@ -31,7 +31,7 @@ const {
         :as-child="true"
         @select="emit('select', $event)">
         <component 
-            :is="!!link ? RouterLink : 'button'"
+            :is="!!link ? NuxtLink : 'button'"
             class="w-full"
             :type="!link"
             :to="link ?? undefined">

@@ -21,12 +21,12 @@ async function promptDeleteAccount() {
 
 <template>
     <div class="flex flex-col gap-2">
-        <RouterLink to="/dashboard" class="w-min">
+        <NuxtLink to="/dashboard" class="w-min">
             <ButtonPrimary >
                 <Icon name="lucide:arrow-left" />
                 Dashboard
             </ButtonPrimary>
-        </RouterLink>
+        </NuxtLink>
         <h1 class="text-2xl font-bold">Account Info</h1>
         <div class="flex flex-col gap-4">
             <h2 class="text-xl font-semibold">Details</h2>

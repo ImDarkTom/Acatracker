@@ -119,6 +119,6 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
     </form>
 
     <span class="text-center">
-        New? <RouterLink to="/auth/sign-up" class="link-text">Create an account</RouterLink>
+        New? <NuxtLink to="/auth/sign-up" class="link-text">Create an account</NuxtLink>
     </span>
 </template>

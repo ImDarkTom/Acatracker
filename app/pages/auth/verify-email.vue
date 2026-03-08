@@ -81,12 +81,12 @@ onUnmounted(() => {
         v-else-if="!auth.user.value"
         class="flex flex-col gap-2 items-center">
         <AppErrorBanner text="Couldn't get sign-in info." />
-        <RouterLink to="/">
+        <NuxtLink to="/">
             <ButtonPrimary>
                 <Icon name="lucide:arrow-left" />
                 Back to home
             </ButtonPrimary>
-        </RouterLink>
+        </NuxtLink>
     </div>
     <div 
         v-else-if="auth.user.value.emailVerified" 
