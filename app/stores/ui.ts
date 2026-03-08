@@ -16,6 +16,7 @@ export const useUiStore = defineStore('useUiStore', () => {
         backText: 'Back home',
         path: '/dashboard',
     });
+    const sidebarCollapsed = ref(false);
 
     function setLastOpenedView(path: ViewPath) {
         lastOpenedView.value = {
@@ -24,8 +25,14 @@ export const useUiStore = defineStore('useUiStore', () => {
         };
     }
 
+    function collapseSidebar() {
+        sidebarCollapsed.value = !sidebarCollapsed.value;
+    }
+
     return {
         lastOpenedView,
         setLastOpenedView,
+        sidebarCollapsed,
+        collapseSidebar,
     }
 });
