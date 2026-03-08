@@ -1,14 +1,14 @@
 <script setup lang="ts">
 const uiStore = useUiStore();
 
-await callOnce('schedule', async () => {
-    const scheduleStore = useScheduleStore();
-    await scheduleStore.fetchSchedule();
-});
-
-await callOnce('userPreferences', async () => {
+await callOnce('userPreferencesAndSchedule', async () => {
     const preferences = useUserPreferencesStore();
-    await preferences.fetchPreferences();
+    const scheduleStore = useScheduleStore();
+
+    await Promise.all([
+        preferences.fetchPreferences(),
+        scheduleStore.fetchSchedule(),
+    ]);
 });
 </script>
 
