@@ -1,6 +1,5 @@
 import { fromDate, getLocalTimeZone, isSameDay } from "@internationalized/date";
 import type { DateValue } from "reka-ui";
-import type { OptGroupEntry } from "~/types/dynamicForm";
 import type { ScheduleResponse } from "~~/lib/db/queries/modules";
 import type { InsertAssessment, InsertTask } from "~~/lib/db/schema";
 

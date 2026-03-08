@@ -22,7 +22,7 @@ const preprocessDate = z.preprocess((arg) => {
     if (arg instanceof Date) return arg.getTime();
 
     return arg;
-}, z.number().int())
+}, z.number('Pick a valid date.').int())
 
 export const task = sqliteTable("task", {
     id: int().primaryKey({ autoIncrement: true }),

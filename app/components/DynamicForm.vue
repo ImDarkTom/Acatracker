@@ -1,28 +1,18 @@
 <script setup lang="ts">
-import type { OptGroupEntry } from '~/types/dynamicForm';
-
 type BaseField = {
     label: string,
     name: string,
-    sideBtn?: Component,
 }
 
 type FieldOptions = 
     { 
         as: 'input', 
-        type: 'text',
+        type: 'text' | 'number' | 'date',
     } | {
         as: 'input',
-        type: 'number',
-    } | {
-        as: 'input',
-        type: 'date' | 'checkbox',
+        type: 'checkbox',
     } | { 
         as: 'textarea'
-    } | { 
-        as: 'select', 
-        groups: OptGroupEntry[], 
-        hintText: string
     };
 
 defineProps<{
@@ -40,7 +30,7 @@ defineProps<{
 <template>
     <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
         <div v-for="{ label, name, as: asType, type, ...attrs } in fields">
-            <label>
+            <label v-if="type !== 'checkbox'">
                 <span class="font-medium">
                     {{ label }}
                 </span>
@@ -57,24 +47,36 @@ defineProps<{
                             'ring-errortxt!': errors[name],
                             'opacity-50': isLoading,
                         }">
-                        <template v-if="asType === 'select'">
-                            <option value="" disabled selected>{{ attrs.hintText }}</option>
-                            <optgroup
-                                v-for="item in attrs.groups"
-                                :label="item.label">
-                                <option
-                                    v-for="[value, label] in item.options" 
-                                    :value>
-                                    {{ label }}
-                                </option>
-                            </optgroup>
-                        </template>
                     </Field>
-                    <component v-if="attrs.sideBtn" :is="attrs.sideBtn" />
                 </div>
                 <ErrorMessage :name class="text-sm text-errortxt" />
             </label>
+            <label 
+                v-else
+                class="flex flex-row gap-2 ml-1 mt-1">
+                <Field
+                    v-slot="{ field }"
+                    :name
+                    type="checkbox"
+                    :disabled="isLoading"
+                    :error="errors[name]"
+                    :value="true"
+                    :unchecked-value="false">
+                    <input 
+                        type="checkbox" 
+                        v-bind="field" 
+                        :value="true"
+                        :class="{
+                            'ring-errortxt!': errors[name],
+                            'opacity-50': isLoading,
+                        }" />
+                </Field>
+                <span class="font-medium">
+                    {{ label }}
+                </span>
+            </label>
         </div>
+        
         <div class="flex justify-end mt-2">
             <ButtonPrimary 
                 type="submit" 

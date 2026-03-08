@@ -64,7 +64,7 @@ const onSubmit = submitHandler(scheduleStore.task.add, setErrors);
                     },
                     {
                         name: 'isCompleted',
-                        label: 'Completed',
+                        label: 'Completed?',
                         as: 'input',
                         type: 'checkbox'
                     },

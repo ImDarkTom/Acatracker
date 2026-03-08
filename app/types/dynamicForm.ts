@@ -1,1 +1,0 @@
-export type OptGroupEntry = { label: string, options: [number, string][] };

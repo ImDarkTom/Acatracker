@@ -16,7 +16,7 @@ const initialValues: InsertTask = {
     assessmentId: props.assessment.id,
     isCompleted: props.task.isCompleted,
     name: props.task.name,
-    description: props.task.description,
+    description: props.task.description ?? undefined,
     dueAt: props.task.dueAt,
 }
 
@@ -80,7 +80,7 @@ const onSubmit = submitHandler(async (values) => scheduleStore.task.update(value
                     },
                     {
                         name: 'isCompleted',
-                        label: 'Completed',
+                        label: 'Completed?',
                         as: 'input',
                         type: 'checkbox'
                     },
