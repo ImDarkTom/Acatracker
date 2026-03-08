@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { InsertAssessment } from '~~/lib/db/schema';
-import AddModuleSideButton from './AddModuleSideButton.vue';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
 import type { AssessmentWithoutId } from '~~/lib/db/queries/modules';
 
@@ -12,9 +11,9 @@ const scheduleStore = useScheduleStore();
 
 const initialValues: InsertAssessment = {
     name: props.assessment.name,    
-    description: props.assessment.description,
+    description: props.assessment.description ?? undefined,
     moduleId: props.assessment.moduleId,
-    releasedAt: props.assessment.releasedAt,
+    releasedAt: props.assessment.releasedAt ?? undefined,
     dueAt: props.assessment.dueAt,
 }
 
@@ -86,14 +85,6 @@ watch(isOpen, (justOpened) => {
                         type: 'date',
                         value: unixTimestampToISO(initialValues.dueAt),
                     },
-                    {
-                        name: 'moduleId',
-                        label: 'Module',
-                        as: 'select',
-                        groups: scheduleStore.moduleSelectorOptions,
-                        hintText: '(Select a Module)',
-                        sideBtn: AddModuleSideButton,
-                    }
                 ]" />
         </template>
     </CustomDialog>

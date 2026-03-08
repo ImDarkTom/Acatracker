@@ -99,19 +99,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         return { pending, total };
     });
 
-    const moduleSelectorOptions = computed<OptGroupEntry[]>(() => {
-        if (!schedule.value) return [];
-
-        const options = schedule.value.map(module => [module.id, module.name] as [number, string]);
-
-        return [
-            {
-                label: 'Current Modules',
-                options,
-            }
-        ]
-    });
-
     const upcomingEvents = computed<EventsForDate[]>(() => {
         if (!schedule.value) return [];
 
@@ -371,7 +358,6 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         fetchSchedule,
         getAssessmentBySlug,
         assessmentsCount,
-        moduleSelectorOptions,
         upcomingEvents,
         module: moduleOperations,
         assessment: assessmentOperations,
