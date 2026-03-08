@@ -13,12 +13,5 @@ export default defineAuthenticatedEventHandler(async (event) => {
         });
     }
 
-    if (results.length === 0) {
-        throw createError({
-            statusCode: 404,
-            message: 'No items found.',
-        });
-    }
-
     return results;
 });

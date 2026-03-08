@@ -12,7 +12,7 @@ const { pending, error } = storeToRefs(scheduleStore);
         <LoadingIcon size="32" />
     </div>
     <div v-if="error">
-        Oh no! {{ error.statusMessage }}
+        Oh no! {{ error }}
     </div>
     <template v-if="!pending && !error">
         <CalendarRoot
