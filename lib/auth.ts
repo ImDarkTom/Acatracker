@@ -1,10 +1,11 @@
-import db from './db/index';
-import { betterAuth, type User } from "better-auth";
+import { betterAuth } from "better-auth/minimal";
+import type { User } from 'better-auth';
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware } from "better-auth/api";
-import env from './env';
+import db from './db/index';
 import { calendarToken, userPreferences } from './db/schema';
 import { resend } from './email/resend';
+import env from './env';
 
 export type UserWithId = Omit<User, 'id'> & {
     id: number;
