@@ -26,10 +26,10 @@ export const moduleRelations = relations(module, ({ many }) => ({ assessments: m
 export type ModuleSchema = typeof module.$inferSelect;
 
 export const InsertModule = createInsertSchema(module, {
-    name: (field) => field.min(1).max(100),
-    code: (field) => field.min(1).max(20),
-    year: (field) => field.min(1).max(10),
-    semester: (field) => field.min(1).max(5),
+    name: z.string('A name is required.').min(1).max(100, 'Too long! (max 100 chars)'),
+    code: z.string('A code is required.').min(1).max(20, 'Too long! (max 20 chars)'),
+    year: z.int().min(1).max(10),
+    semester: z.int().min(1).max(5),
 }).omit({
     id: true,
     userId: true,

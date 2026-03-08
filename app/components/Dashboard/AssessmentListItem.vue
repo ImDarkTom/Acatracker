@@ -29,23 +29,30 @@ const headerTooltipContent = computed(() => `${props.module.assessments.length} 
         <AccordionHeader class="flex flex-row justify-between items-center pb-1">
             <AppTooltip :content="headerTooltipContent">
                 <div 
-                    class="flex flex-row gap-2 items-center"
+                    class="flex flex-row gap-2 items-center select-none hover:text-text-primary"
                     :class="{
-                        'line-through text-text-muted ring-text-muted': remainingAssessmentCount == 0
+                        'line-through text-text-muted ring-text-muted': module.assessments.length > 0 && remainingAssessmentCount == 0
                     }">
                     <code class="ring-1 ring-inset text-sm p-1 rounded-sm h-min">{{ module.code }}</code>
                     <span class="text-lg">{{ module.name }}</span>
                 </div>
             </AppTooltip>
 
-            <div class="flex flex-row gap-1">
-                <PopupAssessmentAddFromModuleButton :for-module-id="module.id">
+            <div class="inline-flex gap-1 items-center">
+                <AppTooltip :content="headerTooltipContent">
+                    <span class="text-sm select-none min-w-max tracking-tighter leading-none">{{ module.assessments.length - remainingAssessmentCount }} / {{ module.assessments.length }}</span>
+                </AppTooltip>
+
+                <PopupAddAssessment :module-id="module.id">
                     <ButtonGhost layer="base">
                         <Icon name="lucide:plus" />
                     </ButtonGhost>
-                </PopupAssessmentAddFromModuleButton>
+                </PopupAddAssessment>
 
-                <AccordionTrigger :as-child="true" class="group">
+                <AccordionTrigger 
+                    class="group"
+                    :disabled="module.assessments.length === 0"
+                    :as-child="true">
                     <ButtonGhost class="size-8 justify-center" layer="base" :highlight-on-open="false">
                         <Icon 
                             name="lucide:chevron-down"

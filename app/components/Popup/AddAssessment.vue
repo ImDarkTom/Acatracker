@@ -1,16 +1,32 @@
 <script setup lang="ts">
 import { InsertAssessment } from '~~/lib/db/schema';
-import AddModuleSideButton from './AddModuleSideButton.vue';
+
+const props = defineProps<{
+    moduleId: number,
+}>();
 
 const scheduleStore = useScheduleStore();
 
-const { handleSubmit, errors, meta, setErrors } = useForm({
-    validationSchema: toTypedSchema(InsertAssessment)
+const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
+    validationSchema: toTypedSchema(InsertAssessment),
+    initialValues: {
+        moduleId: props.moduleId,
+    },
 });
 
 const { isOpen, isLoading, submitHandler, confirmBeforeExiting, submitError } = useEditDialogForm({ meta, handleSubmit });
 
 const onSubmit = submitHandler(scheduleStore.assessment.add, setErrors);
+
+watch(isOpen, (newValue) => {
+    if (newValue) {
+        resetForm({
+            values: {
+                moduleId: props.moduleId,
+            }
+        });
+    }
+});
 </script>
 
 <template>
@@ -61,12 +77,11 @@ const onSubmit = submitHandler(scheduleStore.assessment.add, setErrors);
                         type: 'date'
                     },
                     {
-                        name: 'module',
+                        name: 'moduleId',
                         label: 'Module',
                         as: 'select',
                         groups: scheduleStore.moduleSelectorOptions,
                         hintText: '(Select a Module)',
-                        sideBtn: AddModuleSideButton,
                     }
                 ]" />
         </template>

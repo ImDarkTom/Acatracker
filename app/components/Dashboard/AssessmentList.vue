@@ -20,15 +20,14 @@ function stopRefreshAnim() {
 <template>
     <div class="h-full flex flex-col gap-2 p-2 overflow-auto">
         <div class="flex flex-row justify-between items-center">
-            <span
-                v-if="scheduleStore.pending" 
-                class="text-lg">
-                ... Pending Assessment(s)
-            </span>
             <span 
-                v-else
-                class="text-lg">
-                {{ scheduleStore.assessmentsCount.pending }} Pending Assessment(s)
+                class="text-text-muted">
+                <template v-if="scheduleStore.pending">
+                    ... Pending Assessment(s)
+                </template>
+                <template v-else>
+                    {{ scheduleStore.assessmentsCount.pending }} Pending Assessment(s)
+                </template>
             </span>
             <AppTooltip content="Refresh">
                 <ButtonGhost
@@ -50,12 +49,17 @@ function stopRefreshAnim() {
             <LoadingIcon size="32" />
         </div>
         <template v-else>
-            <div v-if="scheduleStore.assessmentsCount.total === 0" class="flex h-full grow items-center justify-center">
-                Add an assessment to get started
+            <div 
+                v-if="modules?.length === 0" 
+                class="flex flex-col gap-2 h-full grow items-center justify-center">
+                No modules added for year {{ preferences?.currentYear }}, semester {{ preferences?.currentSemester }}
+                <PopupAddModule>
+                    <ButtonPrimary>
+                        Add a module
+                    </ButtonPrimary>
+                </PopupAddModule>
             </div>
-            <div v-else-if="modules?.length === 0" class="flex h-full grow items-center justify-center">
-                No modules/assessments added for year {{ preferences?.currentYear }}, semester {{ preferences?.currentSemester }}
-            </div>
+            
             <AccordionRoot 
                 v-else
                 class="flex grow flex-col gap-2 overflow-y-auto"
@@ -67,19 +71,13 @@ function stopRefreshAnim() {
                     :key="module.id" 
                     :module />
             </AccordionRoot>
-            <div class="flex flex-row gap-2">
-                <PopupAddAssessment>
-                    <ButtonSecondary class="p-4 w-full px-auto">
-                        <Icon name="lucide:clipboard-list" />
-                        Add Assessment
-                    </ButtonSecondary>
-                </PopupAddAssessment>
-                <PopupAddModule>
-                    <ButtonSecondary aria-label="Add Module" title="Add Module" class="aspect-square flex justify-center">
-                        <Icon name="lucide:layers" />
-                    </ButtonSecondary>
-                </PopupAddModule>
-            </div>
+
+            <PopupAddModule>
+                <ButtonSecondary class="flex justify-center">
+                    <Icon name="lucide:layers" />
+                    Add Module
+                </ButtonSecondary>
+            </PopupAddModule>
         </template>
     </div>
 </template>

@@ -125,7 +125,7 @@ function onMouseleaveTimeline() {
 
 <template>
     <div 
-        v-if="!schedule?.length || schedule?.length > 0"
+        v-if="items.length > 0"
         class="min-w-full min-h-full touch-none">
         <Timeline
             class="timeline"
@@ -168,7 +168,7 @@ function onMouseleaveTimeline() {
     <div 
         v-else
         class="w-full h-full flex items-center justify-center text-text-muted">
-        Timeline will appear once you have assessments
+        Timeline will appear once you have assessments for this semester
     </div>
 </template>
 
