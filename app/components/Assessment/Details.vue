@@ -149,12 +149,12 @@ function promptDeleteTask(task: AssessmentWithTasks['tasks'][number]) {
                                     <CustomDropdownItem 
                                         value="Edit" 
                                         icon="lucide:pencil"
-                                        :on-select="(e) => e.preventDefault()" />
+                                        @select="e => e.preventDefault()" />
                                 </PopupEditTask>
                                 <CustomDropdownItem 
                                     value="Delete" 
                                     icon="lucide:trash-2"
-                                    :on-select="() => promptDeleteTask(task)" />
+                                    @select="promptDeleteTask(task)" />
                             </DropdownMenuContent>
                         </DropdownMenuPortal>
                     </DropdownMenuRoot>
