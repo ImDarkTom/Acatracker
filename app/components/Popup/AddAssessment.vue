@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { ModuleWithAssessments } from '~~/lib/db/queries/modules';
 import { InsertAssessment } from '~~/lib/db/schema';
 
 const props = defineProps<{
-    moduleId: number,
+    module: ModuleWithAssessments,
 }>();
 
 const scheduleStore = useScheduleStore();
@@ -10,7 +11,7 @@ const scheduleStore = useScheduleStore();
 const { handleSubmit, errors, meta, setErrors, resetForm } = useForm({
     validationSchema: toTypedSchema(InsertAssessment),
     initialValues: {
-        moduleId: props.moduleId,
+        moduleId: props.module.id,
     },
 });
 
@@ -22,7 +23,7 @@ watch(isOpen, (newValue) => {
     if (newValue) {
         resetForm({
             values: {
-                moduleId: props.moduleId,
+                moduleId: props.module.id,
             }
         });
     }
@@ -38,7 +39,7 @@ watch(isOpen, (newValue) => {
             Add a new assessment
         </template>
         <template #description>
-            This can be an assignment, exam date, project due date, etc.
+            Adding an assessment for: "{{ module.name }}"
         </template>
         <template #form>
             <DynamicForm 
@@ -76,13 +77,6 @@ watch(isOpen, (newValue) => {
                         as: 'input',
                         type: 'date'
                     },
-                    {
-                        name: 'moduleId',
-                        label: 'Module',
-                        as: 'select',
-                        groups: scheduleStore.moduleSelectorOptions,
-                        hintText: '(Select a Module)',
-                    }
                 ]" />
         </template>
     </CustomDialog>

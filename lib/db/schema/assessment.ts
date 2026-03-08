@@ -22,7 +22,7 @@ const preprocessDate = z.preprocess((arg) => {
     if (arg instanceof Date) return arg.getTime();
 
     return arg;
-}, z.number().int())
+}, z.number('Pick a valid date.').int())
 
 export const assessment = sqliteTable("assessment", {
     id: int().primaryKey({ autoIncrement: true }),
@@ -50,11 +50,10 @@ export const assessmentRelations = relations(assessment, ({ one, many }) => ({
 
 
 export const InsertAssessment = createInsertSchema(assessment, {
-    name: (field) => field.min(1).max(100),
-    description: (field) => field.max(1000),
-    moduleId: (field) => field,
-    releasedAt: () => preprocessDate,
-    dueAt: () => preprocessDate,
+    name: z.string('A name is required.').min(1).max(100, 'Too long! (max 100 chars)'),
+    description: z.string().max(1000, 'Too long! (max 1000 chars)').optional(),
+    releasedAt: preprocessDate,
+    dueAt: preprocessDate,
 }).omit({
     id: true,
     slug: true,

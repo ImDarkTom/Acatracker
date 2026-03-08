@@ -27,23 +27,21 @@ const headerTooltipContent = computed(() => `${props.module.assessments.length} 
 <template>
     <AccordionItem :value="module.id.toString()">
         <AccordionHeader class="flex flex-row justify-between items-center pb-1">
-            <AppTooltip :content="headerTooltipContent">
-                <div 
-                    class="flex flex-row gap-2 items-center select-none hover:text-text-primary"
-                    :class="{
-                        'line-through text-text-muted ring-text-muted': module.assessments.length > 0 && remainingAssessmentCount == 0
-                    }">
-                    <code class="ring-1 ring-inset text-sm p-1 rounded-sm h-min">{{ module.code }}</code>
-                    <span class="text-lg">{{ module.name }}</span>
-                </div>
-            </AppTooltip>
+            <div 
+                class="flex flex-row gap-2 items-center select-none hover:text-text-primary"
+                :class="{
+                    'line-through text-text-muted ring-text-muted': module.assessments.length > 0 && remainingAssessmentCount == 0
+                }">
+                <code class="ring-1 ring-inset text-sm p-1 rounded-sm h-min">{{ module.code }}</code>
+                <span class="text-lg">{{ module.name }}</span>
+            </div>
 
             <div class="inline-flex gap-1 items-center">
                 <AppTooltip :content="headerTooltipContent">
-                    <span class="text-sm select-none min-w-max tracking-tighter leading-none">{{ module.assessments.length - remainingAssessmentCount }} / {{ module.assessments.length }}</span>
+                    <span class="text-sm select-none min-w-max tracking-tighter leading-none mr-1">{{ module.assessments.length - remainingAssessmentCount }} / {{ module.assessments.length }}</span>
                 </AppTooltip>
 
-                <PopupAddAssessment :module-id="module.id">
+                <PopupAddAssessment :module>
                     <ButtonGhost layer="base">
                         <Icon name="lucide:plus" />
                     </ButtonGhost>

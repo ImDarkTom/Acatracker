@@ -37,9 +37,9 @@ export const task = sqliteTable("task", {
 });
 
 export const InsertTask = createInsertSchema(task, {
-    name: (field) => field.min(1).max(100),
-    description: (field) => field.max(1000),
-    dueAt: () => preprocessDate,
+    name: z.string('A name is required').min(1).max(100),
+    description: z.string().max(1000, 'Too long! (max 1000 chars)').optional(),
+    dueAt: preprocessDate,
 }).omit({
     id: true,
     userId: true,
