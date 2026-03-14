@@ -116,6 +116,7 @@ const headerTooltipContent = computed(() => `${props.module.assessments.length} 
                         </div>
                     </div>
                 </NuxtLink>
+                {{ assessment.releasedAt }}
                 <div @click.stop>
                     <DropdownMenuRoot>
                         <DropdownMenuTrigger

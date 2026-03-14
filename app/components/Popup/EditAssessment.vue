@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { InsertAssessment } from '~~/lib/db/schema';
-import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
 import type { AssessmentWithoutId } from '~~/lib/db/queries/modules';
 
 const props = defineProps<{
@@ -32,6 +31,8 @@ const onSubmit = submitHandler(
 watch(isOpen, (justOpened) => {
     if (justOpened) {
         resetForm();
+
+        console.log(typeof initialValues.releasedAt);
     };
 });
 </script>
@@ -76,14 +77,14 @@ watch(isOpen, (justOpened) => {
                         label: 'Release Date (optional)',
                         as: 'input',
                         type: 'date',
-                        value: initialValues.releasedAt ? unixTimestampToISO(initialValues.releasedAt) : undefined,
+                        value: initialValues.releasedAt ? initialValues.releasedAt.toISOString() : undefined,
                     },
                     {
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
                         type: 'date',
-                        value: unixTimestampToISO(initialValues.dueAt),
+                        value: initialValues.dueAt.toISOString(),
                     },
                 ]" />
         </template>
