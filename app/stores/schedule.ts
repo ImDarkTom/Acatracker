@@ -52,16 +52,11 @@ export type EventsForDate = {
 export type EventTypeKey = keyof EventsForDate['events'];
 export type EventType<T extends EventTypeKey> = NonNullable<EventsForDate['events'][T]>[number];
 
-import type { InternalApi } from 'nitropack';
-
-export type ApiRoutes = keyof InternalApi;
-
-export type ApiResponse<T extends ApiRoutes, M extends keyof InternalApi[T]> = InternalApi[T][M]
-
 export const useScheduleStore = defineStore('useScheduleStore', () => {
     const { $csrfFetch } = useNuxtApp();
+    const fetchWithCookies = useRequestFetch();
 
-    const schedule = ref<ApiResponse<'/api/schedule', 'get'> | null>(null);
+    const schedule = ref<Awaited<ScheduleResponse>>(null);
     const pending = ref(false);
     const error = ref<string | null>(null);
 
@@ -70,9 +65,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
         error.value = null;
         
         try {
-            schedule.value = await $fetch("/api/schedule", {
-                credentials: 'include',
-            });
+            schedule.value = await fetchWithCookies("/api/schedule");
         } catch (err) {
             error.value = (err as Error).message || "An error occurred while fetching the schedule.";
         } finally {

@@ -10,8 +10,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "db:generate": "bunx drizzle-kit generate",
-    "db:migrate": "bunx drizzle-kit migrate",
-    "db:studio": "bunx drizzle-kit studio"
+    "db:migrate": "bunx drizzle-kit migrate"
   },
   "dependencies": {
     "@internationalized/date": "^3.12.0",
