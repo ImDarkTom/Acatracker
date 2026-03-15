@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AssessmentWithDetails } from '~~/lib/db/queries/assessments';
 import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
 import { formatRelativeTime, timeIsPast } from '~~/shared/utils/time';
 
@@ -13,7 +12,7 @@ const assessmentBeingUpdated = ref(false);
 const tasksBeingUpdated = ref<number[]>([]);
 
 
-async function toggleTask(task: AssessmentWithDetails['tasks'][number]) {
+async function toggleTask(task: AssessmentWithTasks['tasks'][number]) {
     task.isCompleted = !task.isCompleted;
 
     tasksBeingUpdated.value.push(task.id);

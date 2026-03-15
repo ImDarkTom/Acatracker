@@ -1,21 +1,9 @@
-import { getAssessmentWithTasks } from "~~/lib/db/queries/assessments";
+import { AssessmentsService } from "~~/server/services";
 
 export default defineAuthenticatedEventHandler(async (event) => {
     const slug = getRouterParam(event, "slug");
-    if (!slug) {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Assessment slug is required."
-        });
-    }
+    if (!slug) throw createError({ statusCode: 400, statusMessage: "Assessment slug is required." });
 
-    const assessment = await getAssessmentWithTasks(slug, event.context.user.id);
-    if (!assessment) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "Assessment not found.",
-        });
-    }
-
+    const assessment = await AssessmentsService.getOneAssessment(slug, event.context.user.id);
     return assessment;
 });

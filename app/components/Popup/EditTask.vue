@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { InsertTask } from '~~/lib/db/schema';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
-import type { AssessmentWithDetails } from '~~/lib/db/queries/assessments';
 import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
 
 const scheduleStore = useScheduleStore();
@@ -9,7 +8,7 @@ const scheduleStore = useScheduleStore();
 // TODO: replace task with just an id since we cal select from the assessment prop
 const props = defineProps<{
     assessment: AssessmentWithTasks,
-    task: AssessmentWithDetails['tasks'][number],
+    task: AssessmentWithTasks['tasks'][number],
 }>();
 
 const initialValues: InsertTask = {

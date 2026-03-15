@@ -9,7 +9,7 @@ useHead({
 
 const { data, error, pending } = useFetch('/api/token', { lazy: true });
 
-const calendarIcsUrl = computed(() => `${useRequestURL().origin}/api/events/${data.value?.calendarToken}`);
+const calendarIcsUrl = computed(() => `${useRequestURL().origin}/api/events/${data.value}`);
 
 const calendarWebcalUrl = computed(() => calendarIcsUrl.value.replace(/^https?:\/\//, 'webcal://'));
 

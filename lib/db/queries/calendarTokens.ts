@@ -7,9 +7,3 @@ export async function getCalendarTokenFromUser(userId: number) {
         where: eq(calendarToken.userId, userId),
     });
 }
-
-export async function getUserFromCalendarToken(token: string) {
-    return db.query.calendarToken.findFirst({
-        where: eq(calendarToken.calendarToken, token),
-    });
-}
