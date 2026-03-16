@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { InsertTask } from '~~/lib/db/schema';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
-import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
 
 const scheduleStore = useScheduleStore();
 

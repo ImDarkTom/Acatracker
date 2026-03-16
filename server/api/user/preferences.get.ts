@@ -1,15 +1,7 @@
-import { getUserPreferences } from "~~/lib/db/queries/userPreferences";
+import { UserService } from "~~/server/services";
 
 export default defineAuthenticatedEventHandler(async (event) => {
-    const user = event.context.user;
-    
-    const userPreferences = await getUserPreferences(user.id);
-    if (!userPreferences) {
-        throw createError({
-            status: 400,
-            statusMessage: "User preferences not found.",
-        });
-    }
+    const userPreferences = await UserService.getUserPreferences(event.context.user.id);
 
     return userPreferences;
 });

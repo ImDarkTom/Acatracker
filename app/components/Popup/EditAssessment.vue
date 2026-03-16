@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { InsertAssessment } from '~~/lib/db/schema';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
-import type { AssessmentWithoutId } from '~~/lib/db/queries/modules';
 
 const props = defineProps<{
-    assessment: AssessmentWithoutId,
+    assessment: AssessmentWithTasks,
 }>();
 
 const scheduleStore = useScheduleStore();

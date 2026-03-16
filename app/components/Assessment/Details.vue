@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
 import { formatRelativeTime, timeIsPast } from '~~/shared/utils/time';
 
 const props = defineProps<{

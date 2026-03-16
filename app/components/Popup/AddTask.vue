@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
 import { InsertTask } from '~~/lib/db/schema';
 
 const scheduleStore = useScheduleStore();
