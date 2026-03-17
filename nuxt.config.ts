@@ -31,6 +31,7 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     'nuxt-csurf',
     'reka-ui/nuxt',
+    '@vercel/analytics'
   ],
 
   icon: {
