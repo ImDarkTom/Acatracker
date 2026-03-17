@@ -59,7 +59,9 @@ const onSubmit = submitHandler(scheduleStore.task.add, setErrors);
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'datetime-local'
+                        type: 'datetime-local',
+                        max: unixTimestampToISO(assessment.dueAt),
+                        min: assessment.releasedAt ? unixTimestampToISO(assessment.releasedAt) : undefined,
                     },
                     {
                         name: 'isCompleted',

@@ -122,7 +122,9 @@ const tasksGroupedByDate = computed(() => {
         </div>
 
         <div class="flex flex-col">
-            <div v-if="assessment.releasedAt" class="flex flex-row gap-2 items-center select-none">
+            <div 
+                v-if="assessment.releasedAt" 
+                class="flex flex-row gap-2 items-center select-none">
                 <div class="flex flex-col h-full min-w-16 items-center">
                     <div class="w-px h-full"></div>
                     <span class="select-none tracking-tight text-text-primary font-semibold">
@@ -144,7 +146,8 @@ const tasksGroupedByDate = computed(() => {
                             </span>
                         </div>
 
-                        <span class="text-text-primary leading-none text-lg font-semibold">
+                        <span class="text-text-primary leading-none text-lg font-semibold flex items-center gap-2">
+                            <Icon name="lucide:book-open" class="text-text-secondary" />
                             Released
                         </span>
                     </div>
@@ -182,6 +185,7 @@ const tasksGroupedByDate = computed(() => {
                                 hover:bg-bg-surface-hover hover:ring-8">
                                 <input 
                                     type="checkbox"
+                                    class="accent-brand-base"
                                     :checked="!!task.isCompleted"
                                     :disabled="tasksBeingUpdated.includes(task.id)" 
                                     @change="toggleTask(task)">
@@ -228,7 +232,8 @@ const tasksGroupedByDate = computed(() => {
 
                 <div class="card bg-bg-surface rounded-md p-4 w-full">
                     <div class="flex flex-col gap-2">
-                        <div class="text-text-secondary text-sm">
+                        <div 
+                            class="text-text-secondary text-sm">
                             <span>
                                 {{ new Date(assessment.dueAt).toLocaleTimeString([], {
                                     hour: '2-digit', minute: '2-digit' 
@@ -239,7 +244,8 @@ const tasksGroupedByDate = computed(() => {
                             </span>
                         </div>
 
-                        <span class="text-text-primary leading-none text-lg font-semibold">
+                        <span class="text-text-primary leading-none text-lg font-semibold flex items-center gap-2">
+                            <Icon name="lucide:clock-alert" class="text-text-secondary" />
                             Due
                         </span>
                     </div>

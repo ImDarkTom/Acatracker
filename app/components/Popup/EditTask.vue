@@ -73,8 +73,10 @@ const onSubmit = submitHandler(async (values) => scheduleStore.task.update(value
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'date',
-                        value: unixTimestampToISO(initialValues.dueAt)
+                        type: 'datetime-local',
+                        value: unixTimestampToISO(initialValues.dueAt),
+                        max: unixTimestampToISO(assessment.dueAt),
+                        min: assessment.releasedAt ? unixTimestampToISO(assessment.releasedAt) : undefined,
                     },
                     {
                         name: 'isCompleted',
