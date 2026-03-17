@@ -62,27 +62,29 @@ watch(isOpen, (justOpened) => {
                         as: 'input',
                         type: 'text',
                         placeholder: assessment.name,
+                        required: true,
                     },
                     {
                         name: 'description',
                         label: 'Description',
                         as: 'textarea',
                         type: 'text',
-                        placeholder: assessment.description ?? '(Optional)'
+                        placeholder: assessment.description ?? 'e.g. Sections are divided into...',
                     },
                     {
                         name: 'releasedAt',
-                        label: 'Release Date (optional)',
+                        label: 'Release Date',
                         as: 'input',
-                        type: 'date',
+                        type: 'datetime-local',
                         value: initialValues.releasedAt ? unixTimestampToISO(initialValues.releasedAt) : undefined,
                     },
                     {
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'date',
+                        type: 'datetime-local',
                         value: unixTimestampToISO(initialValues.dueAt),
+                        required: true,
                     },
                 ]" />
         </template>

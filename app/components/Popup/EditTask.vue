@@ -61,13 +61,15 @@ const onSubmit = submitHandler(async (values) => scheduleStore.task.update(value
                         as: 'input',
                         type: 'text',
                         placeholder: task.name,
+                        required: true,
                     },
                     {
                         name: 'description',
                         label: 'Description',
                         as: 'textarea',
                         type: 'text',
-                        placeholder: task.description ?? '(Optional)'
+                        placeholder: task.description ?? 'e.g. This needs to include...',
+                        required: true,
                     },
                     {
                         name: 'dueAt',
@@ -77,6 +79,7 @@ const onSubmit = submitHandler(async (values) => scheduleStore.task.update(value
                         value: unixTimestampToISO(initialValues.dueAt),
                         max: unixTimestampToISO(assessment.dueAt),
                         min: assessment.releasedAt ? unixTimestampToISO(assessment.releasedAt) : undefined,
+                        required: true,
                     },
                     {
                         name: 'isCompleted',

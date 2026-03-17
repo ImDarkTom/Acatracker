@@ -26,6 +26,8 @@ watch(isOpen, (justOpened) => {
 });
 
 const onSubmit = submitHandler(async (values) => scheduleStore.module.edit(values, props.module.id), setErrors)
+
+// todo: maybe instead of showing year and semester in form, just have a button in the dropdown to move to another year/semester
 </script>
 
 <template>
@@ -54,7 +56,8 @@ const onSubmit = submitHandler(async (values) => scheduleStore.module.edit(value
                         label: 'Name',
                         as: 'input',
                         type: 'text',
-                        placeholder: module.name
+                        placeholder: module.name,
+                        required: true,
                     },
                     {
                         name: 'code',
@@ -62,6 +65,7 @@ const onSubmit = submitHandler(async (values) => scheduleStore.module.edit(value
                         as: 'input',
                         type: 'text',
                         placeholder: module.code,
+                        required: true,
                     },
                     {
                         name: 'year',
@@ -69,6 +73,7 @@ const onSubmit = submitHandler(async (values) => scheduleStore.module.edit(value
                         as: 'input',
                         type: 'number',
                         placeholder: module.year,
+                        required: true,
                     },
                     {
                         name: 'semester',
@@ -76,6 +81,7 @@ const onSubmit = submitHandler(async (values) => scheduleStore.module.edit(value
                         as: 'input',
                         type: 'number',
                         placeholder: module.semester,
+                        required: true,
                     }
                 ]" />
         </template>

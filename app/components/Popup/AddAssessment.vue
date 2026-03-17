@@ -56,25 +56,27 @@ watch(isOpen, (newValue) => {
                         as: 'input',
                         type: 'text',
                         placeholder: 'e.g. Important Exam',
+                        required: true,
                     },
                     {
                         name: 'description',
                         label: 'Description',
                         as: 'textarea',
                         type: 'text',
-                        placeholder: '(Optional)'
+                        placeholder: 'e.g. Sections are divided into...'
                     },
                     {
                         name: 'releasedAt',
-                        label: 'Release Date (optional)',
+                        label: 'Release Date',
                         as: 'input',
-                        type: 'date'
+                        type: 'datetime-local'
                     },
                     {
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'date'
+                        type: 'datetime-local',
+                        required: true,
                     },
                 ]" />
         </template>

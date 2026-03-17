@@ -47,13 +47,14 @@ const onSubmit = submitHandler(scheduleStore.task.add, setErrors);
                         as: 'input',
                         type: 'text',
                         placeholder: 'e.g. Submit First Draft',
+                        required: true,
                     },
                     {
                         name: 'description',
                         label: 'Description',
                         as: 'textarea',
                         type: 'text',
-                        placeholder: '(Optional)'
+                        placeholder: 'e.g. This needs to include...'
                     },
                     {
                         name: 'dueAt',
@@ -62,12 +63,13 @@ const onSubmit = submitHandler(scheduleStore.task.add, setErrors);
                         type: 'datetime-local',
                         max: unixTimestampToISO(assessment.dueAt),
                         min: assessment.releasedAt ? unixTimestampToISO(assessment.releasedAt) : undefined,
+                        required: true,
                     },
                     {
                         name: 'isCompleted',
                         label: 'Completed?',
                         as: 'input',
-                        type: 'checkbox'
+                        type: 'checkbox',
                     },
                 ]" />
         </template>
