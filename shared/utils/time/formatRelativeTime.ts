@@ -23,3 +23,26 @@ export function formatRelativeTime(timestamp: number, locale: string = 'en'): st
 
     return 'just now';
 }
+
+export function formatDueDate(timestamp: number, finished: boolean) {
+    const now = Date.now();
+    const diff = timestamp - now;
+    const abs = Math.abs(diff);
+    const past = diff < 0;
+
+    const date = new Date(timestamp);
+    const time = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+
+    const pastStatusText = finished ? 'Completed' : 'Overdue';
+
+    if (abs < 60 * 60 * 1000) {
+        const mins = Math.round(abs / 60000);
+        return past ? `${pastStatusText} ${mins}m ago` : `Due in ${mins}m`;
+    } else if (abs < 24 * 60 * 60 * 1000) {
+        const hrs = Math.round(abs / 3600000);
+        return past ? `${pastStatusText} ${hrs}h ago · ${time}` : `Due in ${hrs}h · ${time}`;
+    } else {
+        const day = date.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+        return `${past ? `${pastStatusText} · ` : 'Due '}${day} at ${time}`;
+    }
+}

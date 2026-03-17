@@ -7,7 +7,7 @@ type BaseField = {
 type FieldOptions = 
     { 
         as: 'input', 
-        type: 'text' | 'number' | 'date',
+        type: 'text' | 'number' | 'date' | 'datetime-local',
     } | {
         as: 'input',
         type: 'checkbox',

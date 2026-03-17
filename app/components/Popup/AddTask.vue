@@ -59,7 +59,7 @@ const onSubmit = submitHandler(scheduleStore.task.add, setErrors);
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'date'
+                        type: 'datetime-local'
                     },
                     {
                         name: 'isCompleted',

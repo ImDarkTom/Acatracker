@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatRelativeTime, timeIsPast } from '~~/shared/utils/time';
+import { timeIsPast, formatRelativeTime } from '~~/shared/utils/time';
 
 const props = defineProps<{
     assessment: AssessmentWithTasks,
@@ -55,11 +55,23 @@ function promptDeleteTask(task: AssessmentWithTasks['tasks'][number]) {
 
     scheduleStore.task.delete(task.id);
 }
+
+function getDateAsDDMM(date: string | number) {
+    const dateObj = new Date(date);
+
+    return String(dateObj.getDate()).padStart(2, '0') + "/" + String(dateObj.getMonth() + 1).padStart(2, '0')
+}
+
+const tasksGroupedByDate = computed(() => {
+    const sortedTasks = props.assessment.tasks.sort((a, b) => a.dueAt - b.dueAt);
+
+    return Object.entries(Object.groupBy(sortedTasks, (i) => new Date(i.dueAt).toISOString().split('T')[0]!))
+        .map(([date, tasks]) => [getDateAsDDMM(date), tasks ?? []] as const);
+});
 </script>
 
 <template>
-    <div 
-        class="grow flex flex-col gap-2">
+    <div class="grow flex flex-col gap-2">
         <div class="flex flex-row gap-2">
             <AppBackBtn />
             <PopupEditAssessment :assessment>
@@ -69,13 +81,19 @@ function promptDeleteTask(task: AssessmentWithTasks['tasks'][number]) {
                 </ButtonSecondary>
             </PopupEditAssessment>
         </div>
-        
-        <span class="text-3xl">{{ assessment.name }}</span>
-        <p class="text-text-secondary">{{ assessment.description ?? '(No description)' }}</p>
+
+        <span class="text-3xl font-semibold">{{ assessment.name }}</span>
+        <p 
+            class="text-text-secondary"
+            :class="{
+                'text-text-muted!': !assessment.description,
+            }">
+            {{ assessment.description ?? '(No description)' }}
+        </p>
 
         <div class="flex flex-row gap-2">
             <div 
-                class="p-2 rounded-md ring-1 ring-inset flex flex-row gap-2 items-center select-none"
+                class="p-2 rounded-md ring-1 ring-inset flex flex-row gap-2 items-center select-none" 
                 :class="{
                     'ring-info-border bg-info-bg text-info-text': assessmentState === 'unreleased',
                     'ring-warning-border bg-warning-bg text-warning-text': assessmentState === 'due',
@@ -90,87 +108,143 @@ function promptDeleteTask(task: AssessmentWithTasks['tasks'][number]) {
                     {{ assessmentState }}
                 </span>
             </div>
-            <ButtonSecondary
-                @click="toggleCompleted"
+            <ButtonSecondary 
+                @click="toggleCompleted" 
                 :disabled="assessmentBeingUpdated">
                 Mark as complete
             </ButtonSecondary>
-        </div>
-
-        <div v-if="assessment.releasedAt" class="text-lg card bg-bg-surface rounded-sm">
-            Release: {{ new Date(assessment.releasedAt).toLocaleDateString() }}
-        </div>
-
-        <div class="ml-8 mr-4 flex flex-col gap-2">
-            <div 
-                v-for="task in assessment.tasks"
-                class="card bg-bg-surface rounded-sm flex flex-col gap-2">
-                <div class="flex flex-row items-center justify-between">
-                    <label class="w-full flex flex-row gap-2">
-                        <input 
-                            type="checkbox"
-                            :checked="!!task.isCompleted"
-                            :disabled="tasksBeingUpdated.includes(task.id)"
-                            @change="toggleTask(task)">
-                        <div 
-                            class="w-full flex flex-row select-none">
-                            <span 
-                                class="text-text-primary"
-                                :class="{ 'line-through': !!task.isCompleted }">
-                                {{ task.name }}
-                            </span>
-                            <div class="ml-2">
-                                <span>
-                                    | {{ new Date(task.dueAt).toLocaleDateString() }} - 
-                                </span>
-                                <span 
-                                    class="text-text-secondary"
-                                    :class="{
-                                        'text-warning-base': timeIsPast(task.dueAt)
-                                    }">
-                                    {{ formatRelativeTime(task.dueAt) }}
-                                </span>
-                            </div>
-                        </div>
-                    </label>
-                    <DropdownMenuRoot>
-                        <DropdownMenuTrigger
-                            class="rounded-sm hover:bg-bg-surface-hover data-[state='open']:bg-bg-surface-active cursor-pointer p-2 size-8 flex items-center justify-center">
-                            <Icon name="lucide:ellipsis-vertical" size="24" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuContent
-                                class="dropdown-content">
-                                <PopupEditTask 
-                                    :assessment
-                                    :task>
-                                    <CustomDropdownItem 
-                                        value="Edit" 
-                                        icon="lucide:pencil"
-                                        @select="e => e.preventDefault()" />
-                                </PopupEditTask>
-                                <CustomDropdownItem 
-                                    value="Delete" 
-                                    icon="lucide:trash-2"
-                                    @select="promptDeleteTask(task)" />
-                            </DropdownMenuContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuRoot>
-                </div>
-                <p 
-                    v-if="task.description"
-                    class="text-sm text-text-secondary">{{ task.description }}</p>
-            </div>
-            <PopupAddTask :assessment >
-                <ButtonPrimary class="w-full">
+            <PopupAddTask :assessment>
+                <ButtonPrimary>
                     <Icon name="lucide:circle-check-big" />
                     Add Task
                 </ButtonPrimary>
             </PopupAddTask>
         </div>
 
-        <div class="text-lg card bg-bg-surface rounded-sm">
-            Due: {{ new Date(assessment.dueAt).toLocaleDateString() }}
+        <div class="flex flex-col">
+            <div v-if="assessment.releasedAt" class="flex flex-row gap-2 items-center select-none">
+                <div class="flex flex-col h-full min-w-16 items-center">
+                    <div class="w-px h-full"></div>
+                    <span class="select-none tracking-tight text-text-primary font-semibold">
+                        {{ getDateAsDDMM(assessment.releasedAt) }}
+                    </span>
+                    <div class="w-px h-full border-txt-muted border-l border-dotted"></div>
+                </div>
+
+                <div class="card bg-bg-surface rounded-md p-4 w-full">
+                    <div class="flex flex-col gap-2">
+                        <div class="text-text-secondary text-sm">
+                            <span>
+                                {{ new Date(assessment.releasedAt).toLocaleTimeString([], {
+                                    hour: '2-digit', minute:
+                                '2-digit' }) }}
+                            </span>
+                            <span class="capitalize">
+                                / {{ formatRelativeTime(assessment.releasedAt) }}
+                            </span>
+                        </div>
+
+                        <span class="text-text-primary leading-none text-lg font-semibold">
+                            Released
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div v-for="[date, tasks] in tasksGroupedByDate" class="flex flex-row gap-2 items-center">
+
+                <div class="flex flex-col h-full min-w-16 items-center">
+                    <div class="w-px h-full border-txt-muted border-l border-dotted"></div>
+                    <span class="select-none tracking-tight text-text-primary">{{ date }}</span>
+                    <div class="w-px h-full border-txt-muted border-l border-dotted"></div>
+                </div>
+
+                <ul class="flex flex-col gap-2 w-full my-2">
+                    <li v-for="task in tasks"
+                        class="card bg-bg-surface rounded-md flex flex-row justify-between gap-2 p-4" :class="{
+                            'brightness-75': !!task.isCompleted
+                        }">
+                        <div class="flex flex-col gap-2">
+                            <div class="text-text-secondary text-sm" :class="{
+                                'text-warning-base': timeIsPast(task.dueAt)
+                            }">
+                                <span>
+                                    {{ new Date(task.dueAt).toLocaleTimeString([], {
+                                        hour: '2-digit', minute: '2-digit'
+                                    }) }}
+                                </span>
+                                <span class="capitalize">
+                                    / {{ formatRelativeTime(task.dueAt) }}
+                                </span>
+                            </div>
+                            <label 
+                                class="w-full flex flex-row gap-2 cursor-pointer rounded-xl ring-0 ring-bg-surface-hover transition-all duration-75
+                                hover:bg-bg-surface-hover hover:ring-8">
+                                <input 
+                                    type="checkbox"
+                                    :checked="!!task.isCompleted"
+                                    :disabled="tasksBeingUpdated.includes(task.id)" 
+                                    @change="toggleTask(task)">
+                                <span 
+                                    class="text-text-primary leading-none text-lg"
+                                    :class="{ 'line-through text-text-muted!': !!task.isCompleted }">
+                                    {{ task.name }}
+                                </span>
+                            </label>
+
+                            <p v-if="task.description" class="ml-5.5 mt-1 text-sm text-text-secondary">
+                                {{ task.description }}
+                            </p>
+                        </div>
+
+                        <DropdownMenuRoot>
+                            <DropdownMenuTrigger
+                                class="rounded-sm hover:bg-bg-surface-hover data-[state='open']:bg-bg-surface-active cursor-pointer p-2 size-8 flex items-center justify-center">
+                                <Icon name="lucide:ellipsis-vertical" size="24" />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuContent class="dropdown-content">
+                                    <PopupEditTask :assessment :task>
+                                        <CustomDropdownItem value="Edit" icon="lucide:pencil"
+                                            @select="e => e.preventDefault()" />
+                                    </PopupEditTask>
+                                    <CustomDropdownItem value="Delete" icon="lucide:trash-2"
+                                        @select="promptDeleteTask(task)" />
+                                </DropdownMenuContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuRoot>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex flex-row gap-2 items-center select-none">
+                <div class="flex flex-col h-full min-w-16 items-center">
+                    <div class="w-px h-full border-txt-muted border-l border-dotted"></div>
+                    <span class="select-none tracking-tight text-text-primary font-semibold">
+                        {{ getDateAsDDMM(assessment.dueAt) }}
+                    </span>
+                    <div class="w-px h-full"></div>
+                </div>
+
+                <div class="card bg-bg-surface rounded-md p-4 w-full">
+                    <div class="flex flex-col gap-2">
+                        <div class="text-text-secondary text-sm">
+                            <span>
+                                {{ new Date(assessment.dueAt).toLocaleTimeString([], {
+                                    hour: '2-digit', minute: '2-digit' 
+                                }) }}
+                            </span>
+                            <span class="capitalize">
+                                / {{ formatRelativeTime(assessment.dueAt) }}
+                            </span>
+                        </div>
+
+                        <span class="text-text-primary leading-none text-lg font-semibold">
+                            Due
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
