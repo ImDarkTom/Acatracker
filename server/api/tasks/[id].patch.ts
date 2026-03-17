@@ -1,20 +1,11 @@
-import { updateTaskById } from "~~/lib/db/queries/tasks";
 import { InsertTask } from "~~/lib/db/schema";
-import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
+import { TasksService } from "~~/server/services";
 import { parseIdParam, validateBody } from "~~/server/utils/validation";
 
-export default defineAuthenticatedEventHander(async (event) => {
-    const id = parseIdParam(event);
+export default defineAuthenticatedEventHandler(async (event) => {
+    const taskId = parseIdParam(event);
     const bodyData = await validateBody(event, InsertTask.partial());
 
-    const updated = await updateTaskById(id, bodyData, event.context.user.id);
-
-    if (!updated) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "Task not found."
-        });
-    }
-
+    await TasksService.updateTaskById(taskId, bodyData, event.context.user.id);
     setResponseStatus(event, 204);
 });

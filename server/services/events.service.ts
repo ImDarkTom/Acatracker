@@ -1,13 +1,12 @@
 import { ICalEventData, ICalEventStatus } from "ical-generator";
-import { findTasks } from "~~/lib/db/queries/tasks";
-import { AssessmentsService, ModulesService } from ".";
+import { AssessmentsService, ModulesService, TasksService } from ".";
 
 export async function getUserEvents(userId: number, host: string) {
     let events: ICalEventData[] = [];
     
     const assessments = await AssessmentsService.getAllAssessmentsForUser(userId);
     const modules = await ModulesService.findModules(userId);
-    const tasks = await findTasks(userId);
+    const tasks = await TasksService.findTasks(userId);
 
     const getModule = (moduleId: number) => modules.find((m) => m.id === moduleId);
 

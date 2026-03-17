@@ -1,6 +1,7 @@
-import { findTasks } from "~~/lib/db/queries/tasks";
+import { TasksService } from "~~/server/services";
 import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
 
 export default defineAuthenticatedEventHander(async (event) => {
-    return findTasks(event.context.user.id);
+    const tasks = await TasksService.findTasks(event.context.user.id);
+    return tasks;
 });
