@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { InsertAssessment } from '~~/lib/db/schema';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
-import type { AssessmentWithoutId } from '~~/lib/db/queries/modules';
 
 const props = defineProps<{
-    assessment: AssessmentWithoutId,
+    assessment: AssessmentWithTasks,
 }>();
 
 const scheduleStore = useScheduleStore();
@@ -63,27 +62,29 @@ watch(isOpen, (justOpened) => {
                         as: 'input',
                         type: 'text',
                         placeholder: assessment.name,
+                        required: true,
                     },
                     {
                         name: 'description',
                         label: 'Description',
                         as: 'textarea',
                         type: 'text',
-                        placeholder: assessment.description ?? '(Optional)'
+                        placeholder: assessment.description ?? 'e.g. Sections are divided into...',
                     },
                     {
                         name: 'releasedAt',
-                        label: 'Release Date (optional)',
+                        label: 'Release Date',
                         as: 'input',
-                        type: 'date',
+                        type: 'datetime-local',
                         value: initialValues.releasedAt ? unixTimestampToISO(initialValues.releasedAt) : undefined,
                     },
                     {
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'date',
+                        type: 'datetime-local',
                         value: unixTimestampToISO(initialValues.dueAt),
+                        required: true,
                     },
                 ]" />
         </template>

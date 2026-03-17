@@ -1,6 +1,5 @@
-import { findModules } from "~~/lib/db/queries/modules";
-import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
+import { ModulesService } from "~~/server/services";
 
-export default defineAuthenticatedEventHander(async (event) => {
-    return findModules(event.context.user.id);
+export default defineAuthenticatedEventHandler(async (event) => {
+    return await ModulesService.findModules(event.context.user.id)
 });

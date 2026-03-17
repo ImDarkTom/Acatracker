@@ -11,7 +11,6 @@ Relevant files:
 - `lib/db/`: Contains all DB-related code.
 - `lib/db/migrations`: Contains migrations that need to be applied after creating an empty DB by running `bun drizzle-kit migrate`.
 - `lib/db/schema`: Contains user-created DB schemas, except for `lib/db/schema/auth.ts` which is generated automatically by Better Auth and should not be modified. For adding additional fields to users, see [here](https://better-auth-ui.com/advanced/additional-fields).
-- `lib/db/queries`: Contains query functions for parts of the app backend. Do not write queries outside this folder, instead create a query inside here and use it elsewhere.
 - `lib/db/index.ts`: Contains the Drizzle instance & settings.
 
 

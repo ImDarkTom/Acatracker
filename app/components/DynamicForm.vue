@@ -7,7 +7,7 @@ type BaseField = {
 type FieldOptions = 
     { 
         as: 'input', 
-        type: 'text' | 'number' | 'date',
+        type: 'text' | 'number' | 'date' | 'datetime-local',
     } | {
         as: 'input',
         type: 'checkbox',
@@ -29,9 +29,13 @@ defineProps<{
 
 <template>
     <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
-        <div v-for="{ label, name, as: asType, type, ...attrs } in fields">
+        <div v-for="{ label, name, as: asType, type, required, ...attrs } in fields">
             <label v-if="type !== 'checkbox'">
-                <span class="font-medium">
+                <span 
+                    class="font-medium"
+                    :class="{
+                        'after:content-[\'*\'] after:text-brand-focus': required,
+                    }">
                     {{ label }}
                 </span>
                 <div class="flex flex-row gap-2">
@@ -40,6 +44,7 @@ defineProps<{
                         :name
                         :type
                         :disabled="isLoading"
+                        :required
                         :error="errors[name]"
                         v-bind="attrs"
                         class="w-full outline-none ring-1 focus:ring-2 ring-highlight focus:ring-brand-focus p-2 rounded-md"

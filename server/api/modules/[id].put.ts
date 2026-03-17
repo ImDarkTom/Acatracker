@@ -1,20 +1,11 @@
-import { updateModuleById } from "~~/lib/db/queries/modules";
 import { InsertModule } from "~~/lib/db/schema";
-import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
+import { ModulesService } from "~~/server/services";
 import { parseIdParam, validateBody } from "~~/server/utils/validation";
 
-export default defineAuthenticatedEventHander(async (event) => {
-    const id = parseIdParam(event);
+export default defineAuthenticatedEventHandler(async (event) => {
+    const moduleId = parseIdParam(event);
     const bodyData = await validateBody(event, InsertModule);
 
-    const updated = await updateModuleById(id, bodyData, event.context.user.id);
-
-    if (!updated) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "Module not found."
-        });
-    }
-
+    await ModulesService.updateModuleById(moduleId, bodyData, event.context.user.id);
     setResponseStatus(event, 204);
 });

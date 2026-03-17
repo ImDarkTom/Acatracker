@@ -63,7 +63,8 @@ watch(isOpen, (newValue) => {
                             label: 'Name',
                             as: 'input',
                             type: 'text',
-                            placeholder: 'e.g. Object-Oriented Programming'
+                            placeholder: 'e.g. Object-Oriented Programming',
+                            required: true,
                         },
                         {
                             name: 'code',
@@ -71,6 +72,7 @@ watch(isOpen, (newValue) => {
                             as: 'input',
                             type: 'text',
                             placeholder: 'e.g. OOP1234',
+                            required: true,
                         },
                     ]" />
             </template>

@@ -1,6 +1,18 @@
-import db from "..";
 import { eq } from "drizzle-orm";
-import { userPreferences, type UserPreferencesSchema } from "../schema";
+import db from "~~/lib/db";
+import { calendarToken, userPreferences, UserPreferencesSchema } from "~~/lib/db/schema";
+
+export async function getUserByCalendarToken(token: string) {
+    return await db.query.calendarToken.findFirst({
+        where: eq(calendarToken.calendarToken, token),
+    });
+}
+
+export async function getCalendarTokenForUser(userId: number) {
+    return await db.query.calendarToken.findFirst({
+        where: eq(calendarToken.userId, userId),
+    });
+}
 
 export async function getUserPreferences(userId: number) {
     const returned = await db.query.userPreferences.findFirst({
@@ -17,8 +29,6 @@ export async function getUserPreferences(userId: number) {
         weekStartsOn: returned.weekStartsOn,
     }
 }
-
-export type UserPreferencesResponse = Awaited<ReturnType<typeof getUserPreferences>>;
 
 export async function updateUserPreferences(userId: number, newPreferences: Partial<UserPreferencesSchema>) {
     const [ updated ] = await db.update(userPreferences)

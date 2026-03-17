@@ -1,17 +1,6 @@
-import { getModuleWithDetailedAssessments } from "~~/lib/db/queries/modules";
+import { ModulesService } from "../services";
 
 export default defineAuthenticatedEventHandler(async (event) => {
-    const userId = event.context.user.id;
-
-    const results = await getModuleWithDetailedAssessments(userId);
-
-    if (!results) {
-        // No results means we failed to get user preferences.
-        throw createError({
-            statusCode: 500,
-            message: 'Internal server error.',
-        });
-    }
-
-    return results;
+    const modules = ModulesService.getUserModulesWithInfo(event.context.user.id);
+    return modules;
 });

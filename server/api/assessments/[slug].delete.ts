@@ -1,23 +1,9 @@
-import { deleteAssessmentBySlug } from "~~/lib/db/queries/assessments";
-import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
+import { AssessmentsService } from "~~/server/services";
 
-export default defineAuthenticatedEventHander(async (event) => {
+export default defineAuthenticatedEventHandler(async (event) => {
    const slug = getRouterParam(event, "slug");
-    if (!slug) {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Assessment slug is required."
-        });
-    }
+    if (!slug) throw createError({ statusCode: 400, statusMessage: "Assessment slug is required." });
 
-    const deleted = await deleteAssessmentBySlug(slug, event.context.user.id);
-
-    if (!deleted) {
-        return sendError(event, createError({
-            statusCode: 404,
-            statusMessage: "Assessment not found."
-        }));
-    }
-
-    setResponseStatus(event, 204);
+    await AssessmentsService.deleteAssessment(slug, event.context.user.id);
+    setResponseStatus(event, 204); // No Content
 });

@@ -1,6 +1,6 @@
-import db from "..";
 import { and, eq } from "drizzle-orm";
-import { InsertTask, task, type TaskSchema } from "../schema";
+import db from "~~/lib/db";
+import { InsertTask, task, TaskSchema } from "~~/lib/db/schema";
 
 export async function findTasks(userId: number): Promise<TaskSchema[]> {
     return db.query.task.findMany({

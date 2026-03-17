@@ -1,6 +1,5 @@
 import { fromDate, getLocalTimeZone, isSameDay } from "@internationalized/date";
 import type { DateValue } from "reka-ui";
-import type { ScheduleResponse } from "~~/lib/db/queries/modules";
 import type { InsertAssessment, InsertTask } from "~~/lib/db/schema";
 
 export type EventsForDate = {
@@ -56,7 +55,7 @@ export const useScheduleStore = defineStore('useScheduleStore', () => {
     const { $csrfFetch } = useNuxtApp();
     const fetchWithCookies = useRequestFetch();
 
-    const schedule = ref<Awaited<ScheduleResponse>>(null);
+    const schedule = ref<Awaited<ApiResponse<'/api/schedule', 'get'>> | null>(null);
     const pending = ref(false);
     const error = ref<string | null>(null);
 

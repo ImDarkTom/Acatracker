@@ -1,16 +1,10 @@
-import { DrizzleError } from "drizzle-orm";
 import { InsertTask } from "~~/lib/db/schema";
-import defineAuthenticatedEventHander from "../../utils/defineAuthenticatedEventHandler";
-import { insertTask } from "../../../lib/db/queries/tasks";
 import { validateBody } from "~~/server/utils/validation";
+import { TasksService } from "~~/server/services";
 
-export default defineAuthenticatedEventHander(async (event) => {
+export default defineAuthenticatedEventHandler(async (event) => {
     const bodyData = await validateBody(event, InsertTask);
 
-    try {
-        return insertTask(bodyData, event.context.user.id);
-    } catch (e) {
-        const error = e as DrizzleError;
-        throw error;
-    }
+    await TasksService.insertTask(bodyData, event.context.user.id);
+    setResponseStatus(event, 204);
 });

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
 import { InsertTask } from '~~/lib/db/schema';
 
 const scheduleStore = useScheduleStore();
@@ -48,25 +47,29 @@ const onSubmit = submitHandler(scheduleStore.task.add, setErrors);
                         as: 'input',
                         type: 'text',
                         placeholder: 'e.g. Submit First Draft',
+                        required: true,
                     },
                     {
                         name: 'description',
                         label: 'Description',
                         as: 'textarea',
                         type: 'text',
-                        placeholder: '(Optional)'
+                        placeholder: 'e.g. This needs to include...'
                     },
                     {
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'date'
+                        type: 'datetime-local',
+                        max: unixTimestampToISO(assessment.dueAt),
+                        min: assessment.releasedAt ? unixTimestampToISO(assessment.releasedAt) : undefined,
+                        required: true,
                     },
                     {
                         name: 'isCompleted',
                         label: 'Completed?',
                         as: 'input',
-                        type: 'checkbox'
+                        type: 'checkbox',
                     },
                 ]" />
         </template>

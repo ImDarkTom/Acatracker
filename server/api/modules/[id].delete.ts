@@ -1,18 +1,9 @@
-import { deleteModuleById } from "~~/lib/db/queries/modules";
-import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
+import { ModulesService } from "~~/server/services";
 import { parseIdParam } from "~~/server/utils/validation";
 
-export default defineAuthenticatedEventHander(async (event) => {
-    const id = parseIdParam(event);
+export default defineAuthenticatedEventHandler(async (event) => {
+    const moduleId = parseIdParam(event);
 
-    const deleted = await deleteModuleById(id, event.context.user.id);
-
-    if (!deleted) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "Module not found."
-        });
-    }
-
+    await ModulesService.deleteModuleById(moduleId, event.context.user.id);
     setResponseStatus(event, 204);
 });

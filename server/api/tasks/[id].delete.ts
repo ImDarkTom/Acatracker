@@ -1,18 +1,9 @@
-import { deleteTaskById } from "~~/lib/db/queries/tasks";
-import defineAuthenticatedEventHander from "~~/server/utils/defineAuthenticatedEventHandler";
+import { TasksService } from "~~/server/services";
 import { parseIdParam } from "~~/server/utils/validation";
 
-export default defineAuthenticatedEventHander(async (event) => {
-    const id = parseIdParam(event);
+export default defineAuthenticatedEventHandler(async (event) => {
+    const taskId = parseIdParam(event);
 
-    const deleted = await deleteTaskById(id, event.context.user.id);
-
-    if (!deleted) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "Task not found."
-        });
-    }
-
+    await TasksService.deleteTaskById(taskId, event.context.user.id);
     setResponseStatus(event, 204);
 });

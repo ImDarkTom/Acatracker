@@ -21,7 +21,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <div class="card flex flex-row justify-between p-3">
+    <div class="card bg-bg-surface flex flex-row justify-between p-3">
         <div class="flex flex-col">
             <span class="text-sm flex flex-row gap-2">
                 <code class="ring-1 ring-inset text-xs p-1 rounded-sm h-min">

@@ -1,10 +1,9 @@
-import type { UserPreferencesResponse } from "~~/lib/db/queries/userPreferences";
 import type { InsertUserPreferences, UserPreferencesSchema } from "~~/lib/db/schema";
 
 export const useUserPreferencesStore = defineStore('useUserPreferencesStore', () => {
     const { $csrfFetch } = useNuxtApp();
 
-    const preferences = ref<UserPreferencesResponse | null>(null);
+    const preferences = ref<ApiResponse<'/api/user/preferences', 'get'> | null>(null);
     const pending = ref(false);
     const error = ref<Error | null>(null);
 

@@ -1,18 +1,9 @@
-import { updateUserPreferences } from "~~/lib/db/queries/userPreferences";
 import { InsertUserPreferences } from "~~/lib/db/schema";
+import { UserService } from "~~/server/services";
 
 export default defineAuthenticatedEventHandler(async (event) => {
-    const userId = event.context.user.id;
     const bodyData = await validateBody(event, InsertUserPreferences.partial());
 
-    const updated = await updateUserPreferences(userId, bodyData);
-
-    if (!updated) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "User preferences not found."
-        });
-    }
-
+    const updated = await UserService.updateUserPreferences(event.context.user.id, bodyData);
     return updated;
 });

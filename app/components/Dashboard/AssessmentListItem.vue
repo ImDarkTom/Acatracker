@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { ModuleWithAssessments } from '~~/lib/db/queries/modules';
-
 const props = defineProps<{
     module: ModuleWithAssessments,
 }>();

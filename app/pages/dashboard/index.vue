@@ -64,63 +64,69 @@ const localTimezone = getLocalTimeZone();
 
 <template>
     <div class="flex flex-col gap-2 w-full max-w-xl mx-auto overflow-auto">
-        <CollapsibleRoot  v-if="entries.completed.length > 0">
-            <CollapsibleTrigger 
-                class="group" 
-                :as-child="true">
-                <span class="text-text-secondary hover:text-text-primary group-data-[state=open]:text-text-primary
+        <CollapsibleRoot v-if="entries.completed.length > 0">
+            <CollapsibleTrigger :as-child="true">
+                <span class="group text-text-muted hover:text-text-secondary data-[state=open]:text-text-primary
                     text-lg font-bold inline-flex items-center gap-2 cursor-pointer">
                     <Icon 
                         name="lucide:chevron-right"
                         class="group-data-[state=open]:rotate-90 transition-discrete duration-150"
                         aria-label="Expand/Collapse" />
-                    <h2>Completed ({{ entries.completed.length }})</h2>
+                    <span class="inline-flex items-center gap-2">
+                        <Icon name="lucide:check" />
+                        <h2>Completed ({{ entries.completed.length }})</h2>
+                    </span>
                 </span>
             </CollapsibleTrigger>
             <CollapsibleContent>
-                <div 
-                    v-for="dateEntry in entries.completed"
-                    :key="dateEntry.date.toDate(localTimezone).toISOString()">
-                    <h2 class="capitalize text-lg font-semibold text-text-secondary">
-                        {{ formatRelativeTime(dateEntry.date.toDate(localTimezone).getTime()) }}
-                    </h2>
-                    
-                    <DashboardHomeDueDateSection
-                        v-if="dateEntry.events.dueAssessments"
-                        text="Due Assessments"
-                        :date-entry="dateEntry"
-                        type="dueAssessments">
-                        <template #default="{ event }">
-                            <DashboardHomeEventCard
-                                :module-code="event.module.code"
-                                :breadcrumbs="[ { label: event.module.name } ]"
-                                :title="event.assessment.name"
-                                :title-to="{ name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug } }"
-                                :date="dateEntry.date.toDate(localTimezone).toLocaleDateString()"
-                                v-model:is-completed="event.assessment.isCompleted"
-                                @update:is-completed="scheduleStore.assessment.toggleCompleted(event.assessment.slug, $event)" />
-                        </template>
-                    </DashboardHomeDueDateSection>
+                <div class="flex flex-row gap-5">
+                    <div class="ml-2 min-h-full w-px bg-text-muted"></div>
+                    <div class="w-full flex flex-col gap-2">
+                        <div 
+                            v-for="dateEntry in entries.completed"
+                            :key="dateEntry.date.toDate(localTimezone).toISOString()">
+                            <h2 class="capitalize text-lg font-semibold text-text-secondary">
+                                {{ formatRelativeTime(dateEntry.date.toDate(localTimezone).getTime()) }}
+                            </h2>
+                            
+                            <DashboardHomeDueDateSection
+                                v-if="dateEntry.events.dueAssessments"
+                                text="Due Assessments"
+                                :date-entry="dateEntry"
+                                type="dueAssessments">
+                                <template #default="{ event }">
+                                    <DashboardHomeEventCard
+                                        :module-code="event.module.code"
+                                        :breadcrumbs="[ { label: event.module.name } ]"
+                                        :title="event.assessment.name"
+                                        :title-to="{ name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug } }"
+                                        :date="dateEntry.date.toDate(localTimezone).toLocaleDateString()"
+                                        v-model:is-completed="event.assessment.isCompleted"
+                                        @update:is-completed="scheduleStore.assessment.toggleCompleted(event.assessment.slug, $event)" />
+                                </template>
+                            </DashboardHomeDueDateSection>
 
-                    <DashboardHomeDueDateSection
-                        v-if="dateEntry.events.dueTasks"
-                        text="Due Tasks"
-                        :date-entry="dateEntry"
-                        type="dueTasks">
-                        <template #default="{ event }">
-                            <DashboardHomeEventCard
-                                :module-code="event.module.code"
-                                :breadcrumbs="[
-                                    { label: event.module.name },
-                                    { label: event.assessment.name, to: { name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug } } },
-                                ]"
-                                :title="event.task.name"
-                                :title-to="{ name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug }, query: { task: event.task.id } }"
-                                :date="dateEntry.date.toDate(localTimezone).toLocaleDateString()"
-                                v-model:is-completed="event.task.isCompleted"
-                                @update:is-completed="scheduleStore.task.toggleCompleted(event.task.id, $event)" />
-                        </template>
-                    </DashboardHomeDueDateSection>
+                            <DashboardHomeDueDateSection
+                                v-if="dateEntry.events.dueTasks"
+                                text="Due Tasks"
+                                :date-entry="dateEntry"
+                                type="dueTasks">
+                                <template #default="{ event }">
+                                    <DashboardHomeEventCard
+                                        :module-code="event.module.code"
+                                        :breadcrumbs="[
+                                            { label: event.module.name },
+                                            { label: event.assessment.name, to: { name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug } } },
+                                        ]"
+                                        :title="event.task.name"
+                                        :title-to="{ name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug }, query: { task: event.task.id } }"
+                                        :date="dateEntry.date.toDate(localTimezone).toLocaleDateString()"
+                                        v-model:is-completed="event.task.isCompleted"
+                                        @update:is-completed="scheduleStore.task.toggleCompleted(event.task.id, $event)" />
+                                </template>
+                            </DashboardHomeDueDateSection>
+                        </div>
+                    </div>
                 </div>
             </CollapsibleContent>
         </CollapsibleRoot>
@@ -128,62 +134,68 @@ const localTimezone = getLocalTimeZone();
         <CollapsibleRoot 
             v-if="entries.overdue.length > 0" 
             :default-open="true">
-            <CollapsibleTrigger 
-                class="group" 
-                :as-child="true">
-                <span class="text-text-secondary hover:text-text-primary group-data-[state=open]:text-text-primary
+            <CollapsibleTrigger :as-child="true">
+                <span class="group text-text-secondary hover:text-text-primary data-[state=open]:text-text-primary
                     text-lg font-bold inline-flex items-center gap-2 cursor-pointer">
                     <Icon 
                         name="lucide:chevron-right"
                         class="group-data-[state=open]:rotate-90 transition-discrete duration-150"
                         aria-label="Expand/Collapse" />
-                        <h2 class="text-warning-text">Overdue Events ({{ entries.overdue.length }})</h2>
+                        <span class="inline-flex items-center gap-2 text-warning-text">
+                            <Icon name="lucide:clock-alert" />
+                            <h2>Overdue Events ({{ entries.overdue.length }})</h2>
+                        </span>
                 </span>
             </CollapsibleTrigger>
             <CollapsibleContent>
-                <div 
-                    v-for="dateEntry in entries.overdue"
-                    :key="dateEntry.date.toDate(localTimezone).toISOString()">
-                    <h2 class="capitalize text-lg font-semibold text-text-secondary">
-                        {{ formatRelativeTime(dateEntry.date.toDate(localTimezone).getTime()) }}
-                    </h2>
-                    
-                    <DashboardHomeDueDateSection
-                        v-if="dateEntry.events.dueAssessments"
-                        text="Due Assessments"
-                        :date-entry="dateEntry"
-                        type="dueAssessments">
-                        <template #default="{ event }">
-                            <DashboardHomeEventCard
-                                :module-code="event.module.code"
-                                :breadcrumbs="[ { label: event.module.name } ]"
-                                :title="event.assessment.name"
-                                :title-to="{ name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug } }"
-                                :date="dateEntry.date.toDate(localTimezone).toLocaleDateString()"
-                                v-model:is-completed="event.assessment.isCompleted"
-                                @update:is-completed="scheduleStore.assessment.toggleCompleted(event.assessment.slug, $event)" />
-                        </template>
-                    </DashboardHomeDueDateSection>
+                <div class="flex flex-row gap-5">
+                    <div class="ml-2 min-h-full w-px bg-warning-border"></div>
+                    <div class="flex flex-col gap-2 w-full">
+                        <div 
+                            v-for="dateEntry in entries.overdue"
+                            :key="dateEntry.date.toDate(localTimezone).toISOString()">
+                            <h2 class="capitalize text-lg font-semibold text-text-secondary">
+                                {{ formatRelativeTime(dateEntry.date.toDate(localTimezone).getTime()) }}
+                            </h2>
+                            
+                            <DashboardHomeDueDateSection
+                                v-if="dateEntry.events.dueAssessments"
+                                text="Due Assessments"
+                                :date-entry="dateEntry"
+                                type="dueAssessments">
+                                <template #default="{ event }">
+                                    <DashboardHomeEventCard
+                                        :module-code="event.module.code"
+                                        :breadcrumbs="[ { label: event.module.name } ]"
+                                        :title="event.assessment.name"
+                                        :title-to="{ name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug } }"
+                                        :date="dateEntry.date.toDate(localTimezone).toLocaleDateString()"
+                                        v-model:is-completed="event.assessment.isCompleted"
+                                        @update:is-completed="scheduleStore.assessment.toggleCompleted(event.assessment.slug, $event)" />
+                                </template>
+                            </DashboardHomeDueDateSection>
 
-                    <DashboardHomeDueDateSection
-                        v-if="dateEntry.events.dueTasks"
-                        text="Due Tasks"
-                        :date-entry="dateEntry"
-                        type="dueTasks">
-                        <template #default="{ event }">
-                            <DashboardHomeEventCard
-                                :module-code="event.module.code"
-                                :breadcrumbs="[
-                                    { label: event.module.name },
-                                    { label: event.assessment.name, to: { name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug } } },
-                                ]"
-                                :title="event.task.name"
-                                :title-to="{ name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug }, query: { task: event.task.id } }"
-                                :date="dateEntry.date.toDate(localTimezone).toLocaleDateString()"
-                                v-model:is-completed="event.task.isCompleted"
-                                @update:is-completed="scheduleStore.task.toggleCompleted(event.task.id, $event)" />
-                        </template>
-                    </DashboardHomeDueDateSection>
+                            <DashboardHomeDueDateSection
+                                v-if="dateEntry.events.dueTasks"
+                                text="Due Tasks"
+                                :date-entry="dateEntry"
+                                type="dueTasks">
+                                <template #default="{ event }">
+                                    <DashboardHomeEventCard
+                                        :module-code="event.module.code"
+                                        :breadcrumbs="[
+                                            { label: event.module.name },
+                                            { label: event.assessment.name, to: { name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug } } },
+                                        ]"
+                                        :title="event.task.name"
+                                        :title-to="{ name: 'dashboard-assessment-slug', params: { slug: event.assessment.slug }, query: { task: event.task.id } }"
+                                        :date="dateEntry.date.toDate(localTimezone).toLocaleDateString()"
+                                        v-model:is-completed="event.task.isCompleted"
+                                        @update:is-completed="scheduleStore.task.toggleCompleted(event.task.id, $event)" />
+                                </template>
+                            </DashboardHomeDueDateSection>
+                        </div>
+                    </div>
                 </div>
             </CollapsibleContent>
         </CollapsibleRoot>

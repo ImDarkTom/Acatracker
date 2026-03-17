@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { InsertTask } from '~~/lib/db/schema';
 import unixTimestampToISO from '#shared/utils/unixTimestampToISO';
-import type { AssessmentWithDetails } from '~~/lib/db/queries/assessments';
-import type { AssessmentWithTasks } from '~~/lib/db/queries/modules';
 
 const scheduleStore = useScheduleStore();
 
 // TODO: replace task with just an id since we cal select from the assessment prop
 const props = defineProps<{
     assessment: AssessmentWithTasks,
-    task: AssessmentWithDetails['tasks'][number],
+    task: AssessmentWithTasks['tasks'][number],
 }>();
 
 const initialValues: InsertTask = {
@@ -63,20 +61,25 @@ const onSubmit = submitHandler(async (values) => scheduleStore.task.update(value
                         as: 'input',
                         type: 'text',
                         placeholder: task.name,
+                        required: true,
                     },
                     {
                         name: 'description',
                         label: 'Description',
                         as: 'textarea',
                         type: 'text',
-                        placeholder: task.description ?? '(Optional)'
+                        placeholder: task.description ?? 'e.g. This needs to include...',
+                        required: true,
                     },
                     {
                         name: 'dueAt',
                         label: 'Due Date',
                         as: 'input',
-                        type: 'date',
-                        value: unixTimestampToISO(initialValues.dueAt)
+                        type: 'datetime-local',
+                        value: unixTimestampToISO(initialValues.dueAt),
+                        max: unixTimestampToISO(assessment.dueAt),
+                        min: assessment.releasedAt ? unixTimestampToISO(assessment.releasedAt) : undefined,
+                        required: true,
                     },
                     {
                         name: 'isCompleted',

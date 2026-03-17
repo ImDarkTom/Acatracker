@@ -1,3 +1,3 @@
 export default function (timestamp: number): string {
-    return new Date(timestamp).toISOString().split('T')[0]!;
+    return new Date(timestamp).toISOString().slice(0, 16);
 }

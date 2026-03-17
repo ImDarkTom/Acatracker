@@ -53,9 +53,11 @@ function handleExitClick(e: Event, exitFn: () => void) {
                     <DialogTitle class="text-lg font-semibold text-text-primary">
                         <slot name="title" />
                     </DialogTitle>
-                    <DialogDescription class="mt-2 mb-4 text-text-muted">
+                    <DialogDescription class="mt-2 mb-4 text-text-secondary">
                         <slot name="description" />
                     </DialogDescription>
+
+                    <span class="text-xs text-text-muted">Fields marked with a '*' are required.</span>
                     
                     <div v-if="submitError" class="bg-errorbg p-2 rounded-sm">
                         {{ submitError }}

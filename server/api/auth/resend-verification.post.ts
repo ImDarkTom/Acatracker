@@ -4,13 +4,10 @@ const rateLimitStore = new Map<string, number>();
 
 export default defineAuthenticatedEventHandler(async (event) => {
     const user = event.context.user;
-
-    if (user.emailVerified) {
-        return sendError(event, createError({
-            statusCode: 400,
-            statusMessage: "Email is already verified."
-        }));
-    }
+    if (user.emailVerified) throw createError({
+        statusCode: 400,
+        statusMessage: "Email is already verified."
+    });
 
     const email = user.email;
 
@@ -28,12 +25,21 @@ export default defineAuthenticatedEventHandler(async (event) => {
         }));
     }
 
-    await auth.api.sendVerificationEmail({
-        body: {
-            email,
-            callbackURL: '/'
-        }
-    });
+    try {
+        await auth.api.sendVerificationEmail({
+            body: {
+                email,
+                callbackURL: '/'
+            }
+        });
+    } catch (e) {
+        console.error(e);
+
+        throw createError({
+            statusCode: 500,
+            statusMessage: "Error sending verification email. Please try again later."
+        });
+    }
 
     rateLimitStore.set(email, now);
     
@@ -44,5 +50,5 @@ export default defineAuthenticatedEventHandler(async (event) => {
         oldEntries.forEach(([key]) => rateLimitStore.delete(key));
     }
 
-    return { message: 'Verification email sent.' }
+    setResponseStatus(event, 204); // No Content
 });
