@@ -1,20 +1,15 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-    isOpen: boolean,
-    confirmBeforeExiting: boolean;
+    confirmBeforeExiting?: boolean;
     submitError?: string;
     priority?: number;
 }>(), {
     priority: 1,
+    confirmBeforeExiting: true,
 });
 
-const emit = defineEmits<{
-    (e: 'update:isOpen', value: boolean): void,
-}>();
-
-const open = computed({
-    get: () => props.isOpen,
-    set: (value: boolean) => emit('update:isOpen', value),
+const isOpen = defineModel('isOpen', {
+    default: false,
 });
 
 function handleExitClick(e: Event, exitFn: () => void) {
@@ -34,7 +29,10 @@ function handleExitClick(e: Event, exitFn: () => void) {
 </script>
 
 <template>
-    <DialogRoot v-model:open="open" v-bind="$attrs" v-slot="{ close: dialogClose }">
+    <DialogRoot 
+        v-model:open="isOpen"
+        v-bind="$attrs"
+        v-slot="{ close: dialogClose }">
         <DialogTrigger as-child>
             <slot name="button" />
         </DialogTrigger>
