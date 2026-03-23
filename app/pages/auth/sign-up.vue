@@ -137,7 +137,7 @@ const onSubmit = submitHandler(async (values: { email: string, password: string,
         </ButtonPrimary>
     </form>
 
-    <span class="text-center">
+    <span class="text-center text-sm font-medium">
         Already have an account? <NuxtLink to="/auth/sign-in" class="link-text">Sign in</NuxtLink>
     </span>
 </template>

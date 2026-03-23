@@ -108,6 +108,11 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
             </div>
             <ErrorMessage name="password" class="text-sm text-errortxt" />
         </label>
+        <NuxtLink
+            class="link-text w-fit ml-auto"
+            :to="{ name: 'auth-forgot-password' }">
+            Forgot Password?
+        </NuxtLink>
         <ButtonPrimary 
             class="justify-center mt-2"
             type="submit"
@@ -118,7 +123,7 @@ const onSubmit = submitHandler(async (values: { email: string, password: string 
         </ButtonPrimary>
     </form>
 
-    <span class="text-center">
-        New? <NuxtLink to="/auth/sign-up" class="link-text">Create an account</NuxtLink>
+    <span class="text-center text-sm font-medium">
+        Don't have an account? <NuxtLink to="/auth/sign-up" class="link-text">Sign Up</NuxtLink>
     </span>
 </template>

@@ -59,6 +59,20 @@ export const auth = betterAuth({
         enabled: true,
         minPasswordLength: 8,
         requireEmailVerification: false,
+        sendResetPassword: async ({ user, url }) => {
+            // TODO: use waitUntil to prevent timing attacks
+            await resend.emails.send({
+                from: 'Acatracker <accounts@acatracker.app>',
+                to: user.email,
+                subject: 'Reset your password for Acatracker',
+                template: {
+                    id: 'password-reset',
+                    variables: {
+                        URL: url
+                    }
+                }
+            });
+        }
     },
     emailVerification: {
         sendOnSignUp: true,

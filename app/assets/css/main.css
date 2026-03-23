@@ -230,7 +230,7 @@ body {
     }
 
     .link-text {
-        @apply text-brand-active hover:underline hover:text-brand-focus;
+        @apply text-brand-focus hover:underline;
     }
 
     .animate-dynamic-slide {
